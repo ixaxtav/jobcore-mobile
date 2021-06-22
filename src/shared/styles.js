@@ -1,3 +1,4 @@
+
 import { StyleSheet } from 'react-native';
 import { BLUE_MAIN, WHITE_MAIN } from './colorPalette';
 import { hasNotch } from './utils';
@@ -9,11 +10,22 @@ const headerStyles = StyleSheet.create({
   headerCustom: {
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: BLUE_MAIN,
-    height: HEIGHT,
+    backgroundColor: 'black',
+    // height: HEIGHT,
     justifyContent: 'center',
+    borderBottomWidth: 0,
     paddingBottom: 0,
-    paddingTop: PADDING_TOP,
+    // paddingTop: PADDING_TOP,
+  },
+  headerCustomWhite: {
+    alignContent: 'center',
+    alignItems: 'center',
+    backgroundColor: WHITE_MAIN,
+    // height: HEIGHT,
+    justifyContent: 'center',
+    borderBottomWidth: 0,
+    paddingBottom: 0,
+    // paddingTop: PADDING_TOP,
   },
   leftButtonImage: {
     color: WHITE_MAIN,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, Linking, Alert } from 'react-native';
-import { Container, Content, Text, Thumbnail, Button } from 'native-base';
+import { Container, Content, Text, Thumbnail, Button, ListItem, List, Left, Icon, Body, Right, Switch} from 'native-base';
 import styles from './ProfileStyle';
 import * as inviteActions from '../Invite/actions';
 import inviteStore from '../Invite/InviteStore';
@@ -26,10 +26,12 @@ import UploadDocumentScreen from './UploadDocumentScreen';
 class Profile extends Component {
   static navigationOptions = {
     tabBarLabel: i18next.t('PROFILE.profile'),
-    tabBarIcon: () => (
-      <Image
-        style={{ resizeMode: 'contain', width: 42, height: 42 }}
-        source={require('../../assets/image/tab/profile.png')}
+    tabBarIcon: ({tintColor}) => (
+      <Icon
+        type="MaterialCommunityIcons"
+        style={{color: tintColor}}
+        name="account"
+       
       />
     ),
   };
@@ -131,12 +133,14 @@ class Profile extends Component {
     return (
       <I18n>
         {(t) => (
+     
           <Container>
             {this.state.isLoading ? <Loading /> : null}
             <TabHeader
               screenName="profile"
               title={t('PROFILE.profileSettings')}
             />
+            
             <Content>
               <BackgroundHeader heightAuto>
                 <View style={{ padding: 15 }}>
@@ -170,56 +174,56 @@ class Profile extends Component {
                     {t('PROFILE.editProfile').toUpperCase()}
                   </Text>
                   <Button transparent>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={require('../../assets/img/next.png')}
-                    />
+                    <Icon style={{color:"black", fontSize: 35, marginRight: 20}} type="FontAwesome" name='angle-right' />
+
                   </Button>
                 </View>
               </TouchableOpacity>
               <View style={styles.darkLine} />
-              <TouchableOpacity onPress={this.goToPublicProfile}>
-                <View style={styles.profileButton}>
-                  <Text style={styles.buttonTextName}>
-                    {t('PROFILE.publicProfile').toUpperCase()}
-                  </Text>
-                  <Button transparent>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={require('../../assets/img/next.png')}
-                    />
-                  </Button>
-                </View>
-              </TouchableOpacity>
+                  <TouchableOpacity onPress={this.goToMyDocuments}>
+                  <View style={styles.profileButton}>
+                    <Text style={styles.buttonTextName}>
+                      {t('USER_DOCUMENTS.uploadDocuments').toUpperCase()}
+                    </Text>
+                    <Button transparent>
+                    <Icon style={{color:"black", fontSize: 35, marginRight: 20}} type="FontAwesome" name='angle-right' />
+
+                    </Button>
+                  </View>
+                </TouchableOpacity>
+        
+
               <View style={styles.darkLine} />
+
               <TouchableOpacity onPress={this.goToBankAccounts}>
                 <View style={styles.profileButton}>
                   <Text style={styles.buttonTextName}>
                     {t('BANK_ACCOUNTS.bankAccounts').toUpperCase()}
                   </Text>
                   <Button transparent>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={require('../../assets/img/next.png')}
-                    />
+                    <Icon style={{color:"black", fontSize: 35, marginRight: 20}} type="FontAwesome" name='angle-right' />
+
                   </Button>
                 </View>
               </TouchableOpacity>
+                
               <View style={styles.darkLine} />
-              <TouchableOpacity onPress={this.goToMyDocuments}>
+
+              <TouchableOpacity onPress={this.goToPublicProfile}>
                 <View style={styles.profileButton}>
                   <Text style={styles.buttonTextName}>
-                    {t('USER_DOCUMENTS.uploadDocuments').toUpperCase()}
+                    {t('PROFILE.publicProfile').toUpperCase()}
                   </Text>
                   <Button transparent>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={require('../../assets/img/next.png')}
-                    />
+                    <Icon style={{color:"black", fontSize: 35, marginRight: 20}} type="FontAwesome" name='angle-right' />
+
                   </Button>
                 </View>
               </TouchableOpacity>
+                
+
               <View style={styles.darkLine} />
+              
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL('https://jobcore.co/community-guidelines/')
@@ -229,10 +233,8 @@ class Profile extends Component {
                     {t('PROFILE.communityGuidlines').toUpperCase()}
                   </Text>
                   <Button transparent>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={require('../../assets/img/next.png')}
-                    />
+                    <Icon style={{color:"black", fontSize: 35, marginRight: 20}} type="FontAwesome" name='angle-right' />
+
                   </Button>
                 </View>
               </TouchableOpacity>

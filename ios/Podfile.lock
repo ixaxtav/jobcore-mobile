@@ -18,7 +18,7 @@ PODS:
     - GoogleUtilities/Network (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - FirebaseAnalyticsInterop (1.4.0)
+  - FirebaseAnalyticsInterop (1.5.0)
   - FirebaseCore (5.4.0):
     - GoogleUtilities/Environment (~> 5.2)
     - GoogleUtilities/Logger (~> 5.2)
@@ -63,7 +63,7 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Protobuf (3.11.1)
+  - Protobuf (3.12.0)
   - React (0.59.10):
     - React/Core (= 0.59.10)
   - react-native-image-picker (0.28.1):
@@ -72,7 +72,9 @@ PODS:
     - React
   - react-native-netinfo (3.2.1):
     - React
-  - react-native-webview (7.6.0):
+  - react-native-signature-capture (0.4.11):
+    - React
+  - react-native-webview (7.1.0):
     - React
   - React/Core (0.59.10):
     - yoga (= 0.59.10.React)
@@ -102,13 +104,15 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNCAsyncStorage (1.8.0):
+  - RNCAsyncStorage (1.11.0):
     - React
-  - RNDateTimePicker (2.2.2):
+  - RNDateTimePicker (2.6.2):
     - React
   - RNDeviceInfo (5.5.3):
     - React
   - RNI18n (2.0.15):
+    - React
+  - RNVectorIcons (7.1.0):
     - React
   - TouchID (4.4.1):
     - React
@@ -122,6 +126,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-signature-capture (from `../node_modules/react-native-signature-capture/react-native-signature-capture.podspec`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -138,6 +143,7 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNI18n (from `../node_modules/react-native-i18n`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - TouchID (from `../node_modules/react-native-touch-id`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -163,6 +169,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-signature-capture:
+    :path: "../node_modules/react-native-signature-capture/react-native-signature-capture.podspec"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   RNCAsyncStorage:
@@ -173,6 +181,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNI18n:
     :path: "../node_modules/react-native-i18n"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   TouchID:
     :path: "../node_modules/react-native-touch-id"
   yoga:
@@ -181,26 +191,28 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Firebase: c60d49e9c2630875a96207d15e2affb8364996d1
   FirebaseAnalytics: fd72a26bf8dac84cefba2f0864366f718555a5b0
-  FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
+  FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
   FirebaseCore: 22a79a961c3951ef2f77b67bfbc99e454247b319
   FirebaseInstanceID: a122b0c258720cf250551bb2bedf48c699f80d90
   FirebaseMessaging: 2d53d08d752fbe63ce0820428d70be5ab87c11fb
   GoogleAppMeasurement: 1624046ab1bcc5e170061a56ef5679000b079c8e
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Protobuf: 20d79da7f20b5928b80043b05080b816e802659e
+  Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   React: 36d0768f9e93be2473b37e7fa64f92c1d5341eef
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
   react-native-netinfo: 27d908bc7ee7b9f29400c02938a0b2a27a1015be
-  react-native-webview: 711cef318a554093b09a5b871894011435d87a8d
-  RNCAsyncStorage: 455b48eb552543bad4e3099e180e1700700771f3
-  RNDateTimePicker: 501ab152e78882c183607e05074c37ce19ace5bf
+  react-native-signature-capture: 12762c4939e37106840643092460738900576b15
+  react-native-webview: bebe3ee631f5cb6d627c50c8c19e88a4b5f9d6c5
+  RNCAsyncStorage: db711e29e5e0500d9bd21aa0c2e397efa45302b1
+  RNDateTimePicker: dc9dab744823a2c734dbc7362cdf57a3adba3c43
   RNDeviceInfo: 67607dfe9cfbed105838144c40187a8392aa404d
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
+  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: f538905c536fc880cfab5ddcb9aa3c0abac32a18
+PODFILE CHECKSUM: 213b95ff6e26dcba591ed373f50f0eeaaeb6d855
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.1

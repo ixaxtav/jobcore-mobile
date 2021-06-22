@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import {
   View,
@@ -8,12 +9,14 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Content, Item, Input, Button, Text, Form, Toast } from 'native-base';
+import { Container, Content, Item, Input, Button, Text, Form, Toast } from 'native-base';
 import styles from './LoginStyle';
 import {
   REGISTER_ROUTE,
   FORGOT_ROUTE,
   APP_ROUTE,
+  VALIDATION_CODE_ROUTE,
+  POSITION_ONBOARDING_ROUTE
 } from '../../constants/routes';
 import * as accountActions from './actions';
 import accountStore from './AccountStore';
@@ -23,7 +26,8 @@ import { LOG } from '../../shared';
 import { CustomToast, Loading } from '../../shared/components';
 import { FormView } from '../../shared/platform';
 import firebase from 'react-native-firebase';
-import { WHITE_MAIN } from '../../shared/colorPalette';
+import { WHITE_MAIN, BLUE_DARK } from '../../shared/colorPalette';
+import ValidationCodeScreen from './ValidationCodeScreen';
 
 const optionalConfigObject = {
   title: 'Authentication Required', // Android
@@ -93,7 +97,7 @@ class LoginScreen extends Component {
       //     accountActions.requestSendValidationLink(email);
       //   },
       // });
-      CustomToast('Validation link sent! Check your email inbox.');
+      CustomToast('JobCore verification code sent! Check your phone.');
     });
 
     TouchID.isSupported().then((biometryType) => {
@@ -139,7 +143,6 @@ class LoginScreen extends Component {
       email,
       password,
     };
-    // console.log('dattica  ',credentialUser)
     await AsyncStorage.setItem(
       '@JobCoreCredential',
       JSON.stringify(credentialUser),
@@ -157,24 +160,32 @@ class LoginScreen extends Component {
     try {
       token = response.token;
       status = response.user.profile.status;
+      phoneNumber = response.user.profile.phone_number;
+      email= response.user.email;
     } catch (e) {
       return LOG(this, e);
     }
 
     if (!status || status === 'PENDING_EMAIL_VALIDATION') {
-      const email = this.state.email.toLowerCase().trim();
-      Toast.show({
-        text: 'You need to validate your email to log in the platform.',
-        type: 'danger',
-        duration: 180000,
-        position: 'top',
-        buttonText: 'Resend Email',
-        buttonStyle: { width: 85, height: 60, backgroundColor: '#c3453c' },
-        buttonTextStyle: { color: WHITE_MAIN, textAlign: 'center' },
-        onClose: () => {
-          accountActions.requestSendValidationLink(email);
-        },
-      });
+      // const email = this.state.email.toLowerCase().trim();
+      // Toast.show({
+      //   text: 'You need to validate your email to log in the platform.',
+      //   type: 'danger',
+      //   duration: 180000,
+      //   position: 'top',
+      //   buttonText: 'Resend Email',
+      //   buttonStyle: { width: 85, height: 60, backgroundColor: '#c3453c' },
+      //   buttonTextStyle: { color: WHITE_MAIN, textAlign: 'center' },
+      //   onClose: () => {
+      //     accountActions.requestSendValidationLink(email);
+      //   },
+      // });
+      accountActions.requestSendValidationLink(email,phoneNumber);
+      this.props.navigation.navigate(VALIDATION_CODE_ROUTE,{
+        email: email,
+        phone_number: phoneNumber
+      })
+      this.isLoading(false);
       // const _storeData = async () => {
       //   try {
       //     await AsyncStorage.setItem('@JobCore:isFirstLogin', true);
@@ -184,9 +195,14 @@ class LoginScreen extends Component {
       // };
 
       return;
-    }
+    }else if(status == "PAUSED"){
+      this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE)
+      this.isLoading(false);
+      return;
+    } 
 
     if (token) {
+      console.log('token', token)
       this.isLoading(false);
       if (this.state.biometrySupport) {
         if (permissionTouchId) {
@@ -206,7 +222,7 @@ class LoginScreen extends Component {
               ],
               { cancelable: false },
             );
-          } else {
+          }else {
             this.props.navigation.navigate(APP_ROUTE);
           }
         } else {
@@ -215,7 +231,7 @@ class LoginScreen extends Component {
       } else {
         this.props.navigation.navigate(APP_ROUTE);
       }
-    } else {
+    }else {
       this.isLoading(false);
     }
   };
@@ -232,13 +248,14 @@ class LoginScreen extends Component {
     return (
       <I18n>
         {(t) => (
-          <Content contentContainerStyle={{ flexGrow: 1 }}>
+          <Container>
+          <Content contentContainerStyle={{ flexGrow: 1}}>
             <View style={styles.container}>
               {this.state.isLoading ? <Loading /> : null}
-              <Image
+              {/* <Image
                 style={styles.viewBackground}
                 source={require('../../assets/image/bg.jpg')}
-              />
+              /> */}
               <Image
                 style={styles.viewLogo}
                 source={require('../../assets/image/logo1.png')}
@@ -249,6 +266,7 @@ class LoginScreen extends Component {
                     <Input
                       keyboardType={'email-address'}
                       autoCapitalize={'none'}
+                      style={{color: 'black'}}
                       value={this.state.email}
                       placeholder={t('LOGIN.email')}
                       onChangeText={(text) => this.setState({ email: text })}
@@ -258,6 +276,7 @@ class LoginScreen extends Component {
                     <Input
                       autoCapitalize={'none'}
                       value={this.state.password}
+                      style={{color: 'black'}}
                       placeholder={t('LOGIN.password')}
                       onChangeText={(text) => this.setState({ password: text })}
                       secureTextEntry={true}
@@ -292,7 +311,15 @@ class LoginScreen extends Component {
                   style={styles.viewButtomLogin}>
                   <Text style={styles.textButtom}>{t('LOGIN.signIn')}</Text>
                 </Button>
-                <TouchableOpacity
+                <Button
+                  full
+                  onPress={this.userRegister.bind(this)}
+                  style={styles.viewButtomRegister}>
+                    <Text style={styles.textButtomRegister}>
+                      {t('LOGIN.signUp')}
+                    </Text>
+                </Button>
+                {/* <TouchableOpacity
                   full
                   onPress={this.userRegister.bind(this)}
                   style={styles.viewButtomSignUp}>
@@ -302,10 +329,12 @@ class LoginScreen extends Component {
                       {t('LOGIN.clickToSignUp')}
                     </Text>
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </FormView>
             </View>
-          </Content>
+            </Content>
+          </Container>
+
         )}
       </I18n>
     );
@@ -349,3 +378,4 @@ class LoginScreen extends Component {
 }
 
 export default LoginScreen;
+

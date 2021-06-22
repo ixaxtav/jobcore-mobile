@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, Slider, RefreshControl } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, Slider, RefreshControl } from 'react-native';
 import {
   Container,
   Content,
@@ -14,7 +14,7 @@ import {
   Icon,
 } from 'native-base';
 import preferencesStyles from './JobPreferencesStyle';
-import { BLUE_DARK, BLUE_MAIN, VIOLET_MAIN } from '../../shared/colorPalette';
+import { VIOLET_MAIN } from '../../shared/colorPalette';
 import {
   AVAILABILITY_ROUTE,
   POSITION_ROUTE,
@@ -47,14 +47,16 @@ class JobPreferences extends Component {
   static navigationOptions = {
     header: null,
     tabBarLabel: i18next.t('JOB_PREFERENCES.jobPreferences'),
-    tabBarIcon: () => (
-      <Image
-        style={{ resizeMode: 'contain', width: 42, height: 42 }}
-        source={require('../../assets/image/preferences.png')}
+    tabBarIcon: ({tintColor}) => (
+      <Icon
+        type="MaterialCommunityIcons"
+        style={{color: tintColor}}
+        name="file-cog"
+       
       />
     ),
   };
-
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -157,9 +159,25 @@ class JobPreferences extends Component {
     this.setState({ isRefreshing: false });
     CustomToast(err, 'danger');
   };
+  
+  savePreferences = (err) => {
+    if(this.state.location == '') CustomToast('Please add a location','danger' );
+    if(this.state.positions.length == 0)CustomToast('Please add job positions','danger')
+    else{
+      this.props.navigation.navigate(EditProfile.routeName,{
+        onboarding: true
+      });
+  
+      CustomToast('Preferences Saved. Please complete your profile to continue.');
+
+    }
+  };
+
 
   getLocationHandler = (profile) => {
-    this.setState({ location: profile.location });
+    console.log(profile)
+    this.setState({ location: profile.location, stopReceivingInvites: !profile.employee.stop_receiving_invites});
+    
   };
 
   saveLocationHandler = (profile) => {
@@ -234,15 +252,20 @@ class JobPreferences extends Component {
                       this.props.navigation.navigate(POSITION_ROUTE)
                     }
                     full
-                    rounded
+                    // rounded
                     style={preferencesStyles.buttonRounded}>
                     <Text
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.position')}
-                    </Text>
-                  </Button>
+                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
 
+                    </Text>
+                 
+                  </Button>
+                
+             
+          
                   <View style={preferencesStyles.viewPositions}>
                     <Text style={{ textAlign: 'center' }}>
                       {this.state.positions.map((position, index) => {
@@ -293,21 +316,23 @@ class JobPreferences extends Component {
                       }
                       onSlidingComplete={this.onHourlySlidingComplete}
                       value={this.state.minimumHourlyRate}
-                      thumbTintColor={BLUE_DARK}
-                      minimumTrackTintColor={BLUE_DARK}
-                      maximumTrackTintColor={BLUE_MAIN}
+                      thumbTintColor={'black'}
+                      minimumTrackTintColor={'black'}
+                      maximumTrackTintColor={"#D3D3D3"}
                     />
 
                     <View style={preferencesStyles.viewButtonLocation}>
                       <Button
                         full
                         onPress={this.editLocation}
-                        rounded
+                        // rounded
                         style={preferencesStyles.buttonRounded}>
                         <Text
                           uppercase={false}
                           style={preferencesStyles.textButton}>
                           {t('JOB_PREFERENCES.myLocation')}
+                          <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
+
                         </Text>
                       </Button>
 
@@ -348,9 +373,9 @@ class JobPreferences extends Component {
                       }
                       onSlidingComplete={this.onDistanceSlidingComplete}
                       value={this.state.maximumJobDistanceMiles}
-                      thumbTintColor={BLUE_DARK}
-                      minimumTrackTintColor={BLUE_DARK}
-                      maximumTrackTintColor={BLUE_MAIN}
+                      thumbTintColor={'black'}
+                      minimumTrackTintColor={'black'}
+                      maximumTrackTintColor={"#D3D3D3"}
                     />
                   </Form>
                 </FormViewPreferences>
@@ -361,12 +386,14 @@ class JobPreferences extends Component {
                       this.props.navigation.navigate(AVAILABILITY_ROUTE)
                     }
                     full
-                    rounded
+                    // rounded
                     style={preferencesStyles.buttonRounded}>
                     <Text
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.availability')}
+                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
+
                     </Text>
                   </Button>
 
@@ -421,11 +448,12 @@ class JobPreferences extends Component {
                     first
                     active>
                     <Icon
-                      style={{ color: BLUE_DARK }}
+                      style={{ color: 'black' }}
+                      type="FontAwesome"
                       name={
                         this.state.stopReceivingInvites
-                          ? 'md-radio-button-on'
-                          : 'md-radio-button-off'
+                          ? 'check-circle'
+                          : 'circle-o'
                       }
                       size={5}
                     />
@@ -441,11 +469,12 @@ class JobPreferences extends Component {
                     }
                     last>
                     <Icon
-                      style={{ color: VIOLET_MAIN }}
+                      style={{ color: 'black' }}
+                      type="FontAwesome"
                       name={
                         this.state.stopReceivingInvites
-                          ? 'md-radio-button-off'
-                          : 'md-radio-button-on'
+                          ? 'circle-o'
+                          : 'check-circle'
                       }
                       size={5}
                     />
@@ -453,8 +482,11 @@ class JobPreferences extends Component {
                   <Text style={preferencesStyles.itemInvite}>
                     {t('DASHBOARD.n')}
                   </Text>
+    
                 </Segment>
               </View>
+    
+           
             </Content>
           </Container>
         )}

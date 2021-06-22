@@ -93,7 +93,7 @@ class ForgotScreen extends Component {
                 <TouchableOpacity
                   full
                   onPress={() => this.props.navigation.goBack()}
-                  style={styles.viewButtomSignUp}>
+                  style={styles.viewButtomSignUpNoBorder}>
                   <Text style={styles.textButtomSignUp}>
                     {t('REGISTER.goBack')}
                   </Text>

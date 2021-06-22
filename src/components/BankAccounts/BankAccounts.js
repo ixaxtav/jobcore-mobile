@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Image, TouchableOpacity, Alert, H1 } from 'react-native';
 import { Item, Text, Form, Label, Content, Container } from 'native-base';
 import { bankAccountsStyle } from './bankAccounts-style';
 import { I18n } from 'react-i18next';
@@ -68,10 +68,10 @@ class BankAccounts extends FluxView {
     if (!user.birth_date) {
       return CustomToast(i18next.t('BANK_ACCOUNTS.needBirthDate'), 'danger');
     }
-    if (!user.last_4dig_ssn) {
-      return CustomToast(i18next.t('BANK_ACCOUNTS.needSsn4digits'), 'danger');
-    }
-    if (user.birth_date && user.last_4dig_ssn)
+    // if (!user.last_4dig_ssn) {
+    //   return CustomToast(i18next.t('BANK_ACCOUNTS.needSsn4digits'), 'danger');
+    // }
+    if (user.birth_date)
       this.props.navigation.navigate(AddBankAccount.routeName);
   };
 
@@ -101,6 +101,7 @@ class BankAccounts extends FluxView {
 
   render() {
     const { isLoading, bankAccounts } = this.state;
+    console.log('banco estado', this.state);
     return (
       <I18n>
         {(t) => (
@@ -110,6 +111,18 @@ class BankAccounts extends FluxView {
             <Content>
               <View style={bankAccountsStyle.container}>
                 <View>
+                  {bankAccounts.length > 0 && (
+                    <View style={{
+                      paddingTop: 5,
+                    }} >
+                
+                      <Text style={{ marginBottom: 15, fontWeight: 700, fontSize: 24, lineHeight: 45 }}>
+                        {'Your bank account is ready to receive payment.'}
+                      </Text>
+      
+                    </View>
+
+                  )}
                   <Form>
                     {bankAccounts.length > 0 ? (
                       bankAccounts.map(
@@ -120,13 +133,12 @@ class BankAccounts extends FluxView {
                                 style={bankAccountsStyle.viewInput}
                                 inlineLabel
                                 rounded>
-                                <Label numberOfLines={1}>
-                                  {bankAccount.name}
+                                <Label>
+                                  <Text style={{ fontWeight: 500 }}>{bankAccount.institution_name + '\n' + bankAccount.name + ' - ' + bankAccount.account}</Text>
                                 </Label>
-                                {/*<Label style={bankAccountsStyle.statusStyle}>*/}
-                                {/*  #status*/}
-                                {/*</Label>*/}
+                 
                               </Item>
+                             
                               <TouchableOpacity
                                 onPress={() =>
                                   this.deleteBankAccountAlert(bankAccount)

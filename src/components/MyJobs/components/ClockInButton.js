@@ -4,6 +4,7 @@ import { inviteStyles } from '../../Invite/InviteDetailsStyle';
 import PropTypes from 'prop-types';
 
 const ClockInButton = ({ canClockIn, diffInMinutes, onClick }) => {
+
   let timeToClockIn = parseInt(diffInMinutes);
   let timeUnit = 'Minutes';
   let time = `${timeToClockIn} ${timeUnit}`;

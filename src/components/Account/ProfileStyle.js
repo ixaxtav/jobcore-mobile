@@ -6,6 +6,7 @@ import {
   BLUE_LIGHT,
   BG_GRAY_LIGHT,
   BLACK_MAIN,
+  GRAY_LIGHT,
 } from '../../shared/colorPalette';
 
 export default StyleSheet.create({
@@ -29,6 +30,7 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     marginRight: 20,
+
   },
   profileButton: {
     height: 65,
@@ -47,7 +49,7 @@ export default StyleSheet.create({
   },
   viewHeader: {
     backgroundColor: BLUE_LIGHT,
-    borderRadius: 50,
+    borderRadius: 0,
     padding: 15,
     paddingLeft: 20,
     paddingRight: 20,
@@ -95,6 +97,13 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     color: BLUE_DARK,
+    marginLeft: 35,
+  },
+  buttonTextNameGrey: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontWeight: '600',
+    color: GRAY_LIGHT,
     marginLeft: 35,
   },
   titleTextName: {

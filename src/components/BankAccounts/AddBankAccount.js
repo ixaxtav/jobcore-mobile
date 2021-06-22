@@ -51,30 +51,6 @@ class AddBankAccount extends View {
     });
   }
 
-  render() {
-    return (
-      <I18n>
-        {(t) => (
-          <Container>
-            {this.state.isLoading ? <Loading /> : null}
-            <TabHeader
-              onPressBack={() => this.props.navigation.goBack()}
-              goBack
-              title={t('BANK_ACCOUNTS.addBankAccountTitle')}
-            />
-            {this.state.isPlaidLoading ? <Loading /> : null}
-            <PlaidAuthenticator
-              onMessage={this.onPlaidMessage}
-              publicKey={PLAID_PUBLIC_KEY}
-              env={PLAID_ENVIRONMENT}
-              product="auth"
-            />
-          </Container>
-        )}
-      </I18n>
-    );
-  }
-
   onPlaidMessage = (e) => {
     console.log(`AddBankAccount:onPlaidMessage:`, e);
     const { metadata } = e;
@@ -102,6 +78,32 @@ class AddBankAccount extends View {
       this.props.navigation.goBack();
     });
   };
+
+  render() {
+    return (
+      <I18n>
+        {(t) => (
+          <Container>
+            {this.state.isLoading ? <Loading /> : null}
+            <TabHeader
+              onPressBack={() => this.props.navigation.goBack()}
+              // goBack
+              title={t('BANK_ACCOUNTS.addBankAccountTitle')}
+            />
+            {this.state.isPlaidLoading ? <Loading /> : null}
+            <PlaidAuthenticator
+              onMessage={this.onPlaidMessage}
+              publicKey={PLAID_PUBLIC_KEY}
+              env={PLAID_ENVIRONMENT}
+              product="auth"
+            />
+          </Container>
+        )}
+      </I18n>
+    );
+  }
+
+
 }
 
 AddBankAccount.routeName = 'AddBankAccount';

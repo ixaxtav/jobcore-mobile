@@ -15,8 +15,9 @@ export default StyleSheet.create({
     fontSize: 18,
   },
   textEmployer: {
-    color: VIOLET_MAIN,
+    color: 'black',
     textAlign: 'left',
+    fontWeight: '700',
   },
   textGray: {
     color: GRAY_MAIN,
@@ -25,10 +26,12 @@ export default StyleSheet.create({
   textRed: {
     color: RED_MAIN,
     textAlign: 'left',
+    fontWeight: '700',
   },
   textShiftTitle: {
-    color: BLUE_MAIN,
+    color: 'black',
     textAlign: 'left',
+    fontWeight: '700',
   },
   textBlack: {
     color: BLACK_MAIN,

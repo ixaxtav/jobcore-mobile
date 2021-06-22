@@ -8,8 +8,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { Container, Content, Text } from 'native-base';
 import {
   WHITE_MAIN,
-  BLUE_DARK,
-  BLUE_MAIN,
   BLACK_MAIN,
 } from '../../shared/colorPalette';
 import { LOG } from '../../shared';
@@ -133,9 +131,9 @@ class EditLocation extends PureComponent {
                     height: 55,
                     marginLeft: 15,
                     marginRight: 15,
-                    borderColor: BLUE_MAIN,
+                    borderColor: "black",
                     color: BLACK_MAIN,
-                    borderRadius: 50,
+                    borderRadius: 0,
                     borderWidth: 1,
                   },
                   description: {
@@ -145,7 +143,7 @@ class EditLocation extends PureComponent {
                     color: '#1faadb',
                   },
                   loader: {
-                    color: BLUE_DARK,
+                    color: "black",
                   },
                   listView: {
                     backgroundColor: WHITE_MAIN,

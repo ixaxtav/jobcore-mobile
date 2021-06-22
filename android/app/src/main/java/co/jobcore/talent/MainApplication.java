@@ -3,14 +3,17 @@ package co.jobcore.talent;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
+// import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.rssignaturecapture.RSSignatureCapturePackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
 // import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -36,9 +39,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeConfigPackage(),
             new RNDateTimePickerPackage(),
             new RNDeviceInfo(),
-            new RNCWebViewPackage(),
+            // new RNCWebViewPackage(),
+            new RSSignatureCapturePackage(),
+            new VectorIconsPackage(),
             new FingerprintAuthPackage(),
             new RNI18nPackage(),
             new RNFirebasePackage(),
