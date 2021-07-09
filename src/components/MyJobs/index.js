@@ -55,12 +55,11 @@ const jobFilters = [
 class MyJobs extends Component {
   static navigationOptions = {
     tabBarLabel: i18next.t('MY_JOBS.myJobs'),
-    tabBarIcon: ({tintColor}) => (
+    tabBarIcon: ({ tintColor }) => (
       <Icon
         type="MaterialCommunityIcons"
-        style={{color: tintColor}}
+        style={{ color: tintColor }}
         name="briefcase"
-       
       />
     ),
   };
@@ -180,14 +179,16 @@ class MyJobs extends Component {
                     index === 0 ? styles.firstButtonBorderLeft : {},
                   ]}>
                   <View style={styles[filter.style]} />
-                  <View style={[
-                       styles[
+                  <View
+                    style={[
+                      styles[
                         this.state.jobFilterSelected === filter.action
                           ? styles[filter.style]
                           : 'inactiveFilter'
                       ],
                       index === 0 ? styles.firstButtonBorderLeft : {},
-                  ]} />
+                    ]}
+                  />
                 </Button>
               ))}
             </Segment>

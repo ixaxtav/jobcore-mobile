@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'native-base';
-import {
-  WHITE_MAIN,
-} from '../../shared/colorPalette';
+import { WHITE_MAIN } from '../../shared/colorPalette';
 import { withNavigation } from 'react-navigation';
 
 const styles = {
@@ -18,32 +16,32 @@ const styles = {
   viewButtomLeft: {
     width: '50%',
     marginRight: 5,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderRadius: 0,
   },
   buttomLeft: {
-    borderColor: "black",
+    borderColor: 'black',
     color: WHITE_MAIN,
     borderWidth: 1,
   },
   viewButtomRight: {
     width: '50%',
     marginLeft: 5,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderRadius: 0,
   },
   buttomRight: {
-    borderColor: "black",
+    borderColor: 'black',
     color: WHITE_MAIN,
   },
   textWhite: {
     color: WHITE_MAIN,
   },
   textViolet: {
-    color: "black",
+    color: 'black',
   },
   textBlue: {
-    color: "black",
+    color: 'black',
   },
 };
 
@@ -67,7 +65,9 @@ const BtnCancelSave = (props) => {
           full
           rounded
           bordered>
-          <Text style={styles.textWhite}>{props.t('JOB_PREFERENCES.save')}</Text>
+          <Text style={styles.textWhite}>
+            {props.t('JOB_PREFERENCES.save')}
+          </Text>
         </Button>
       </View>
     </View>

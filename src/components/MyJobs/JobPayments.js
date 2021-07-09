@@ -158,8 +158,7 @@ class JobPayments extends Component {
                           resizeMode={'cover'}
                           circle={true}
                           source={
-                            payment.employer &&
-                            payment.employer.picture
+                            payment.employer && payment.employer.picture
                               ? { uri: payment.employer.picture }
                               : CHICKEN
                           }

@@ -35,13 +35,11 @@ const CustomPicker = ({
 );
 
 const styles = {
-  customPickerItem: {
- 
-  },
+  customPickerItem: {},
   customPickerItemText: {
     marginBottom: 20,
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
   },
 };
 

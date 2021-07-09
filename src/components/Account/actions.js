@@ -101,7 +101,15 @@ const register = (
   acceptTerms,
 ) => {
   try {
-    registerValidator(email, password, firstName, lastName, phoneNumber, city, acceptTerms);
+    registerValidator(
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      city,
+      acceptTerms,
+    );
   } catch (err) {
     return Flux.dispatchEvent('AccountStoreError', err);
   }
@@ -131,6 +139,7 @@ const register = (
       Flux.dispatchEvent('Register', data);
     })
     .catch((err) => {
+      console.log('erroneous', err)
       Flux.dispatchEvent('AccountStoreError', err);
     });
 };
@@ -196,7 +205,7 @@ const editProfile = (
       city: '',
     };
   }
-  
+
   putData(`/profiles/me`, data)
     .then((data) => {
       Flux.dispatchEvent('EditProfile', data);
@@ -207,16 +216,14 @@ const editProfile = (
     });
 };
 
-const editStatus = (
-  status, loginStore
-) => {
+const editStatus = (status, loginStore) => {
   let data = {
-    "status": "ACTIVE"
-  }
+    status: 'ACTIVE',
+  };
   let newLoginStore;
-  if(loginStore){
+  if (loginStore) {
     newLoginStore = loginStore;
-    newLoginStore['user']['profile']['status'] = "ACTIVE"
+    newLoginStore['user']['profile']['status'] = 'ACTIVE';
   }
 
   console.log('newLoginStore', newLoginStore);
@@ -325,7 +332,7 @@ const editProfilePicture = (image) => {
 
 /**
  * Edit profile resume
- * 
+ *
  */
 const editProfileResume = (image) => {
   try {
@@ -447,7 +454,12 @@ const getDocumentsTypes = async () => {
       console.log('getDocumentsTypes employment: ', employment);
       console.log('getDocumentsTypes form: ', form);
       let types = [];
-      const allTypesArray = [...identity, ...employment, ...form, ...document_a];
+      const allTypesArray = [
+        ...identity,
+        ...employment,
+        ...form,
+        ...document_a,
+      ];
       allTypesArray.forEach((type) => {
         if (
           types.filter((filterType) => filterType.title === type.title)
@@ -476,7 +488,11 @@ const setStoredUser = (user) => {
 };
 
 export const requestSendValidationLink = (email, phoneNumber) => {
-  postData(`/user/phone_number/validate/send/${email}/${phoneNumber}`, {}, false)
+  postData(
+    `/user/phone_number/validate/send/${email}/${phoneNumber}`,
+    {},
+    false,
+  )
     .then((data) => {
       Flux.dispatchEvent('ValidationLink', data);
     })
@@ -485,8 +501,12 @@ export const requestSendValidationLink = (email, phoneNumber) => {
     });
 };
 
-export const validatePhoneNumber = (email,phoneNumber, code) => {
-  postData(`/user/phone_number/validate/${email}/${phoneNumber}/${code}`, {}, false)
+export const validatePhoneNumber = (email, phoneNumber, code) => {
+  postData(
+    `/user/phone_number/validate/${email}/${phoneNumber}/${code}`,
+    {},
+    false,
+  )
     .then((data) => {
       Flux.dispatchEvent('ValidationLink', data);
     })

@@ -1,7 +1,33 @@
 import React, { Component } from 'react';
-import { View, Image, Alert, Modal, TouchableOpacity,Linking } from 'react-native';
+import {
+  View,
+  Image,
+  Alert,
+  Modal,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 
-import { Text, Form, Label, Content, Container,Footer,FooterTab,Button, CardItem, Card, Body, Icon, ListItem, List,Right,Left,Input,Item } from 'native-base';
+import {
+  Text,
+  Form,
+  Label,
+  Content,
+  Container,
+  Footer,
+  FooterTab,
+  Button,
+  CardItem,
+  Card,
+  Body,
+  Icon,
+  ListItem,
+  List,
+  Right,
+  Left,
+  Input,
+  Item,
+} from 'native-base';
 import UploadDocumentStyle from './UploadDocumentStyle';
 import BankAccounts from '../BankAccounts/BankAccounts';
 import { I18n } from 'react-i18next';
@@ -295,7 +321,7 @@ class UploadDocumentScreen extends Component {
   render() {
     const { user, showWarning, documentsTypes } = this.state;
     const { documents } = this.state;
-   
+
     const isAllowDocuments = user.employee
       ? !user.employee.document_active
       : true;
@@ -319,238 +345,359 @@ class UploadDocumentScreen extends Component {
     const extraWithholding = user.employee
       ? user.employee.extra_withholding
       : '';
-    
-    console.log('upload document',this.state);
+
+    console.log('upload document', this.state);
     return (
       <I18n>
         {(t) => (
           <Container>
             <ModalHeader
               screenName="i9_form"
-              title={"I-9 Form"}
+              title={'I-9 Form'}
               withoutHelpIcon={false}
               canClose={true}
             />
             <Content padder>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Last Name <Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='Last Name' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>First Name <Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='First Name' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Middle Initial</Label>
-              <Item regular>
-                <Input placeholder='Middle Initial' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Other Last Names</Label>
-              <Item regular>
-                <Input placeholder='Other Last Names' />
-              </Item>       
-            </View>
-
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Address <Text style={{color:"red"}}>*</Text></Label>
-              <Label style={{paddingLeft: 3, marginBottom: 10, fontSize: 14}}>Street Address</Label>
-              <Item regular>
-                <Input placeholder='Street Address' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10, fontSize: 14}}>Address - Line 2</Label>
-              <Item regular>
-                <Input placeholder='Address - Line 2' />
-              </Item>       
-            </View>
-            <View style={{flex: 1, flexDirection: 'row',flexWrap: 'wrap'}}>
-              <View style={{width: "30%", margin: '1%', aspectRatio: 1}}>
-                <Label style={{paddingLeft: 3, marginBottom: 10,fontSize: 14}}>City</Label>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Last Name <Text style={{ color: 'red' }}>*</Text>
+                </Label>
                 <Item regular>
-                  <Input placeholder='City' />
-                </Item>       
+                  <Input placeholder="Last Name" />
+                </Item>
               </View>
-              <View style={{width: "30%", margin: '1%', aspectRatio: 1}}>
-                <Label style={{paddingLeft: 3, marginBottom: 10,fontSize: 14}}>State</Label>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  First Name <Text style={{ color: 'red' }}>*</Text>
+                </Label>
                 <Item regular>
-                  <Input placeholder='State' />
-                </Item>       
+                  <Input placeholder="First Name" />
+                </Item>
               </View>
-              <View style={{width: "30%", margin: '1%', aspectRatio: 1}}>
-                <Label style={{paddingLeft: 3, marginBottom: 10,fontSize: 14}}>Zip Code</Label>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Middle Initial
+                </Label>
                 <Item regular>
-                  <Input placeholder='Zip Code' />
-                </Item>       
+                  <Input placeholder="Middle Initial" />
+                </Item>
               </View>
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Date Of Birth<Text style={{color:"red"}}>*</Text><Text style={{fontStyle: 'italic'}}> (mm/dd/yyyy)</Text> </Label>
-              <Item regular>
-                <Input placeholder='mm/dd/yyyy' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Social Security Number<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='xxx-xx-xxxx' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Email<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='Email' />
-              </Item>       
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Telephone Number<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='(000) 000-0000' />
-              </Item>       
-            <Text style={{fontSize: 14,color: "#787878",marginTop: 30, paddingLeft: 3}}>I am aware that federal law provides for imprisonment and/or fines for false statements or use of false documents in connection with the completion of this form</Text>
-            </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Other Last Names
+                </Label>
+                <Item regular>
+                  <Input placeholder="Other Last Names" />
+                </Item>
+              </View>
 
-            {/* DROPDOWN */}
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>I attest, under penalty of perjury, that I am a (select from list)<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input/>
-              </Item>       
-            </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Address <Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Label
+                  style={{ paddingLeft: 3, marginBottom: 10, fontSize: 14 }}>
+                  Street Address
+                </Label>
+                <Item regular>
+                  <Input placeholder="Street Address" />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label
+                  style={{ paddingLeft: 3, marginBottom: 10, fontSize: 14 }}>
+                  Address - Line 2
+                </Label>
+                <Item regular>
+                  <Input placeholder="Address - Line 2" />
+                </Item>
+              </View>
+              <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+                <View style={{ width: '30%', margin: '1%', aspectRatio: 1 }}>
+                  <Label
+                    style={{ paddingLeft: 3, marginBottom: 10, fontSize: 14 }}>
+                    City
+                  </Label>
+                  <Item regular>
+                    <Input placeholder="City" />
+                  </Item>
+                </View>
+                <View style={{ width: '30%', margin: '1%', aspectRatio: 1 }}>
+                  <Label
+                    style={{ paddingLeft: 3, marginBottom: 10, fontSize: 14 }}>
+                    State
+                  </Label>
+                  <Item regular>
+                    <Input placeholder="State" />
+                  </Item>
+                </View>
+                <View style={{ width: '30%', margin: '1%', aspectRatio: 1 }}>
+                  <Label
+                    style={{ paddingLeft: 3, marginBottom: 10, fontSize: 14 }}>
+                    Zip Code
+                  </Label>
+                  <Item regular>
+                    <Input placeholder="Zip Code" />
+                  </Item>
+                </View>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Date Of Birth<Text style={{ color: 'red' }}>*</Text>
+                  <Text style={{ fontStyle: 'italic' }}>
+                    {' '}
+                    (mm/dd/yyyy)
+                  </Text>{' '}
+                </Label>
+                <Item regular>
+                  <Input placeholder="mm/dd/yyyy" />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Social Security Number<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input placeholder="xxx-xx-xxxx" />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Email<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input placeholder="Email" />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Telephone Number<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input placeholder="(000) 000-0000" />
+                </Item>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#787878',
+                    marginTop: 30,
+                    paddingLeft: 3,
+                  }}>
+                  I am aware that federal law provides for imprisonment and/or
+                  fines for false statements or use of false documents in
+                  connection with the completion of this form
+                </Text>
+              </View>
 
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>Today's Date<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input placeholder='mm/dd/yyyy'/>
-              </Item>       
-            </View>
+              {/* DROPDOWN */}
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  I attest, under penalty of perjury, that I am a (select from
+                  list)<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input />
+                </Item>
+              </View>
 
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 15}}>List of Acceptable Documents can be found in the link <Text style={{color:'blue'}}>here</Text></Label>
-              <Text style={{paddingLeft: 3, fontSize: 14,color: "#787878"}}>All documents must be UNEXPIRED. Present one document from List A or a combination of one document from both List B and List C.</Text>
-            </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 15}}>List A Documents that Establish Both Identity and Employment Authorization</Label>
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'U.S Passport'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'Passport Card'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'Permanent Resident Card (Form I-551)'}</Text>
-              </View>            
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  Today's Date<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input placeholder="mm/dd/yyyy" />
+                </Item>
               </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 15}}>List B Documents that Establish Identity</Label>
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{"U.S State Driver's License / ID Card"}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'Federal, state, or local government agency/entity ID Card'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'School ID Card with photograph'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'U.S Military Card / Draft Record'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{"Military Dependent's ID Card"}</Text>
-              </View>            
+
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 15 }}>
+                  List of Acceptable Documents can be found in the link{' '}
+                  <Text style={{ color: 'blue' }}>here</Text>
+                </Label>
+                <Text
+                  style={{ paddingLeft: 3, fontSize: 14, color: '#787878' }}>
+                  All documents must be UNEXPIRED. Present one document from
+                  List A or a combination of one document from both List B and
+                  List C.
+                </Text>
               </View>
-            <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 15}}>List C Documents that Establish Employment Authorization</Label>
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{"Social Security Account Number Card "}<Text>without</Text>{" one of these restrictions:"}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 30}}>
-                <Text>{'\u25E6'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'NOT VALID FOR EMPLOYMENT'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 30}}>
-                <Text>{'\u25E6'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'VALID FOR WORK ONLY WITH INS AUTHORIZATION'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 30}}>
-                <Text>{'\u25E6'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'VALID FOR WORK ONLY WITH DHS AUTHORIZATION'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'Department of State Birth Certification (Forms DS-1350, FS-545, FS-240)'}</Text>
-              </View>            
-              <View style={{flexDirection: 'row', paddingLeft: 15}}>
-                <Text>{'\u2022'}</Text>
-                <Text style={{flex: 1, paddingLeft: 5}}>{'Department of Homeland Security Employment Authorization Document'}</Text>
-              </View>            
-           
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 15 }}>
+                  List A Documents that Establish Both Identity and Employment
+                  Authorization
+                </Label>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'U.S Passport'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'Passport Card'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'Permanent Resident Card (Form I-551)'}
+                  </Text>
+                </View>
               </View>
-              <View style={{marginBottom: 30}}>
-                <Label>Select the list with your identity and/or employment authorization documents<Text style={{color:"red"}}>*</Text></Label>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 15 }}>
+                  List B Documents that Establish Identity
+                </Label>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'U.S State Driver\'s License / ID Card'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {
+                      'Federal, state, or local government agency/entity ID Card'
+                    }
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'School ID Card with photograph'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'U.S Military Card / Draft Record'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'Military Dependent\'s ID Card'}
+                  </Text>
+                </View>
               </View>
-              <View style={{flex: 1, flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
-              <View style={{flex: 1}}>
-                <Button bordered dark full style={{marginRight: 15}}>
-                  <Text style={{color:'black'}}>List A</Text>
-                </Button>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 15 }}>
+                  List C Documents that Establish Employment Authorization
+                </Label>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'Social Security Account Number Card '}
+                    <Text>without</Text>
+                    {' one of these restrictions:'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 30 }}>
+                  <Text>{'\u25E6'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'NOT VALID FOR EMPLOYMENT'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 30 }}>
+                  <Text>{'\u25E6'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'VALID FOR WORK ONLY WITH INS AUTHORIZATION'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 30 }}>
+                  <Text>{'\u25E6'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {'VALID FOR WORK ONLY WITH DHS AUTHORIZATION'}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {
+                      'Department of State Birth Certification (Forms DS-1350, FS-545, FS-240)'
+                    }
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
+                  <Text>{'\u2022'}</Text>
+                  <Text style={{ flex: 1, paddingLeft: 5 }}>
+                    {
+                      'Department of Homeland Security Employment Authorization Document'
+                    }
+                  </Text>
+                </View>
               </View>
-              <View style={{flex: 1}}>
-                <Button bordered dark full style={{marginLeft: 15}}>
-                  <Text style={{color:'black'}}>List B and C</Text>
-                </Button>
+              <View style={{ marginBottom: 30 }}>
+                <Label>
+                  Select the list with your identity and/or employment
+                  authorization documents<Text style={{ color: 'red' }}>*</Text>
+                </Label>
               </View>
-    
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View style={{ flex: 1 }}>
+                  <Button bordered dark full style={{ marginRight: 15 }}>
+                    <Text style={{ color: 'black' }}>List A</Text>
+                  </Button>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Button bordered dark full style={{ marginLeft: 15 }}>
+                    <Text style={{ color: 'black' }}>List B and C</Text>
+                  </Button>
+                </View>
               </View>
-              <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>List A Document<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input/>
-              </Item>       
-            </View>
-              <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>List A Document Issuing Authority<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input/>
-              </Item>       
-            </View>
-              <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>List A Document Number<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input/>
-              </Item>       
-            </View>
-              <View style={{marginBottom: 30}}>
-              <Label style={{paddingLeft: 3, marginBottom: 10}}>List A Document Expiry Date If Any<Text style={{color:"red"}}>*</Text></Label>
-              <Item regular>
-                <Input/>
-              </Item>       
-            </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  List A Document<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  List A Document Issuing Authority
+                  <Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  List A Document Number<Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input />
+                </Item>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Label style={{ paddingLeft: 3, marginBottom: 10 }}>
+                  List A Document Expiry Date If Any
+                  <Text style={{ color: 'red' }}>*</Text>
+                </Label>
+                <Item regular>
+                  <Input />
+                </Item>
+              </View>
             </Content>
             <Footer>
-              <FooterTab style={{backgroundColor:"black"}}>
+              <FooterTab style={{ backgroundColor: 'black' }}>
                 <Button>
-                  <Text style={{color:"white", fontSize: 16}}>Submit & Sign</Text>
+                  <Text style={{ color: 'white', fontSize: 16 }}>
+                    Submit & Sign
+                  </Text>
                 </Button>
               </FooterTab>
             </Footer>
           </Container>
-          
         )}
       </I18n>
     );

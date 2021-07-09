@@ -15,7 +15,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerCustom: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
   titleHeader: {
     color: '#fff',
@@ -82,7 +82,7 @@ export default StyleSheet.create({
   titleDate: {
     textAlign: 'center',
     fontSize: 20,
-    color: "black",
+    color: 'black',
     marginTop: 25,
     marginBottom: 15,
   },
@@ -97,7 +97,7 @@ export default StyleSheet.create({
     paddingRight: 0,
   },
   itemName: {
-    color: "black",
+    color: 'black',
     fontSize: 14,
   },
   itemTime: {
@@ -109,24 +109,24 @@ export default StyleSheet.create({
   buttonActive: {
     paddingLeft: 35,
     paddingRight: 35,
-    backgroundColor: "black",
-    borderColor: "black",
+    backgroundColor: 'black',
+    borderColor: 'black',
   },
   buttonInactive: {
     paddingLeft: 35,
     paddingRight: 35,
-    borderColor: "black",
+    borderColor: 'black',
   },
   buttonPaymentsActive: {
     paddingLeft: 65,
     paddingRight: 65,
-    backgroundColor: "black",
-    borderColor: "black",
+    backgroundColor: 'black',
+    borderColor: 'black',
   },
   buttonPaymentsInactive: {
     paddingLeft: 65,
     paddingRight: 65,
-    borderColor: "black",
+    borderColor: 'black',
     borderLeftWidth: 1,
   },
   rateContainer: {
@@ -143,7 +143,7 @@ export default StyleSheet.create({
     textAlign: 'left',
   },
   textThree: {
-    color: "black",
+    color: 'black',
 
     textAlign: 'left',
   },
@@ -176,12 +176,12 @@ export default StyleSheet.create({
   },
   textTitle: {
     textAlign: 'center',
-    color: "black",
+    color: 'black',
     fontWeight: '800',
   },
   textSubTitle: {
     textAlign: 'center',
-    color: "black",
+    color: 'black',
     fontWeight: '100',
   },
   textCenter: {
@@ -203,7 +203,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: "black",
+    backgroundColor: 'black',
     margin: 25,
     paddingLeft: 20,
     paddingRight: 20,

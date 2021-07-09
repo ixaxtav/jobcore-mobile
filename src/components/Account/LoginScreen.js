@@ -1,22 +1,33 @@
-
 import React, { Component } from 'react';
 import {
   View,
-  // SafeAreaView,
+  SafeAreaView,
   Image,
   TouchableOpacity,
+  ImageBackground,
   Alert,
+  Animated,
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Container, Content, Item, Input, Button, Text, Form, Toast } from 'native-base';
+import {
+  Container,
+  Content,
+  Item,
+  Input,
+  Button,
+  Text,
+  Form,
+  Toast,
+} from 'native-base';
 import styles from './LoginStyle';
 import {
   REGISTER_ROUTE,
+  SIGNIN_ROUTE,
   FORGOT_ROUTE,
   APP_ROUTE,
   VALIDATION_CODE_ROUTE,
-  POSITION_ONBOARDING_ROUTE
+  POSITION_ONBOARDING_ROUTE,
 } from '../../constants/routes';
 import * as accountActions from './actions';
 import accountStore from './AccountStore';
@@ -42,6 +53,7 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fadeAnim: new Animated.Value(0),
       isLoading: false,
       email: props.navigation.getParam('email', ''),
       password: '',
@@ -52,6 +64,11 @@ class LoginScreen extends Component {
   }
 
   async componentDidMount() {
+    Animated.timing(this.state.fadeAnim, {
+      toValue: 1,
+      duration: 4000,
+    }).start();
+    
     TouchID.isSupported(optionalConfigObject)
       .then((biometryType) => {
         if (biometryType === 'FaceID') {
@@ -161,7 +178,7 @@ class LoginScreen extends Component {
       token = response.token;
       status = response.user.profile.status;
       phoneNumber = response.user.profile.phone_number;
-      email= response.user.email;
+      email = response.user.email;
     } catch (e) {
       return LOG(this, e);
     }
@@ -180,11 +197,11 @@ class LoginScreen extends Component {
       //     accountActions.requestSendValidationLink(email);
       //   },
       // });
-      accountActions.requestSendValidationLink(email,phoneNumber);
-      this.props.navigation.navigate(VALIDATION_CODE_ROUTE,{
+      accountActions.requestSendValidationLink(email, phoneNumber);
+      this.props.navigation.navigate(VALIDATION_CODE_ROUTE, {
         email: email,
-        phone_number: phoneNumber
-      })
+        phone_number: phoneNumber,
+      });
       this.isLoading(false);
       // const _storeData = async () => {
       //   try {
@@ -195,14 +212,14 @@ class LoginScreen extends Component {
       // };
 
       return;
-    }else if(status == "PAUSED"){
-      this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE)
+    } else if (status == 'PAUSED') {
+      this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE);
       this.isLoading(false);
       return;
-    } 
+    }
 
     if (token) {
-      console.log('token', token)
+      console.log('token', token);
       this.isLoading(false);
       if (this.state.biometrySupport) {
         if (permissionTouchId) {
@@ -222,7 +239,7 @@ class LoginScreen extends Component {
               ],
               { cancelable: false },
             );
-          }else {
+          } else {
             this.props.navigation.navigate(APP_ROUTE);
           }
         } else {
@@ -231,115 +248,184 @@ class LoginScreen extends Component {
       } else {
         this.props.navigation.navigate(APP_ROUTE);
       }
-    }else {
+    } else {
       this.isLoading(false);
     }
   };
 
   errorHandler = (err) => {
     this.isLoading(false);
-    CustomToast(err, 'danger');
+    // CustomToast(err, 'danger');
   };
-
+  
+  fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(this.state.fadeAnim, {
+      toValue: 1,
+      duration: 5000,
+    }).start();
+  };
   render() {
     const { loginAuto, biometrySupport } = this.state;
     // console.log('loginn autoo ',loginAuto)
     // console.log('biometry ', biometrySupport)
+ 
     return (
       <I18n>
         {(t) => (
-          <Container>
-          <Content contentContainerStyle={{ flexGrow: 1}}>
-            <View style={styles.container}>
-              {this.state.isLoading ? <Loading /> : null}
-              {/* <Image
-                style={styles.viewBackground}
-                source={require('../../assets/image/bg.jpg')}
-              /> */}
-              <Image
-                style={styles.viewLogo}
-                source={require('../../assets/image/logo1.png')}
-              />
-              <FormView>
-                <Form>
-                  <Item style={styles.viewInput} inlineLabel rounded>
-                    <Input
-                      keyboardType={'email-address'}
-                      autoCapitalize={'none'}
-                      style={{color: 'black'}}
-                      value={this.state.email}
-                      placeholder={t('LOGIN.email')}
-                      onChangeText={(text) => this.setState({ email: text })}
-                    />
-                  </Item>
-                  <Item style={styles.viewInput} inlineLabel rounded>
-                    <Input
-                      autoCapitalize={'none'}
-                      value={this.state.password}
-                      style={{color: 'black'}}
-                      placeholder={t('LOGIN.password')}
-                      onChangeText={(text) => this.setState({ password: text })}
-                      secureTextEntry={true}
-                    />
-                  </Item>
-                </Form>
-                <TouchableOpacity
-                  full
-                  onPress={this.userForgot.bind(this)}
-                  style={styles.viewButtomSignUp}>
-                  <Text style={styles.textButtomForgot}>
-                    {t('LOGIN.forgotPassword')}
-                  </Text>
-                </TouchableOpacity>
+          <Container >
+            <SafeAreaView style={{ flex:0, backgroundColor: 'black' }}>
+              <Text style={{ color: 'white', fontSize:14, fontWeight:'bold', marginLeft:15, marginBottom: 15 }}>JobCore Talent </Text>
 
-                {biometrySupport && loginAuto && (
-                  <TouchableOpacity
+            </SafeAreaView>
+            <Content contentContainerStyle={{ flexDirection: 'column', flex: 1 }}>
+              {/* <View style={styles.container}> */}
+              {this.state.isLoading ? <Loading /> : null}
+              <ImageBackground  source={require('../../assets/image/employee.jpg')}style={{ flex: 4, resizeMode:'cover', justifyContent:'center', backgroundColor:'black' }} imageStyle={{ opacity: 0.3 }}>
+                <Animated.View style={{ opacity: this.state.fadeAnim }}>
+                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, marginBottom: 10, textAlign:'center', fontFamily: 'UberMoveText-Light' }}>Find Jobs </Text>
+                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, marginBottom: 10, textAlign:'center', fontFamily: 'UberMoveText-Light'   }}>Get Hired </Text>
+                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, textAlign:'center', fontFamily: 'UberMoveText-Light'   }}>Get Paid Faster </Text>
+                </Animated.View>
+              </ImageBackground>
+              
+              <View style={{ flex: 2, backgroundColor: 'white', justifyContent:'center', marginLeft: 15, marginTop: 30 }}>
+                <Text style={{ fontSize: 26, fontFamily:'UberMoveText-Light' }}>
+                  Welcome to the
+                </Text>
+                <Text style={{ fontSize: 26, fontFamily:'UberMoveText-Light', marginTop: 5 }}>
+                  JobCore app
+                </Text>
+                <View style={{ marginTop: 15 }}>
+
+            
+                  {/* <Button
+                    style={{ ...styles.viewButtomLogin,  flex: 1 }}
                     full
-                    onPress={() => this.pressHandler()}
-                    style={styles.viewButtomSignUp}>
-                    <Text style={styles.textButtomForgot}>
-                      {t('LOGIN.loginTouch')}{' '}
-                      {Platform.OS === 'android'
-                        ? 'FingerPrint'
-                        : this.state.biometryType}
-                    </Text>
-                  </TouchableOpacity>
-                )}
+                    onPress={this.userRegister.bind(this)}
+                  >
+                    <Text style={styles.textButtomLogin}>{t('LOGIN.signUp')}</Text>
+                  </Button>
+                  <Button
+                    style={{ ...styles.viewButtomRegister, flex: 1, marginLeft: 15, marginRight: 15 }}
+                    full
+                    onPress={this.userLogin.bind(this)}
+                  >
+                    <Text style={styles.textButtomRegister}>{t('LOGIN.signIn')}</Text>
+                  </Button> */}
+
+
+                </View>
                 <Button
                   full
-                  onPress={this.login}
-                  style={styles.viewButtomLogin}>
-                  <Text style={styles.textButtom}>{t('LOGIN.signIn')}</Text>
+                  dark
+                  onPress={this.userRegister.bind(this)}
+                  style={{ marginBottom: 15, marginRight: 15 }}
+                >
+                  <Text style={styles.textButtomLogin}>{t('LOGIN.signUp')}</Text>
                 </Button>
                 <Button
                   full
-                  onPress={this.userRegister.bind(this)}
-                  style={styles.viewButtomRegister}>
+                  
+                  onPress={this.userLogin.bind(this)}
+                  style={{ marginBottom: 15, marginRight: 15, backgroundColor:'#ededed' }}
+                >
+                  <Text style={styles.textButtomRegister}>{t('LOGIN.signIn')}</Text>
+                </Button> 
+              </View>
+              {/* <Image
+                  style={styles.viewBackground}
+                  source={require('../../assets/image/bg.jpg')}
+                /> */}
+              {/* <Image
+                  style={styles.viewLogo}
+                  source={require('../../assets/image/logo1.png')}
+                /> */}
+
+              {/* <FormView>
+                  <Form>
+                    <Item style={styles.viewInput} inlineLabel rounded>
+                      <Input
+                        keyboardType={'email-address'}
+                        autoCapitalize={'none'}
+                        style={{ color: 'black' }}
+                        value={this.state.email}
+                        placeholder={t('LOGIN.email')}
+                        onChangeText={(text) => this.setState({ email: text })}
+                      />
+                    </Item>
+                    <Item style={styles.viewInput} inlineLabel rounded>
+                      <Input
+                        autoCapitalize={'none'}
+                        value={this.state.password}
+                        style={{ color: 'black' }}
+                        placeholder={t('LOGIN.password')}
+                        onChangeText={(text) =>
+                          this.setState({ password: text })
+                        }
+                        secureTextEntry={true}
+                      />
+                    </Item>
+                  </Form>
+                  <TouchableOpacity
+                    full
+                    onPress={this.userForgot.bind(this)}
+                    style={styles.viewButtomSignUp}>
+                    <Text style={styles.textButtomForgot}>
+                      {t('LOGIN.forgotPassword')}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {biometrySupport && loginAuto && (
+                    <TouchableOpacity
+                      full
+                      onPress={() => this.pressHandler()}
+                      style={styles.viewButtomSignUp}>
+                      <Text style={styles.textButtomForgot}>
+                        {t('LOGIN.loginTouch')}{' '}
+                        {Platform.OS === 'android'
+                          ? 'FingerPrint'
+                          : this.state.biometryType}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                  <Button
+                    full
+                    onPress={this.login}
+                    style={styles.viewButtomLogin}>
+                    <Text style={styles.textButtom}>{t('LOGIN.signIn')}</Text>
+                  </Button>
+                  <Button
+                    full
+                    onPress={this.userRegister.bind(this)}
+                    style={styles.viewButtomRegister}>
                     <Text style={styles.textButtomRegister}>
                       {t('LOGIN.signUp')}
                     </Text>
-                </Button>
-                {/* <TouchableOpacity
-                  full
-                  onPress={this.userRegister.bind(this)}
-                  style={styles.viewButtomSignUp}>
-                  <Text style={styles.textButtomSignUp}>
-                    {`${t('LOGIN.dontHaveAnAccount')} `}
-                    <Text style={styles.textButtomClick}>
-                      {t('LOGIN.clickToSignUp')}
+                  </Button>
+                  <TouchableOpacity
+                    full
+                    onPress={this.userRegister.bind(this)}
+                    style={styles.viewButtomSignUp}>
+                    <Text style={styles.textButtomSignUp}>
+                      {`${t('LOGIN.dontHaveAnAccount')} `}
+                      <Text style={styles.textButtomClick}>
+                        {t('LOGIN.clickToSignUp')}
+                      </Text>
                     </Text>
-                  </Text>
-                </TouchableOpacity> */}
-              </FormView>
-            </View>
+                  </TouchableOpacity>
+                </FormView> */}
+              {/* </View> */}
             </Content>
           </Container>
-
         )}
       </I18n>
     );
   }
 
+  userLogin() {
+    this.props.navigation.navigate(SIGNIN_ROUTE);
+  }
   userRegister() {
     this.props.navigation.navigate(REGISTER_ROUTE);
   }

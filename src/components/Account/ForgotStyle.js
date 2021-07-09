@@ -1,4 +1,3 @@
-
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
 import { BLUE_MAIN, BLUE_DARK, WHITE_MAIN } from '../../shared/colorPalette';
@@ -8,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: WHITE_MAIN
+    backgroundColor: WHITE_MAIN,
   },
   containerChange: {
     paddingHorizontal: 35,

@@ -11,13 +11,18 @@ import {
   Item,
   Input,
   Button,
+  Left,
+  Body,
+  Title,
   Text,
   Form,
   Label,
   Content,
+  Header,
   Thumbnail,
   Textarea,
-  FooterTab, Footer,
+  FooterTab,
+  Footer,
   Container,
   Picker,
   H1,
@@ -59,8 +64,6 @@ const optionalConfigObject = {
 };
 
 class ResumeOnboarding extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +72,6 @@ class ResumeOnboarding extends Component {
       biometrySupport: true,
       selectedResume: {},
     };
-
   }
 
   async componentDidMount() {
@@ -85,10 +87,7 @@ class ResumeOnboarding extends Component {
       'AccountStoreError',
       this.errorHandler,
     );
-  
   }
-
-  
 
   componentWillUnmount() {
     this.getUserSubscription.unsubscribe();
@@ -96,14 +95,10 @@ class ResumeOnboarding extends Component {
     this.accountStoreError.unsubscribe();
   }
 
-
-
   editProfilePictureHandler = (data) => {
-    console.log('data')
+    console.log('data');
     // this.editProfile();
   };
-
-  
 
   errorHandler = (err) => {
     this.isLoading(false);
@@ -111,75 +106,132 @@ class ResumeOnboarding extends Component {
   };
 
   render() {
-    const {
-      isLoading,
-    } = this.state;
+    const { isLoading } = this.state;
     console.log('picture', this.state);
     return (
       <I18n>
         {(t) => (
           <Container>
             {isLoading ? <Loading /> : null}
-            <TabHeaderWhite
-              goBack
-              onPressBack={() => this.props.navigation.goBack()}
-              // title={t('EDIT_PROFILE.editProfile')}
-            />
+            <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}>
+              <Left>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
+              </Left>
+              <Body style={{ flex: 0 }}>
+                <Title></Title>
+              </Body>
+            </Header>
             <Content>
-            <View style={{
-                padding: 25
-              }} >
-                
-              <H1 style={{marginBottom: 15, fontWeight: 700, fontSize: 32, lineHeight: 45}}>
-                Upload your Resume
-              </H1>
-              <Text style={{fontSize: 18, marginTop: 10, color: "gray"}}>
-                Employers will have access to your resume. Make sure you upload the most updated version of your resume.
-              </Text>
+              <View
+                style={{
+                  padding: 25,
+                }}>
+                <H1
+                  style={{
+                    marginBottom: 15,
+                    fontWeight: 700,
+                    fontSize: 32,
+                    lineHeight: 45,
+                    fontFamily:'UberMoveText-Medium',
+                  }}>
+                  Upload your Resume
+                </H1>
+                <Text style={{ fontSize: 18, marginTop: 10,fontFamily:'UberMoveText-Light', color: 'gray' }}>
+                  Employers will have access to your resume. Make sure you
+                  upload the most updated version of your resume.
+                </Text>
               </View>
               <View style={editProfileStyles.container}>
                 <TouchableOpacity onPress={this.openImagePicker}>
                   <View style={profileStyles.viewProfileImgOnboarding}>
-                
-                        <Image
-                        style={{width:160, height: 160}}
-                        source={require('../../assets/image/resume.png')}
-                      />
-                      {
-                          (this.state.selectedResume && Object.keys(this.state.selectedResume).length) || this.state.picture ? (
-                            <Text style={{fontSize: 18, fontWeight:"bold", textAlign:"center", marginTop: 15, color:"#4BB543"}}>Resume has been uploaded !</Text>
-
-                          ):(
-                            <Text style={{fontSize: 18, fontWeight:"bold", textAlign:"center", marginTop: 15}}>Upload or skip this step</Text>
-
-
-                          )
-                      }                    
-                  
+                    <Image
+                      style={{ width: 140, height: 140 }}
+                      source={require('../../assets/image/resume.png')}
+                    />
+                    {(this.state.selectedResume &&
+                      Object.keys(this.state.selectedResume).length) ||
+                    this.state.picture ? (
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            fontFamily:'UberMoveText-Medium',
+                            marginTop: 15,
+                            color: '#4BB543',
+                          }}>
+                        Resume has been uploaded !
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            fontFamily:'UberMoveText-Medium',
+                            marginTop: 15,
+                          }}>
+                        Upload Or Skip This Step
+                        </Text>
+                      )}
                   </View>
                 </TouchableOpacity>
-
               </View>
             </Content>
-            <Footer style={{backgroundColor:"white", borderBottomWidth: 0, borderTopWidth: 0}}>
-          <FooterTab>
-            {(this.state.selectedResume && Object.keys(this.state.selectedResume).length) || this.state.picture ? (
-                <Button full style={{backgroundColor: 'black',  borderRadius: 0}} onPress={() => {
-                  if(this.state.selectedResume && Object.keys(this.state.selectedResume).length) actions.editProfileResume(this.state.selectedResume);
+            <Footer
+              style={{
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+              }}>
+              <FooterTab>
+                {(this.state.selectedResume &&
+                  Object.keys(this.state.selectedResume).length) ||
+                this.state.picture ? (
+                    <Button
+                      full
+                      style={{ backgroundColor: 'black', borderRadius: 0 }}
+                      onPress={() => {
+                        if (
+                          this.state.selectedResume &&
+                        Object.keys(this.state.selectedResume).length
+                        )
+                          actions.editProfileResume(this.state.selectedResume);
 
-                  this.props.navigation.navigate(DOB_ONBOARDING_ROUTE)
-                
-                }}>
-                <Text style={{color: "white", fontSize: 18}}>Next</Text>
-                </Button>
-            ): (
-              <Button full style={{backgroundColor: 'black',  borderRadius: 0}} onPress={()=>this.props.navigation.navigate(DOB_ONBOARDING_ROUTE)}>
-              <Text style={{color: "white", fontSize: 18}}>Next</Text>
-            </Button>
-            )}
-           
-          </FooterTab>
-        </Footer>
+                        this.props.navigation.navigate(DOB_ONBOARDING_ROUTE);
+                      }}>
+                      <Text style={{ color: 'white',fontFamily:'UberMoveText-Medium', fontSize: 18 }}>Next</Text>
+                    </Button>
+                  ) : (
+                    <Button
+                      full
+                      style={{ backgroundColor: 'black', borderRadius: 0 }}
+                      onPress={() =>
+                        this.props.navigation.navigate(DOB_ONBOARDING_ROUTE)
+                      }>
+                      <Text style={{ color: 'white',fontFamily:'UberMoveText-Medium', fontSize: 18 }}>Next</Text>
+                    </Button>
+                  )}
+              </FooterTab>
+            </Footer>
           </Container>
         )}
       </I18n>
@@ -227,8 +279,10 @@ class ResumeOnboarding extends Component {
   };
 
   editProfileAlert = () => {
-   
-    if((this.state.selectedResume && this.state.selectedResume.uri) || !this.state.picture.includes("default")){
+    if (
+      (this.state.selectedResume && this.state.selectedResume.uri) ||
+      !this.state.picture.includes('default')
+    ) {
       Alert.alert(
         i18next.t('EDIT_PROFILE.wantToEditProfile'),
         '',
@@ -244,7 +298,10 @@ class ResumeOnboarding extends Component {
             onPress: () => {
               this.setState({ isLoading: true }, () => {
                 LOG(this, this.state);
-                if (this.state.selectedResume && this.state.selectedResume.uri) {
+                if (
+                  this.state.selectedResume &&
+                  this.state.selectedResume.uri
+                ) {
                   return actions.editProfilePicture(this.state.selectedResume);
                 }
                 // this.editProfile();
@@ -254,13 +311,10 @@ class ResumeOnboarding extends Component {
         ],
         { cancelable: false },
       );
-    }else{
+    } else {
       CustomToast('Please upload a profile picture', 'danger');
-
     }
   };
-
-  
 
   openImagePicker = () => {
     ImagePicker.showImagePicker(
@@ -315,8 +369,6 @@ class ResumeOnboarding extends Component {
       this.setState({ selectedResume });
     }
   };
-
-  
 
   isLoading = (isLoading) => {
     this.setState({ isLoading });

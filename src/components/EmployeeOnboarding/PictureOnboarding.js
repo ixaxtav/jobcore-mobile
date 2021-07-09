@@ -13,11 +13,16 @@ import {
   Button,
   Text,
   Form,
+  Header,
+  Left,
   Label,
   Content,
   Thumbnail,
+  Body,
+  Title,
   Textarea,
-  FooterTab, Footer,
+  FooterTab,
+  Footer,
   Container,
   Picker,
   H1,
@@ -35,8 +40,12 @@ import { LOG, WARN } from '../../shared';
 import TouchID from 'react-native-touch-id';
 import { CustomToast, Loading } from '../../shared/components';
 import ImagePicker from 'react-native-image-picker';
-import { RESUME_ONBOARDING_ROUTE, DOB_ONBOARDING_ROUTE } from '../../constants/routes';
+import {
+  RESUME_ONBOARDING_ROUTE,
+  DOB_ONBOARDING_ROUTE,
+} from '../../constants/routes';
 import PROFILE_IMG from '../../assets/image/profile.png';
+import CAMERA_IMG from '../../assets/image/camera.png';
 import { GRAY_MAIN, BG_GRAY_LIGHT, BLUE_DARK } from '../../shared/colorPalette';
 import { TabHeaderWhite } from '../../shared/components/TabHeaderWhite';
 import moment from 'moment';
@@ -59,17 +68,15 @@ const optionalConfigObject = {
 };
 
 class PictureOnboarding extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
+      uploaded: false,
       isLoading: true,
       picture: '',
       biometrySupport: true,
-      selectedImage: {},
+      selectedImage: null,
     };
-
   }
 
   async componentDidMount() {
@@ -89,22 +96,16 @@ class PictureOnboarding extends Component {
     actions.getUser();
   }
 
-  
-
   componentWillUnmount() {
     this.getUserSubscription.unsubscribe();
     this.editProfilePictureSubscription.unsubscribe();
     this.accountStoreError.unsubscribe();
   }
 
-
-
   editProfilePictureHandler = (data) => {
     this.setUser(data);
     // this.editProfile();
   };
-
-  
 
   errorHandler = (err) => {
     this.isLoading(false);
@@ -112,43 +113,70 @@ class PictureOnboarding extends Component {
   };
 
   render() {
-    const {
-      isLoading,
-    } = this.state;
-    console.log('picture', this.state);
+    const { isLoading } = this.state;
+
+    console.log('estado', this.state);
     return (
       <I18n>
         {(t) => (
           <Container>
             {isLoading ? <Loading /> : null}
-            <TabHeaderWhite
-              goBack
-              onPressBack={() => this.props.navigation.goBack()}
-              // title={t('EDIT_PROFILE.editProfile')}
-            />
+            <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}>
+              <Left>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
+              </Left>
+              <Body style={{ flex: 0 }}>
+                <Title></Title>
+              </Body>
+            </Header>
             <Content>
-            <View style={{
-                padding: 25
-              }} >
-                
-              <H1 style={{marginBottom: 15, fontWeight: 700, fontSize: 32, lineHeight: 45}}>
-                Upload your profile photo
-              </H1>
-              <Text style={{fontSize: 18, marginTop: 10, color: "gray"}}>
-              1. Be as professional as possible
-              </Text>
-              <Text style={{fontSize: 18, marginTop: 10, color: "gray"}}>
-              2. Show your whole face and tops of your shoulders
-              </Text>
-              <Text style={{fontSize: 18, marginTop: 10, color: "gray"}}>
-              3. Take your hat off and sunglasses
-              </Text>
+              <View
+                style={{
+                  padding: 25,
+                }}>
+                <H1
+                  style={{
+                    marginBottom: 15,
+                    fontWeight: 700,
+                    fontSize: 32,
+                    fontFamily:'UberMoveText-Medium',
+                    lineHeight: 45,
+                  }}>
+                  Upload your profile photo
+                </H1>
+                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                  1. Be as professional as possible
+                </Text>
+                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                  2. Show your whole face and tops of your shoulders
+                </Text>
+                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                  3. Take your hat off and sunglasses
+                </Text>
               </View>
               <View style={editProfileStyles.container}>
                 <TouchableOpacity onPress={this.openImagePicker}>
                   <View style={profileStyles.viewProfileImgOnboarding}>
                     <Thumbnail
-                      style={{width: 160, height: 160, borderRadius: 80}}
+                      style={{ width: 160, height: 160, borderRadius: 80 }}
                       source={
                         this.state.selectedImage && this.state.selectedImage.uri
                           ? { uri: this.state.selectedImage.uri }
@@ -165,29 +193,39 @@ class PictureOnboarding extends Component {
                     </View>
                   </View>
                 </TouchableOpacity>
-
-                
               </View>
             </Content>
-            <Footer style={{backgroundColor:"white", borderBottomWidth: 0, borderTopWidth: 0}}>
-          <FooterTab>
-            {(this.state.selectedImage && Object.keys(this.state.selectedImage).length) || this.state.picture ? (
-                <Button full style={{backgroundColor: 'black',  borderRadius: 0}} onPress={() => {
-                  if(this.state.selectedImage && Object.keys(this.state.selectedImage).length) actions.editProfilePicture(this.state.selectedImage);
+            <Footer
+              style={{
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+              }}>
+              <FooterTab>
+                {this.state.selectedImage || this.state.picture !== 'https://res.cloudinary.com/hq02xjols/image/upload/v1560365062/static/default_profile3.png'? (
+                  <Button
+                    full
+                    style={{ backgroundColor: 'black', borderRadius: 0 }}
+                    onPress={() => {
+                      if (
+                        this.state.selectedImage &&
+                        Object.keys(this.state.selectedImage).length
+                      )
+                        actions.editProfilePicture(this.state.selectedImage);
 
-                  this.props.navigation.navigate(RESUME_ONBOARDING_ROUTE)
-                
-                }}>
-                <Text style={{color: "white", fontSize: 18}}>Next</Text>
-                </Button>
-            ): (
-              <Button full light disabled style={{ borderRadius: 0}}>
-              <Text style={{color: "white", fontSize: 18}}>To continue, upload picture</Text>
-            </Button>
-            )}
-           
-          </FooterTab>
-        </Footer>
+                      this.props.navigation.navigate(RESUME_ONBOARDING_ROUTE);
+                    }}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Next</Text>
+                  </Button>
+                ) : (
+                  <Button full light disabled style={{ borderRadius: 0 }}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>
+                      To continue, upload picture
+                    </Text>
+                  </Button>
+                )}
+              </FooterTab>
+            </Footer>
           </Container>
         )}
       </I18n>
@@ -197,6 +235,7 @@ class PictureOnboarding extends Component {
   setUserInfo = (user) => {
     const userBirthDate = moment(user.birth_date);
     this.setState({
+      uploaded: true,
       firstName: user.user.first_name,
       lastName: user.user.last_name,
       email: user.user.email,
@@ -235,8 +274,10 @@ class PictureOnboarding extends Component {
   };
 
   editProfileAlert = () => {
-   
-    if((this.state.selectedImage && this.state.selectedImage.uri) || !this.state.picture.includes("default")){
+    if (
+      (this.state.selectedImage && this.state.selectedImage.uri) ||
+      !this.state.picture.includes('default')
+    ) {
       Alert.alert(
         i18next.t('EDIT_PROFILE.wantToEditProfile'),
         '',
@@ -262,13 +303,10 @@ class PictureOnboarding extends Component {
         ],
         { cancelable: false },
       );
-    }else{
+    } else {
       CustomToast('Please upload a profile picture', 'danger');
-
     }
   };
-
-  
 
   openImagePicker = () => {
     ImagePicker.showImagePicker(
@@ -323,8 +361,6 @@ class PictureOnboarding extends Component {
       this.setState({ selectedImage });
     }
   };
-
-  
 
   isLoading = (isLoading) => {
     this.setState({ isLoading });

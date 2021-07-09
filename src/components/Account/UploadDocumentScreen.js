@@ -1,7 +1,36 @@
 import React, { Component } from 'react';
-import { View, Image, Alert, Modal, TouchableOpacity,Linking,StyleSheet, TouchableHighlight } from 'react-native';
+import {
+  View,
+  Image,
+  Alert,
+  Modal,
+  TouchableOpacity,
+  Linking,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 
-import { Text, Form, Label, Content, Container,Footer,FooterTab,Button, CardItem, Card, Body, Icon, ListItem, List,Right,Left, Picker,Input,Item } from 'native-base';
+import {
+  Text,
+  Form,
+  Label,
+  Content,
+  Container,
+  Footer,
+  FooterTab,
+  Button,
+  CardItem,
+  Card,
+  Body,
+  Icon,
+  ListItem,
+  List,
+  Right,
+  Left,
+  Picker,
+  Input,
+  Item,
+} from 'native-base';
 import UploadDocumentStyle from './UploadDocumentStyle';
 import BankAccounts from '../BankAccounts/BankAccounts';
 import { I18n } from 'react-i18next';
@@ -116,42 +145,41 @@ class UploadDocumentScreen extends Component {
       modalVisible: false,
       filing_status: '',
       step2c_checked: false,
-      translator:false,
+      translator: false,
       data: {
-        'first_name': '',
-        'last_name': '',
-        'middle_initial': '',
-        'other_last_name': '',
-        'address': '',
-        'apt_number': '',
-        'state': '',
-        'city': '',
-        'zipcode': '',
-        'date_of_birth': '',
-        'social_security': '',
-        'email': '',
-        'phone': '',
-        'employee_attestation': 'CITIZEN',
-        'USCIS': '',
-        'I_94': '',
-        'passport_number': '',
-        'country_issuance': '',
-        'employee_signature': '',
-        'date_employee_signature': moment().format('MM/DD/YYYY'),
-        'translator': false,
-        'translator_signature': '',
-        'date_translator_signature': '',
-        'translator_first_name': '',
-        'translator_last_name': '',
-        'translator_address': '',
-        'translator_state': '',
-        'translator_city': '',
-        'translator_zipcode': '',
-        'document_a': '',
-        'document_b_c': '',
-        'document_b_c2': '',
-        'status': 'PENDING',
-
+        first_name: accountStore.getState('Login').user.first_name || '',
+        last_name: accountStore.getState('Login').user.last_name || '',
+        middle_initial: '',
+        other_last_name: '',
+        address: '' ,
+        apt_number: '',
+        state: '' ,
+        city: '',
+        zipcode: '',
+        date_of_birth: '',
+        social_security: '',
+        email: accountStore.getState('Login').user.email || '',
+        phone: '',
+        employee_attestation: 'CITIZEN',
+        USCIS: '',
+        I_94: '',
+        passport_number: '',
+        country_issuance: '',
+        employee_signature: '',
+        date_employee_signature: moment().format('MM/DD/YYYY'),
+        translator: false,
+        translator_signature: '',
+        date_translator_signature: '',
+        translator_first_name: '',
+        translator_last_name: '',
+        translator_address: '',
+        translator_state: '',
+        translator_city: '',
+        translator_zipcode: '',
+        document_a: '',
+        document_b_c: '',
+        document_b_c2: '',
+        status: 'PENDING',
       },
     };
   }
@@ -179,24 +207,20 @@ class UploadDocumentScreen extends Component {
         this.setState({ documentsTypes, isLoading: false });
       },
     );
-    this.getI9FormSubscription = accountStore.subscribe(
-      'GetI9Form',
-      (form) => {
-        console.log('hello world', form);
-        if(form && Array.isArray(form) && form.length > 0){
-          this.setState({ data: form[0], hasI9Form: true, isLoading: false });
-        }
-
-      },
-    );
+    this.getI9FormSubscription = accountStore.subscribe('GetI9Form', (form) => {
+      if (form && Array.isArray(form) && form.length > 0) {
+        this.setState({ data: form[0], hasI9Form: true, isLoading: false });
+      }
+    });
     this.getDocumentsSubscription = accountStore.subscribe(
       'GetDocumentsTypes',
       (documentsTypes) => {
         this.setState({ documentsTypes, isLoading: false });
       },
     );
-    this.getEmployeeDataSubscription = jobStore.subscribe('GetEmployee', (user) =>
-      this.getEmployeeHandler(user),
+    this.getEmployeeDataSubscription = jobStore.subscribe(
+      'GetEmployee',
+      (user) => this.getEmployeeHandler(user),
     );
     this.deleteDocumentsSubscription = accountStore.subscribe(
       'DeleteDocument',
@@ -207,7 +231,19 @@ class UploadDocumentScreen extends Component {
       },
     );
     this.getUserSubscription = accountStore.subscribe('getUser', (user) => {
-      this.setState({ user });
+      console.log('el user', user);
+      // this.setState({ user });
+      this.setState(prevState => ({
+        user,
+        data: {                 
+          ...prevState.data,   
+          city: user.city,      
+          address: user.location,      
+          state: user.state,      
+          date_of_birth: user.birth_date,      
+          phone: user.phone_number,      
+        },
+      }))
     });
     this.accountStoreError = accountStore.subscribe(
       'AccountStoreError',
@@ -217,6 +253,7 @@ class UploadDocumentScreen extends Component {
     getDocumentsTypes();
     getUser();
     getI9Form();
+    
   }
 
   componentWillUnmount() {
@@ -233,11 +270,10 @@ class UploadDocumentScreen extends Component {
   };
   getEmployeeHandler = (user) => {
     this.setState({ employee: user });
-  }
+  };
   goToAddDocument = () => {
     this.props.navigation.navigate(ADD_DOCUMENT_ROUTE);
   };
-
 
   saveDocumentAlert = (docName, res) => {
     Alert.alert(
@@ -263,14 +299,12 @@ class UploadDocumentScreen extends Component {
     );
   };
 
-
   openImagePicker = () => {
     ImagePicker.showImagePicker(
       IMAGE_PICKER_OPTIONS,
       this.handleImagePickerResponse,
     );
   };
-
 
   handleImagePickerResponse = (response) => {
     console.log('response', response);
@@ -330,7 +364,6 @@ class UploadDocumentScreen extends Component {
     );
     CustomToast('W-4 Form Submitted.');
     this.props.navigation.goBack();
-  
   };
 
   onValueChange2(value: string) {
@@ -338,8 +371,9 @@ class UploadDocumentScreen extends Component {
       employee_attestation_4: value,
     });
   }
+
   mask(o, f) {
-    setTimeout(function () {
+    setTimeout(function() {
       var v = f(o.value);
       if (v != o.value) {
         o.value = v;
@@ -349,90 +383,81 @@ class UploadDocumentScreen extends Component {
   saveSign = () => {
     console.log(e);
     this.refs['sign'].saveImage();
-  }
-  
-  resetSign= () =>  {
+  };
+
+  resetSign = () => {
     this.refs['sign'].resetImage();
-  }
-  
+  };
+
   _onSaveEvent = (result) => {
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
     console.log(result);
-  }
+  };
   _onDragEvent = () => {
     // This callback will be called when the user enters signature
     console.log('dragged');
-  }
+  };
   mdate(v) {
-   
-    var r = v.replace(/\D/g,'');
+    var r = v.replace(/\D/g, '');
 
     if (r.length > 4) {
-      r = r.replace(/^(\d\d)(\d{2})(\d{0,4}).*/,'$1/$2/$3');
-    }
-    else if (r.length > 2) {
-      r = r.replace(/^(\d\d)(\d{0,2})/,'$1/$2');
-    }
-    else if (r.length > 0){
+      r = r.replace(/^(\d\d)(\d{2})(\d{0,4}).*/, '$1/$2/$3');
+    } else if (r.length > 2) {
+      r = r.replace(/^(\d\d)(\d{0,2})/, '$1/$2');
+    } else if (r.length > 0) {
       if (r > 12) {
         r = '';
       }
     }
-    this.setState(prev => ({ data: { ...prev.data, 'date_of_birth': r } }));
+    this.setState((prev) => ({ data: { ...prev.data, date_of_birth: r } }));
   }
 
   mphone(v) {
-    var r = v.replace(/\D/g,'');
-    r = r.replace(/^0/,'');
+    var r = v.replace(/\D/g, '');
+    r = r.replace(/^0/, '');
     if (r.length > 10) {
       // 11+ digits. Format as 5+4.
       //r = r.replace(/^(\d\d\d)(\d{5})(\d{4}).*/,"($1) $2-$3");
-      r = r.replace(/^(\d\d\d)(\d{3})(\d{0,4}).*/,'$1-$2-$3');
+      r = r.replace(/^(\d\d\d)(\d{3})(\d{0,4}).*/, '$1-$2-$3');
       return r;
-    }
-    else if (r.length > 5) {
+    } else if (r.length > 5) {
       // 6..10 digits. Format as 4+4
-      r = r.replace(/^(\d\d\d)(\d{3})(\d{0,4}).*/,'$1-$2-$3');
-    }
-    else if (r.length > 2) {
+      r = r.replace(/^(\d\d\d)(\d{3})(\d{0,4}).*/, '$1-$2-$3');
+    } else if (r.length > 2) {
       // 3..5 digits. Add (0XX..)
-      r = r.replace(/^(\d\d\d)(\d{0,3})/,'$1-$2');
-    }
-    else {
+      r = r.replace(/^(\d\d\d)(\d{0,3})/, '$1-$2');
+    } else {
       // 0..2 digits. Just add (0XX
       r = r.replace(/^(\d*)/, '$1');
     }
-    this.setState(prev => ({ data: { ...prev.data, 'phone': r } }));
+    this.setState((prev) => ({ data: { ...prev.data, phone: r } }));
   }
   mssn(v) {
-    var r = v.replace(/\D/g,'');
-      
+    var r = v.replace(/\D/g, '');
+
     if (r.length > 9) {
-      r = r.replace(/^(\d\d\d)(\d{2})(\d{0,4}).*/,'$1-$2-$3');
+      r = r.replace(/^(\d\d\d)(\d{2})(\d{0,4}).*/, '$1-$2-$3');
       return r;
-    }
-    else if (r.length > 4) {
-      r = r.replace(/^(\d\d\d)(\d{2})(\d{0,4}).*/,'$1-$2-$3');
-    }
-    else if (r.length > 2) {
-      r = r.replace(/^(\d\d\d)(\d{0,3})/,'$1-$2');
-    }
-    else {
+    } else if (r.length > 4) {
+      r = r.replace(/^(\d\d\d)(\d{2})(\d{0,4}).*/, '$1-$2-$3');
+    } else if (r.length > 2) {
+      r = r.replace(/^(\d\d\d)(\d{0,3})/, '$1-$2');
+    } else {
       r = r.replace(/^(\d*)/, '$1');
     }
-    this.setState(prev => ({ data: { ...prev.data, 'social_security': r } }));
-  } 
-
-  handleChange = (name,value) => {
-    this.setState(prev => ({ data: { ...prev.data, [name]: value } }));
+    this.setState((prev) => ({ data: { ...prev.data, social_security: r } }));
   }
+
+  handleChange = (name, value) => {
+    this.setState((prev) => ({ data: { ...prev.data, [name]: value } }));
+  };
+
 
   render() {
     const { user, showWarning, documentsTypes } = this.state;
     const { documents } = this.state;
-    
-    console.log('estate', this.state);
+
     const isAllowDocuments = user.employee
       ? !user.employee.document_active
       : true;
@@ -459,6 +484,9 @@ class UploadDocumentScreen extends Component {
     const extraWithholding = user.employee
       ? user.employee.extra_withholding
       : '';
+
+    console.log('estados', this.state);
+    console.log('store', accountStore.getState('Login').user);
     return (
       <I18n>
         {(t) => (
@@ -470,11 +498,13 @@ class UploadDocumentScreen extends Component {
               canClose={true}
             />
             <Content padder>
-           
               <View>
                 <Text style={{ fontSize: 14 }}>
-                  <Text>Section 1. Employee Information and Attestation</Text> (Employees must complete and sign Section 1 of Form I-9 no later
-              than the first day of employment, but not before accepting a job offer.) <Text style={{ color:'red' }}>*</Text>
+                  <Text>Section 1. Employee Information and Attestation</Text>{' '}
+                  (Employees must complete and sign Section 1 of Form I-9 no
+                  later than the first day of employment, but not before
+                  accepting a job offer.){' '}
+                  <Text style={{ color: 'red' }}>*</Text>
                 </Text>
               </View>
               <View
@@ -488,213 +518,340 @@ class UploadDocumentScreen extends Component {
               <Form style={{ marginBottom: 30 }}>
                 <Item floatingLabel last>
                   <Label>Last Name (Family Name)</Label>
-                  <Input value={this.state.data.last_name} onChangeText={(txt) => this.handleChange('last_name', txt)} />
+                  <Input
+                    value={this.state.data.last_name}
+                    onChangeText={(txt) => this.handleChange('last_name', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>First Name (Given Name)</Label>
-                  <Input value={this.state.data.first_name} onChangeText={(txt) => this.handleChange('first_name', txt)} />
+                  <Input
+                    value={this.state.data.first_name}
+                    onChangeText={(txt) => this.handleChange('first_name', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Middle Initial</Label>
-                  <Input value={this.state.data.middle_initial} onChangeText={(txt) => this.handleChange('middle_initial', txt)} />
+                  <Input
+                    value={this.state.data.middle_initial}
+                    onChangeText={(txt) =>
+                      this.handleChange('middle_initial', txt)
+                    }
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Other Last Names Used (if any)</Label>
-                  <Input value={this.state.data.other_last_name} onChangeText={(txt) => this.handleChange('other_last_name', txt)} />
+                  <Input
+                    value={this.state.data.other_last_name}
+                    onChangeText={(txt) =>
+                      this.handleChange('other_last_name', txt)
+                    }
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Address (Street Number and Name)</Label>
-                  <Input value={this.state.data.address} onChangeText={(txt) => this.handleChange('address', txt)} />
+                  <Input
+                    value={this.state.data.address}
+                    onChangeText={(txt) => this.handleChange('address', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Apt. Number</Label>
-                  <Input value={this.state.data.apt_number} onChangeText={(txt) => this.handleChange('apt_number', txt)} />
+                  <Input
+                    value={this.state.data.apt_number}
+                    onChangeText={(txt) => this.handleChange('apt_number', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>City or Town</Label>
-                  <Input value={this.state.data.city} onChangeText={(txt) => this.handleChange('city', txt)} />
-
+                  <Input
+                    value={this.state.data.city}
+                    onChangeText={(txt) => this.handleChange('city', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>State</Label>
-                  <Input value={this.state.data.state} onChangeText={(txt) => this.handleChange('state', txt)} />
+                  <Input
+                    value={this.state.data.state}
+                    onChangeText={(txt) => this.handleChange('state', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>ZIP Code</Label>
-                  <Input value={this.state.data.zipcode} onChangeText={(txt) => this.handleChange('zipcode', txt)} />
+                  <Input
+                    value={this.state.data.zipcode}
+                    onChangeText={(txt) => this.handleChange('zipcode', txt)}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Date of Birth (mm/dd/yyyy)</Label>
-                  <Input value={this.state.data.date_of_birth} value={this.state.data.date_of_birth} onChangeText={text => this.mdate(text)} maxLength={10}/>
+                  <Input
+                    value={this.state.data.date_of_birth}
+                    value={this.state.data.date_of_birth}
+                    onChangeText={(text) => this.mdate(text)}
+                    maxLength={10}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>U.S Social Security Number</Label>
-                  <Input value={this.state.data.social_security} placeholder={'XXX-XXX-XXXX'}value={this.state.data.social_security} onChangeText={text => this.mssn(text)} maxLength={11}/>
+                  <Input
+                    value={this.state.data.social_security}
+                    placeholder={'XXX-XXX-XXXX'}
+                    value={this.state.data.social_security}
+                    onChangeText={(text) => this.mssn(text)}
+                    maxLength={11}
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Employee's E-mail Address</Label>
-                  <Input value={this.state.data.email} keyboardType={'email-address'} value={this.state.data.email} onChangeText={text => this.setState(prev => ({ data: { ...prev.data, 'email': text } }))}/>
+                  <Input
+                    value={this.state.data.email}
+                    keyboardType={'email-address'}
+                    value={this.state.data.email}
+                    onChangeText={(text) =>
+                      this.setState((prev) => ({
+                        data: { ...prev.data, email: text },
+                      }))
+                    }
+                  />
                 </Item>
                 <Item floatingLabel last>
                   <Label>Employee's Telephone Number</Label>
-                  <Input value={this.state.data.phone} keyboardType={'phone-pad'} value={this.state.data.phone} onChangeText={text => this.setState(prev => ({ data: { ...prev.data, 'phone': text } }))}/>
+                  <Input
+                    value={this.state.data.phone}
+                    keyboardType={'phone-pad'}
+                    value={this.state.data.phone}
+                    onChangeText={(text) =>
+                      this.setState((prev) => ({
+                        data: { ...prev.data, phone: text },
+                      }))
+                    }
+                  />
                 </Item>
               </Form>
               <View>
-                <Text style={{ fontSize: 18 }}>Employee Attestation<Text style={{ color:'red' }}>*</Text></Text>
-            
-                <Text style={{ fontSize: 14 }}>I am aware that federal law provides for imprisonment and/or fines for false statements or use of false documents in
-              connection with the completion of this form.
+                <Text style={{ fontSize: 18 }}>
+                  Employee Attestation<Text style={{ color: 'red' }}>*</Text>
                 </Text>
-                <Text style={{ fontSize: 14 }}>I attest, under penalty of perjury, that I am (check one of the following boxes):</Text>
+
+                <Text style={{ fontSize: 14 }}>
+                  I am aware that federal law provides for imprisonment and/or
+                  fines for false statements or use of false documents in
+                  connection with the completion of this form.
+                </Text>
+                <Text style={{ fontSize: 14 }}>
+                  I attest, under penalty of perjury, that I am (check one of
+                  the following boxes):
+                </Text>
 
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity onPress={() => this.setState(prev => ({ employee_attestation: 'CITIZEN', data: { ...prev.data, 'employee_attestation': 'CITIZEN' } }))}>
-                    <View style={[{
-                      height: 20,
-                      width: 20,
-                      marginTop: 15,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        this.state.data.employee_attestation == 'CITIZEN' ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState((prev) => ({
+                        employee_attestation: 'CITIZEN',
+                        data: { ...prev.data, employee_attestation: 'CITIZEN' },
+                      }))
+                    }>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          width: 20,
+                          marginTop: 15,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {this.state.data.employee_attestation == 'CITIZEN' ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>1. A citizen of the United States</Text>
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    1. A citizen of the United States
+                  </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity onPress={() => this.setState(prev => ({ employee_attestation: 'NON_CITIZEN', data: { ...prev.data, 'employee_attestation': 'NON_CITIZEN' } }))}>
-
-                    <View style={[{
-                      height: 20,
-                      width: 20,
-                      marginTop: 15,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        this.state.data.employee_attestation == 'NON_CITIZEN' ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState((prev) => ({
+                        employee_attestation: 'NON_CITIZEN',
+                        data: {
+                          ...prev.data,
+                          employee_attestation: 'NON_CITIZEN',
+                        },
+                      }))
+                    }>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          width: 20,
+                          marginTop: 15,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {this.state.data.employee_attestation == 'NON_CITIZEN' ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>2. A noncitizen national of the United States</Text>
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    2. A noncitizen national of the United States
+                  </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity onPress={() => this.setState(prev => ({ employee_attestation: 'RESIDENT', data: { ...prev.data, 'employee_attestation': 'RESIDENT' } }))}>
-
-                    <View style={[{
-                      height: 20,
-                      marginTop: 15,
-                      width: 20,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        this.state.data.employee_attestation == 'RESIDENT' ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState((prev) => ({
+                        employee_attestation: 'RESIDENT',
+                        data: {
+                          ...prev.data,
+                          employee_attestation: 'RESIDENT',
+                        },
+                      }))
+                    }>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          marginTop: 15,
+                          width: 20,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {this.state.data.employee_attestation == 'RESIDENT' ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>3. A lawful permanent resident</Text>
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    3. A lawful permanent resident
+                  </Text>
                 </View>
                 {/* step 3 alien */}
                 {this.state.employee_attestation == 'RESIDENT' && (
                   <View style={{ marginTop: 15 }}>
                     <Text>Enter Alien Registration Number/USCIS Number:</Text>
                     <Item regular>
-                      <Input onChangeText={(txt) => this.handleChange('USCIS', txt)} />
+                      <Input
+                        onChangeText={(txt) => this.handleChange('USCIS', txt)}
+                      />
                     </Item>
                   </View>
-
                 )}
 
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity onPress={() => this.setState(prev => ({ employee_attestation: 'ALIEN', data: { ...prev.data, 'employee_attestation': 'ALIEN' } }))}>
-
-                    <View style={[{
-                      height: 20,
-                      marginTop: 15,
-                      width: 20,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        this.state.data.employee_attestation == 'ALIEN' ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState((prev) => ({
+                        employee_attestation: 'ALIEN',
+                        data: { ...prev.data, employee_attestation: 'ALIEN' },
+                      }))
+                    }>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          marginTop: 15,
+                          width: 20,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {this.state.data.employee_attestation == 'ALIEN' ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-              
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>4. An alien authorized to work </Text>
+
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    4. An alien authorized to work{' '}
+                  </Text>
                 </View>
 
                 {this.state.data.employee_attestation == 'ALIEN' && (
                   <View>
-                
                     <Text style={{ fontSize: 14, marginTop: 15 }}>
-                Aliens authorized to work must provide only one of the following document numbers to complete Form I-9:
-                An Alien Registration Number/USCIS Number OR Form I-94 Admission Number OR Foreign Passport Number
+                      Aliens authorized to work must provide only one of the
+                      following document numbers to complete Form I-9: An Alien
+                      Registration Number/USCIS Number OR Form I-94 Admission
+                      Number OR Foreign Passport Number
                     </Text>
                     {/* 4 alien */}
                     <Form>
                       <Item picker style={{ marginTop: 5 }}>
                         <Picker
                           mode="dropdown"
-                          iosIcon={<Icon type="FontAwesome" name="angle-down" />}
+                          iosIcon={
+                            <Icon type="FontAwesome" name="angle-down" />
+                          }
                           style={{ width: undefined }}
                           placeholder="Select authorization document"
                           placeholderStyle={{ color: 'black' }}
                           placeholderIconColor="#007aff"
                           selectedValue={this.state.employee_attestation_4}
-                          onValueChange={this.onValueChange2.bind(this)}
-                        >
-                          <Picker.Item label="Alien Registration Number" value="Alien" />
-                          <Picker.Item label="Form I-94 Admission Number" value="I-94" />
-                          <Picker.Item label="Foreign Passport Number" value="Passport" />
-     
+                          onValueChange={this.onValueChange2.bind(this)}>
+                          <Picker.Item
+                            label="Alien Registration Number"
+                            value="Alien"
+                          />
+                          <Picker.Item
+                            label="Form I-94 Admission Number"
+                            value="I-94"
+                          />
+                          <Picker.Item
+                            label="Foreign Passport Number"
+                            value="Passport"
+                          />
                         </Picker>
                       </Item>
-              
                     </Form>
                   </View>
                 )}
@@ -702,31 +859,44 @@ class UploadDocumentScreen extends Component {
                   <View style={{ marginTop: 15 }}>
                     <Text>Enter Alien Registration Number/USCIS Number:</Text>
                     <Item regular>
-                      <Input value={this.state.data.USCIS} onChangeText={(txt) => this.handleChange('USCIS', txt)} />
+                      <Input
+                        value={this.state.data.USCIS}
+                        onChangeText={(txt) => this.handleChange('USCIS', txt)}
+                      />
                     </Item>
                   </View>
-
-                ): this.state.employee_attestation_4 == 'I-94' ? (
+                ) : this.state.employee_attestation_4 == 'I-94' ? (
                   <View style={{ marginTop: 15 }}>
                     <Text>Form I-94 Admission Number:</Text>
                     <Item regular>
-                      <Input  value={this.state.data.I_94} onChangeText={(txt) => this.handleChange('I_94', txt)} />
+                      <Input
+                        value={this.state.data.I_94}
+                        onChangeText={(txt) => this.handleChange('I_94', txt)}
+                      />
                     </Item>
                   </View>
-                ): this.state.employee_attestation_4 == 'Passport' ? (
+                ) : this.state.employee_attestation_4 == 'Passport' ? (
                   <View style={{ marginTop: 15 }}>
                     <Text>Foreign Passport Number:</Text>
                     <Item regular>
-                      <Input  value={this.state.data.passport_number} onChangeText={(txt) => this.handleChange('passport_number', txt)} />
+                      <Input
+                        value={this.state.data.passport_number}
+                        onChangeText={(txt) =>
+                          this.handleChange('passport_number', txt)
+                        }
+                      />
                     </Item>
                     <Text>Country of Issuance:</Text>
                     <Item regular>
-                      <Input  value={this.state.data.country_issuance} onChangeText={(txt) => this.handleChange('country_issuance', txt)} />
+                      <Input
+                        value={this.state.data.country_issuance}
+                        onChangeText={(txt) =>
+                          this.handleChange('country_issuance', txt)
+                        }
+                      />
                     </Item>
                   </View>
-                ): null }
-       
-            
+                ) : null}
               </View>
 
               <View
@@ -738,125 +908,201 @@ class UploadDocumentScreen extends Component {
                 }}
               />
               <View>
-                <Text>Signature of Employee<Text style={{ color:'red' }}>*</Text></Text>
+                <Text>
+                  Signature of Employee<Text style={{ color: 'red' }}>*</Text>
+                </Text>
                 <Text>Today's Date: {moment().format('MM/DD/YYYY')}</Text>
-
               </View>
               {!this.state.data.employee_signature ? (
-                <SignatureScreen onSave={data => this.setState(prev => ({ data: { ...prev.data, 'employee_signature': data } }))}/>
-              ): (
+                <SignatureScreen
+                  onSave={(data) =>
+                    this.setState((prev) => ({
+                      data: { ...prev.data, employee_signature: data },
+                    }))
+                  }
+                />
+              ) : (
                 <Image
-                  source={{ uri: `data:image/png;base64,${this.state.data.employee_signature || ''}` }}
+                  source={{
+                    uri: `data:image/png;base64,${this.state.data
+                      .employee_signature || ''}`,
+                  }}
                   style={{ height: 150, width: '100%' }}
                 />
               )}
-    
+
               <View>
-                <Text style={{ fontSize: 18, marginTop: 15 }}>Preparer and/or Translator Certification (check one): <Text style={{ color:'red' }}>*</Text></Text>
-            
-          
+                <Text style={{ fontSize: 18, marginTop: 15 }}>
+                  Preparer and/or Translator Certification (check one):{' '}
+                  <Text style={{ color: 'red' }}>*</Text>
+                </Text>
+
                 <View style={{ flexDirection: 'row', marginRight: 15 }}>
-                  <TouchableOpacity onPress={() => this.setState({ translator: !this.state.translator })}>
-                    <View style={[{
-                      height: 20,
-                      width: 20,
-                      marginTop: 15,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        !this.state.translator ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState({ translator: !this.state.translator })
+                    }>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          width: 20,
+                          marginTop: 15,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {!this.state.translator ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>I did not use a preparer or translator.</Text>
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    I did not use a preparer or translator.
+                  </Text>
                 </View>
 
                 <View style={{ flexDirection: 'row', marginRight: 15 }}>
-                  <TouchableOpacity onPress={() => this.setState({ translator: true })}>
-                    <View style={[{
-                      height: 20,
-                      width: 20,
-                      marginTop: 15,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: '#000',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }, {}]}>
-                      {
-                        this.state.translator ?
-                          <View style={{
+                  <TouchableOpacity
+                    onPress={() => this.setState({ translator: true })}>
+                    <View
+                      style={[
+                        {
+                          height: 20,
+                          width: 20,
+                          marginTop: 15,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: '#000',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        },
+                        {},
+                      ]}>
+                      {this.state.translator ? (
+                        <View
+                          style={{
                             height: 12,
                             width: 12,
                             borderRadius: 6,
                             backgroundColor: '#000',
-                          }}/>
-                          : null
-                      }
+                          }}
+                        />
+                      ) : null}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>A preparer(s) and/or translator(s) assisted the employee in completing Section 1.</Text>
+                  <Text style={{ paddingLeft: 10, marginTop: 14 }}>
+                    A preparer(s) and/or translator(s) assisted the employee in
+                    completing Section 1.
+                  </Text>
                 </View>
 
                 {this.state.translator && (
-
                   <View>
-                    <Text style={{ fontSize: 12, marginRight: 10, marginTop: 10 }}>(Fields below must be completed and signed when preparers and/or translators assist an employee in completing Section 1.)</Text>
-                    <Text style={{ fontSize: 12, marginRight: 10, marginTop: 10 }}>I attest, under penalty of perjury, that I have assisted in the completion of Section 1 of this form and that to the best of my
-              knowledge the information is true and correct.</Text>
+                    <Text
+                      style={{ fontSize: 12, marginRight: 10, marginTop: 10 }}>
+                      (Fields below must be completed and signed when preparers
+                      and/or translators assist an employee in completing
+                      Section 1.)
+                    </Text>
+                    <Text
+                      style={{ fontSize: 12, marginRight: 10, marginTop: 10 }}>
+                      I attest, under penalty of perjury, that I have assisted
+                      in the completion of Section 1 of this form and that to
+                      the best of my knowledge the information is true and
+                      correct.
+                    </Text>
                     <Form style={{ marginBottom: 30 }}>
                       <Item floatingLabel last>
                         <Label>Last Name (Family Name)</Label>
-                        <Input value={this.state.data.translator_last_name} onChangeText={(txt) => this.handleChange('translator_last_name', txt)} />
+                        <Input
+                          value={this.state.data.translator_last_name}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_last_name', txt)
+                          }
+                        />
                       </Item>
                       <Item floatingLabel last>
                         <Label>First Name (Given Name)</Label>
-                        <Input value={this.state.data.translator_first_name} onChangeText={(txt) => this.handleChange('translator_first_name', txt)} />
+                        <Input
+                          value={this.state.data.translator_first_name}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_first_name', txt)
+                          }
+                        />
                       </Item>
                       <Item floatingLabel last>
                         <Label>Address (Street Number and Name)</Label>
-                        <Input value={this.state.data.translator_address} onChangeText={(txt) => this.handleChange('translator_address', txt)} />
+                        <Input
+                          value={this.state.data.translator_address}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_address', txt)
+                          }
+                        />
                       </Item>
-         
+
                       <Item floatingLabel last>
                         <Label>City or Town</Label>
-                        <Input value={this.state.data.translator_city} onChangeText={(txt) => this.handleChange('translator_city', txt)} />
+                        <Input
+                          value={this.state.data.translator_city}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_city', txt)
+                          }
+                        />
                       </Item>
                       <Item floatingLabel last>
                         <Label>State</Label>
-                        <Input value={this.state.data.translator_state} onChangeText={(txt) => this.handleChange('translator_state', txt)} />
+                        <Input
+                          value={this.state.data.translator_state}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_state', txt)
+                          }
+                        />
                       </Item>
                       <Item floatingLabel last>
                         <Label>ZIP Code</Label>
-                        <Input value={this.state.data.translator_zipcode} onChangeText={(txt) => this.handleChange('translator_zipcode', txt)} />
+                        <Input
+                          value={this.state.data.translator_zipcode}
+                          onChangeText={(txt) =>
+                            this.handleChange('translator_zipcode', txt)
+                          }
+                        />
                       </Item>
-            
                     </Form>
-         
                   </View>
                 )}
               </View>
 
               <View style={{ marginTop: 30 }}>
-                <Text>Choose one of the <Text style={{ color:'blue' }} onPress={() => Linking.openURL('https://www.uscis.gov/i-9-central/form-i-9-acceptable-documents')}>acceptable document(s)</Text> to submit for the I-9<Text style={{ color:'red' }}>*</Text></Text>  
+                <Text>
+                  Choose one of the{' '}
+                  <Text
+                    style={{ color: 'blue' }}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://www.uscis.gov/i-9-central/form-i-9-acceptable-documents',
+                      )
+                    }>
+                    acceptable document(s)
+                  </Text>{' '}
+                  to submit for the I-9<Text style={{ color: 'red' }}>*</Text>
+                </Text>
               </View>
               {showWarning ? (
                 <View style={UploadDocumentStyle.userStatusLabel}>
-                  <View>
-                
-                  </View>
-                
+                  <View></View>
+
                   {/* <Icon
                   onPress={() => this.setState({ showWarning: false })}
                   style={
@@ -878,17 +1124,22 @@ class UploadDocumentScreen extends Component {
                       <View style={UploadDocumentStyle.stepCirle}>
                         <Text style={UploadDocumentStyle.stepCirleText}>1</Text>
                       </View>
-                      <Text>{'Upload one document from List A'}</Text>
+                      <Text style={{ display:'flex' }}>{'Upload one document from List A'}</Text>
                     </View>
-                
+               
                     {/* Step 2 */}
-                  
+
                     <View style={UploadDocumentStyle.step1Container}>
                       <View style={UploadDocumentStyle.stepCirle}>
                         <Text style={UploadDocumentStyle.stepCirleText}>2</Text>
                       </View>
-                      <Text>{'Upload one document from List B and one document from List C'}</Text>
+                      <Text>
+                        {
+                          'Upload one document from List B and one document from List C'
+                        }
+                      </Text>
                     </View>
+                  
                     {documents.length > 0
                       ? documents.map((doc, i) => (
                         <Document
@@ -899,24 +1150,22 @@ class UploadDocumentScreen extends Component {
                         />
                       ))
                       : null}
-           
                   </View>
                 </View>
               </Content>
-              {
-                documents.length <= 5 && ( 
-                  <View style={UploadDocumentStyle.buttonContainer}>
-                    <Button
-                      onPress={() => this.setState({ modalVisible: true })}
-                      disabled={!isAllowDocuments}
-                      style={UploadDocumentStyle.viewButtomLogin}>
-                      <Text style={UploadDocumentStyle.placeholderTextButtomPicker}>
-                        {t('USER_DOCUMENTS.addDocument')}
-                      </Text>
-                    </Button>
-                  </View>
-                )
-              }
+              {documents.length <= 5 && (
+                <View style={{ marginBottom: 30 }}>
+                  <Button
+                    onPress={() => this.setState({ modalVisible: true })}
+                    disabled={!isAllowDocuments}
+                    style={UploadDocumentStyle.viewButtomLogin}>
+                    <Text
+                      style={UploadDocumentStyle.placeholderTextButtomPicker}>
+                      {t('USER_DOCUMENTS.addDocument')}
+                    </Text>
+                  </Button>
+                </View>
+              )}
               <Modal
                 animationType="slide"
                 transparent={false}
@@ -946,17 +1195,15 @@ class UploadDocumentScreen extends Component {
                     const employment = item.validates_employment
                       ? t('USER_DOCUMENTS.employment')
                       : '';
-                    const document_a = item.document_a
-                      ? 'DOCUMENT A'
-                      : '';
+                    const document_a = item.document_a ? 'DOCUMENT A' : '';
                     const form = item.is_form ? t('USER_DOCUMENTS.form') : '';
                     let strings = [];
-                    const string = [identity, employment,document_a, form];
+                    const string = [identity, employment, document_a, form];
                     string.forEach((type) => {
                       if (
                         strings.filter((filterType) => filterType === type)
                           .length === 0 &&
-                      type !== ''
+                        type !== ''
                       )
                         strings.push(type);
                     });
@@ -970,38 +1217,46 @@ class UploadDocumentScreen extends Component {
                     );
                   }}
                 />
-              </Modal>                 
+              </Modal>
+              
             </Content>
             <Footer>
-              <FooterTab style={{ backgroundColor:'black' }}>
-                <Button onPress={() => {
-                  if(!this.state.data.social_security || !this.state.data.address || !this.state.data.employee_signature || documents.length === 0){
-                    Alert.alert(
-                      'Error',
-                      'Please fill required fields',
-                      [
-                        { text: 'OK', onPress: () => console.log('OK Pressed') },
-                      ]
-                    );
-                  }else{
-                    if(!this.state.hasI9Form){
-                      inviteActions.postI9Form(this.state.data);
-                      CustomToast('I-9 Form has been submitted');
-                      this.props.navigation.goBack();
-                    }else {
-                      inviteActions.putI9Form(this.state.data);
-                      CustomToast('I-9 Form has been updated');
-                      this.props.navigation.goBack();
+              <FooterTab style={{ backgroundColor: 'black' }}>
+                <Button
+                  onPress={() => {
+                    if (
+                      !this.state.data.social_security ||
+                      !this.state.data.address ||
+                      !this.state.data.employee_signature ||
+                      documents.length === 0
+                    ) {
+                      Alert.alert('Error', 'Please fill required fields', [
+                        {
+                          text: 'OK',
+                          onPress: () => console.log('OK Pressed'),
+                        },
+                      ]);
+                    } else {
+                      if (!this.state.hasI9Form) {
+                        inviteActions.postI9Form(this.state.data);
+                        CustomToast('I-9 Form has been submitted');
+                        this.props.navigation.goBack();
+                      } else {
+                        inviteActions.putI9Form(this.state.data);
+                        CustomToast('I-9 Form has been updated');
+                        this.props.navigation.goBack();
+                      }
                     }
-
-                  }
-                }}>
-                  <Text style={{ color:'white', fontSize: 16 }}>{!this.state.hasI9Form ? 'Submit I-9 Form' : 'Update Form I-9 Form'}</Text>
+                  }}>
+                  <Text style={{ color: 'white', fontSize: 16 }}>
+                    {!this.state.hasI9Form
+                      ? 'Submit I-9 Form'
+                      : 'Update Form I-9 Form'}
+                  </Text>
                 </Button>
               </FooterTab>
             </Footer>
           </Container>
-          
         )}
       </I18n>
     );
@@ -1012,7 +1267,6 @@ Document.propTypes = {
   doc: PropTypes.any,
   t: PropTypes.any,
   // deleteDocumentAlert: PropTypes.any,
-
 };
 
 const stylesSign = StyleSheet.create({
@@ -1022,11 +1276,14 @@ const stylesSign = StyleSheet.create({
     borderWidth: 1,
   },
   buttonStyle: {
-    flex: 1, justifyContent: 'center', alignItems: 'center', height: 50,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
     backgroundColor: '#eeeeee',
     margin: 10,
   },
-}); 
+});
 
 const stylesSignature = StyleSheet.create({
   signature: {
@@ -1037,9 +1294,12 @@ const stylesSignature = StyleSheet.create({
     borderWidth: 1,
   },
   buttonStyle: {
-    flex: 1, justifyContent: 'center', alignItems: 'center', height: 50,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
     backgroundColor: '#eeeeee',
-    width:'100%',
+    width: '100%',
     margin: 10,
   },
 });

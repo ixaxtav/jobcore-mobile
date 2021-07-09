@@ -1,4 +1,3 @@
-
 import { StyleSheet } from 'react-native';
 import { BLUE_MAIN, WHITE_MAIN } from './colorPalette';
 import { hasNotch } from './utils';

@@ -1,4 +1,3 @@
-
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 import {
   // '#808080',
@@ -40,7 +39,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     borderBottomWidth: 0.5,
-    borderColor: "#c9c9c9"
+    borderColor: '#c9c9c9',
   },
   flexTwo: {
     ...Platform.select({

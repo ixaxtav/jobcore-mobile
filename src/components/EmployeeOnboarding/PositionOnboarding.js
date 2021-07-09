@@ -1,19 +1,40 @@
 import React, { Component } from 'react';
 import {
   View,
-  // SafeAreaView,
-  Image, Alert, RefreshControl,
+  SafeAreaView,
+  Image,
+  Alert,
+  RefreshControl,
   TouchableOpacity,
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { H1, H3, H4, Container, Title, Header, Body, Content, List, Button, Text, FooterTab, Footer, Icon, Left, Right } from 'native-base';
+import {
+  H1,
+  H3,
+  H4,
+  Container,
+  Title,
+  Header,
+  Body,
+  Content,
+  List,
+  Button,
+  Text,
+  FooterTab,
+  Footer,
+  Icon,
+  Left,
+  Right,
+} from 'native-base';
 import {
   REGISTER_ROUTE,
   FORGOT_ROUTE,
   APP_ROUTE,
   VALIDATION_CODE_ROUTE,
-  JOB_PREFERENCES_ONBOARDING_ROUTE, DASHBOARD_ROUTE, LOCATION_ONBOARDING_ROUTE
+  JOB_PREFERENCES_ONBOARDING_ROUTE,
+  DASHBOARD_ROUTE,
+  LOCATION_ONBOARDING_ROUTE,
 } from '../../constants/routes';
 import * as accountActions from '../Account/actions';
 import * as jobActions from '../MyJobs/actions';
@@ -28,7 +49,12 @@ import { LOG } from '../../shared';
 import { CustomToast, Loading } from '../../shared/components';
 import { FormView } from '../../shared/platform';
 import firebase from 'react-native-firebase';
-import { WHITE_MAIN, BLUE_DARK, BLUE_MAIN, GRAY_LIGHT } from '../../shared/colorPalette';
+import {
+  WHITE_MAIN,
+  BLUE_DARK,
+  BLUE_MAIN,
+  GRAY_LIGHT,
+} from '../../shared/colorPalette';
 import { ModalHeader } from '../../shared/components/ModalHeader';
 import BtnCancelSave from '../../shared/components/BtnCancelSave';
 import CustomPickerWhite from '../../shared/components/CustomPickerWhite';
@@ -102,7 +128,6 @@ class PositionOnboarding extends Component {
     this.getJobPreferences();
     // CustomToast(i18next.t('JOB_PREFERENCES.positionUpdated'));
     this.props.navigation.navigate(LOCATION_ONBOARDING_ROUTE);
-
   };
 
   errorHandler = () => {
@@ -141,13 +166,15 @@ class PositionOnboarding extends Component {
     return (
       <I18n>
         {(t) => (
-            <Container>
+          <Container>
             {/* <TabHeaderWhite
               goBack
               onPressBack={() => this.props.navigation.goBack()}
               // title={t('EDIT_PROFILE.editProfile')}
             /> */}
-            <Header androidStatusBarColor={"#FFFFFF"} style={{
+            <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
                 alignContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#FFFFFF',
@@ -156,94 +183,116 @@ class PositionOnboarding extends Component {
                 paddingBottom: 0,
               }}>
               <Left>
-                  <Button style={{ marginLeft: 10 }} transparent onPress={()=>this.logout()}>
-                  <Icon style={{color:"black"}} type="FontAwesome" name='angle-left' />
-                  </Button>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.logout()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
               </Left>
               <Body style={{ flex: 0 }}>
-                <Title>
-                
-                </Title>
+                <Title></Title>
               </Body>
-              <Right>
-              </Right>
-          
+              <Right></Right>
             </Header>
             <Content>
-              <View style={{
-                padding: 25
-              }} >
-                
-              <H1 style={{marginBottom: 15, fontWeight: 700, fontSize: 32, lineHeight: 45}}>
-                What type of work are you interested in?
-              </H1>
-              <Text style={{fontSize: 18, color: "gray"}}>
-              Select all that apply
-              </Text>
+              <View
+                style={{
+                  padding: 25,
+                }}>
+                <H1
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 32,
+                    lineHeight: 45,
+                    fontFamily: 'UberMoveText-Medium', 
+                  }}>
+                  What type of work are you interested in?
+                </H1>
+                <Text style={{ fontSize: 18, color: 'gray',fontFamily: 'UberMoveText-Light'  }}>
+                  Select all that apply
+                </Text>
               </View>
               <>
-            {this.state.isLoading ? <Loading /> : null}
-            <CustomPickerWhite
-              height={'75%'}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this.refreshPositions}
+                {this.state.isLoading ? <Loading /> : null}
+                <CustomPickerWhite
+                  height={'75%'}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.isRefreshing}
+                      onRefresh={this.refreshPositions}
+                    />
+                  }
+                  data={this.state.positionList}
+                  onItemPress={(position) => {
+                    const isPositionSelected = this.isPositionSelected(
+                      position,
+                    );
+                    this.selectUnselectPosition(position, isPositionSelected);
+                  }}
+                  itemRendered={(position, key) => {
+                    const isPositionSelected = this.isPositionSelected(
+                      position,
+                    );
+
+                    return (
+                      <View
+                        key={position.id}
+                        style={[
+                          styles.itemSelectCheck,
+                          { borderBottomWidth: 0, alignItems: 'center' },
+                        ]}>
+                        <View>
+                          <Text style={{ color: 'black', fontSize: 18,fontFamily: 'UberMoveText-Light' }}>
+                            {position.title}
+                          </Text>
+                        </View>
+                        <View>
+                          <Icon
+                            type="FontAwesome"
+                            name={
+                              isPositionSelected ? 'check-circle' : 'circle-o'
+                            }
+                            style={{ fontSize: 24, color: 'black' }}
+                          />
+                        </View>
+                      </View>
+                    );
+                  }}
                 />
-              }
-              data={this.state.positionList}
-              onItemPress={(position) => {
-                const isPositionSelected = this.isPositionSelected(position);
-                this.selectUnselectPosition(position, isPositionSelected);
-              }}
-              itemRendered={(position, key) => {
-                const isPositionSelected = this.isPositionSelected(position);
-
-                return (
-                  <View
-                    key={position.id}
-                    style={[
-                      styles.itemSelectCheck, {borderBottomWidth: 0, alignItems: "center"}
-                    ]}>
-                    <View>
-                      <Text style={{color: "black", fontSize: 18}}>{position.title}</Text>
-                    </View>
-                    <View>
-                      <Icon 
-                        type="FontAwesome"
-                        name={
-                          isPositionSelected
-                            ? 'check-circle'
-                            : 'circle-o'
-                        }
-                        style={{ fontSize: 24, color: 'black' }}
-                      />
-                    </View>
-                  </View>
-                );
-              }}
-            />
-            {/* <BtnCancelSave t={t} onPressSave={this.editPosition} /> */}
-          </>        
+                {/* <BtnCancelSave t={t} onPressSave={this.editPosition} /> */}
+              </>
             </Content>
-            <Footer style={{backgroundColor:"white", borderBottomWidth: 0, borderTopWidth: 0}}>
-          <FooterTab>
-            {Array.isArray(this.state.positions) && this.state.positions.length > 0 ? (
-                <Button full style={{backgroundColor: 'black',  borderRadius: 0}} onPress={this.editPosition}>
-                <Text style={{color: "white", fontSize: 18}}>Next</Text>
-                </Button>
-            ): (
-              <Button light full disabled style={{borderRadius: 0}}>
-              <Text style={{color: "white", fontSize: 18}}>To continue, add position(s)</Text>
-            </Button>
-            )}
-           
-          </FooterTab>
-        </Footer>
-              
-
+            <Footer
+              style={{
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+              }}>
+              <FooterTab>
+                {Array.isArray(this.state.positions) &&
+                this.state.positions.length > 0 ? (
+                    <Button
+                      full
+                      style={{ backgroundColor: 'black', borderRadius: 0 }}
+                      onPress={this.editPosition}>
+                      <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium'  }}>Next</Text>
+                    </Button>
+                  ) : (
+                    <Button light full disabled style={{ borderRadius: 0 }}>
+                      <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>
+                      To continue, add position(s)
+                      </Text>
+                    </Button>
+                  )}
+              </FooterTab>
+            </Footer>
+      
           </Container>
-
         )}
       </I18n>
     );
@@ -298,13 +347,9 @@ class PositionOnboarding extends Component {
   };
 
   editPosition = () => {
-   
-
-            inviteActions.editPositions(
-              this.state.positions.map((position) => position.id),
-            );
-
-          
+    inviteActions.editPositions(
+      this.state.positions.map((position) => position.id),
+    );
   };
 
   isLoading = (isLoading) => {

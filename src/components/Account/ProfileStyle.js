@@ -30,7 +30,6 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     marginRight: 20,
-
   },
   profileButton: {
     height: 65,

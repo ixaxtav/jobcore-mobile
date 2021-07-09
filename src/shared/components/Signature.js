@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-capture-signature/
 
 // import React in our code
-import React, {createRef} from 'react';
+import React, { createRef } from 'react';
 
 // import all the components we are going to use
 import {
@@ -30,10 +30,9 @@ const Signature = (props) => {
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
     alert('Signature Saved');
-    if(props.onSave){
-        props.onSave(result.encoded);
+    if (props.onSave) {
+      props.onSave(result.encoded);
     }
-    
   };
 
   const _onDragEvent = () => {
@@ -44,7 +43,6 @@ const Signature = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-      
         <SignatureCapture
           style={styles.signature}
           ref={sign}
@@ -55,7 +53,7 @@ const Signature = (props) => {
           saveImageFileInExtStorage={false}
           viewMode={'portrait'}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
             style={styles.buttonStyle}
             onPress={() => {
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    height: 250
+    height: 250,
   },
   titleStyle: {
     fontSize: 20,

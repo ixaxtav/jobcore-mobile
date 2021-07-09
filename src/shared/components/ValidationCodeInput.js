@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import {
   CodeField,
@@ -9,45 +9,44 @@ import {
 } from 'react-native-confirmation-code-field';
 import { BLUE_MAIN, BLUE_DARK } from '../../shared/colorPalette';
 
-
 const CELL_COUNT = 6;
 
 const styles = StyleSheet.create({
-    root: {padding: 20, minHeight: 200},
-    codeFieldRoot: {
-      marginTop: 20,
-      width: 280,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-    cellRoot: {
-      width: 40,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderBottomColor: '#808080',
-      borderBottomWidth: 1,
-    },
-    cellText: {
-      color: 'black',
-      fontSize: 30,
-      textAlign: 'center',
-    },
-    focusCell: {
-      borderBottomColor: 'black',
-      borderBottomWidth: 2,
-    },
-
-  });
+  root: { padding: 20, minHeight: 125, marginBottom: 60, marginTop: 30 },
+  codeFieldRoot: {
+    marginTop: 45,
+    width: 280,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  cellRoot: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#808080',
+    borderBottomWidth: 1,
+  },
+  cellText: {
+    color: 'black',
+    fontSize: 30,
+    textAlign: 'center',
+    fontFamily: 'UberMoveText-Light', 
+  },
+  focusCell: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+  },
+});
 
 const ValidationCodeInput = (code) => {
   const [value, setValue] = useState(code.value);
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-  
+
   return (
     <SafeAreaView style={styles.root}>
       <CodeField
@@ -59,7 +58,7 @@ const ValidationCodeInput = (code) => {
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
         textContentType="oneTimeCode"
-        renderCell={({index, symbol, isFocused}) => (
+        renderCell={({ index, symbol, isFocused }) => (
           <View
             onLayout={getCellOnLayoutHandler(index)}
             key={index}
@@ -70,7 +69,6 @@ const ValidationCodeInput = (code) => {
           </View>
         )}
       />
-
     </SafeAreaView>
   );
 };

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { APP_ROUTE, AUTH_ROUTE, POSITION_ONBOARDING_ROUTE } from '../../constants/routes';
+import {
+  APP_ROUTE,
+  AUTH_ROUTE,
+  POSITION_ONBOARDING_ROUTE,
+} from '../../constants/routes';
 import store from '../Account/AccountStore';
 import DeviceInfo from 'react-native-device-info';
 import { LOG } from '../../shared';
@@ -43,7 +47,6 @@ class Splash extends Component {
       LOG(this, e);
     }
 
-    console.log('splash status', status);
     if (token && status && status === 'PAUSED') {
       return this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE);
     }

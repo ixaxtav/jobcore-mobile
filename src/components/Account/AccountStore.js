@@ -8,7 +8,6 @@ class AccountStore extends FluxStore {
     // The login Event
     this.addEvent('Login', (nextState) => {
       LOG(this, nextState);
-      console.log('NEXT STATE', nextState);
       if (!nextState.token) return nextState;
 
       if (

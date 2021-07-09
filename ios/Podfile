@@ -14,7 +14,9 @@ target 'coJobcoreTalent' do
   pod 'GoogleAppMeasurement', '~> 5.8.0'
 
   # Add new pods below this line
-  pod 'react-native-config', :path => '../node_modules/react-native-config'
+  pod 'toolbar-android', :path => '../node_modules/@react-native-community/toolbar-android'
+
+  # pod 'react-native-config', :path => '../node_modules/react-native-config'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
@@ -25,7 +27,7 @@ target 'coJobcoreTalent' do
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+  # pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   pod 'TouchID', :path => '../node_modules/react-native-touch-id'
 

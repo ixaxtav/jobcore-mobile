@@ -1,4 +1,3 @@
-
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
 import { BLUE_MAIN, BLUE_DARK, WHITE_MAIN } from '../../shared/colorPalette';
@@ -8,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: WHITE_MAIN
+    backgroundColor: WHITE_MAIN,
   },
   viewLogo: {
     width: '80%',
@@ -26,7 +25,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   viewForm: {
     width: width,
@@ -62,19 +61,19 @@ export default StyleSheet.create({
   },
 
   viewButtomRegister: {
-    marginTop: 30,
+    // marginTop: 30,
     borderRadius: 0,
     height: 55,
     textAlign: 'center',
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderColor: 'black',
-    borderWidth: 3,
+    backgroundColor: '#ededed',
+    // borderStyle: 'solid',
+    // borderColor: 'black',
+    // borderWidth: 3,
     color: 'black',
-
   },
   textButtom: {
-    fontSize: 16,
+    fontSize: 20,
+    fontFamily: 'UberMoveText-Medium',
     fontWeight: '500',
     textAlign: 'center',
     ...Platform.select({
@@ -85,7 +84,35 @@ export default StyleSheet.create({
       },
     }),
   },
-  
+  textButtomLogin: {
+    fontSize: 20,
+    fontFamily: 'UberMoveText-Medium',
+    fontWeight: '500',
+    textAlign: 'center',
+    color:'white',
+    ...Platform.select({
+      android: {
+        color: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    }),
+  },
+  textButtomRegister: {
+    fontSize: 20,
+    fontFamily: 'UberMoveText-Medium',
+    fontWeight: '500',
+    textAlign: 'center',
+    color:'black',
+    ...Platform.select({
+      android: {
+        color: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    }),
+  },
+
   textButtomClick: {
     fontSize: 14,
     fontWeight: '500',
@@ -94,12 +121,12 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
     color: 'black',
   },
-  textButtomRegister: {
-    fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
-    color: 'black',
-  },
+  // textButtomRegister: {
+  //   fontSize: 18,
+  //   fontWeight: '500',
+  //   textAlign: 'center',
+  //   color: 'black',
+  // },
   textButtomForgot: {
     fontSize: 16,
     fontWeight: '500',

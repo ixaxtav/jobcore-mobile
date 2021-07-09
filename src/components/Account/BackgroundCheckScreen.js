@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
-import { View, Image, Alert, Modal, TouchableOpacity,Linking } from 'react-native';
-import { Text, Form, Label, Content, Container, Button, Input, CheckBox } from 'native-base';
+import {
+  View,
+  Image,
+  Alert,
+  Modal,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
+import {
+  Text,
+  Form,
+  Label,
+  Content,
+  Container,
+  Button,
+  Input,
+  CheckBox,
+} from 'native-base';
 import UploadDocumentStyle from './UploadDocumentStyle';
 import BankAccounts from '../../components/BankAccounts/BankAccounts';
 import { I18n } from 'react-i18next';
@@ -103,7 +119,7 @@ class BackgroundCheckScreen extends Component {
       documentsTypes: [],
       last_4dig_ssn: '',
       modalVisible: false,
-      agree: false
+      agree: false,
     };
   }
 
@@ -244,10 +260,10 @@ class BackgroundCheckScreen extends Component {
     );
   };
   agree = () => {
-    this.setState(prevState => ({
-        agree: !prevState.agree
-      }));
-  }
+    this.setState((prevState) => ({
+      agree: !prevState.agree,
+    }));
+  };
   /**
    * Handle react-native-image-picker response and set the selected image
    * @param  {object} response A react-native-image-picker response
@@ -297,7 +313,7 @@ class BackgroundCheckScreen extends Component {
     }
   };
   editProfile = () => {
-    if(this.state.agree){
+    if (this.state.agree) {
       editProfile(
         this.state.user.user.first_name,
         this.state.user.user.last_name,
@@ -309,10 +325,8 @@ class BackgroundCheckScreen extends Component {
       );
       CustomToast('Background information saved.');
       this.props.navigation.navigate(UploadDocumentScreen.routeName);
-    }
-    else{
+    } else {
       CustomToast('Please click the agree checkbox', 'danger');
-
     }
   };
   render() {
@@ -344,8 +358,8 @@ class BackgroundCheckScreen extends Component {
     const extraWithholding = user.employee
       ? user.employee.extra_withholding
       : '';
-    
-    console.log('upload document',this.state);
+
+    console.log('upload document', this.state);
     return (
       <I18n>
         {(t) => (
@@ -355,58 +369,54 @@ class BackgroundCheckScreen extends Component {
               title={'Background Check'}
               withoutHelpIcon={false}
             />
-            
+
             {this.state.isLoading ? <Loading /> : null}
             <Content>
-       
+              <View>
+                <View style={{ marginRight: 30, marginLeft: 30 }}>
+                  <Label style={{ marginTop: 30 }}>
+                    {'Last 4 digits of social security number '}
+                  </Label>
 
-            <View>
-
-            <View style={{marginRight: 30, marginLeft: 30}}>
-            <Label style={{marginTop: 30}}>{'Last 4 digits of social security number '}</Label>
-
-            <View style={editProfileStyles.viewInputBackground}>
-                <Input
-                keyboardType="numeric"
-                value={this.state.last_4dig_ssn}
-                placeholder={t('REGISTER.last_4dig_ssn_placeholder')}
-                onChangeText={(text) => {
-                    if (text.length >= 0 && text.length < 5)
-                    this.setState({
-                        last_4dig_ssn: text.replace(/[^0-9]/g, ''),
-                    });
-                }}
-                />                
-            </View>
-            </View>
-            <View
-                style={{
+                  <View style={editProfileStyles.viewInputBackground}>
+                    <Input
+                      keyboardType="numeric"
+                      value={this.state.last_4dig_ssn}
+                      placeholder={t('REGISTER.last_4dig_ssn_placeholder')}
+                      onChangeText={(text) => {
+                        if (text.length >= 0 && text.length < 5)
+                          this.setState({
+                            last_4dig_ssn: text.replace(/[^0-9]/g, ''),
+                          });
+                      }}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
                     borderBottomColor: 'black',
                     borderBottomWidth: 1,
-                }}
-            />
-            <View style={UploadDocumentStyle.buttonContainer}>
-              <Text style={UploadDocumentStyle.backgroundcheckdisclosureText}>
-                  {
+                  }}
+                />
+                <View style={UploadDocumentStyle.buttonContainer}>
+                  <Text
+                    style={UploadDocumentStyle.backgroundcheckdisclosureText}>
+                    {
                       'ACKNOWLEDGMENT AND AUTHORIZATION FOR BACKGROUND CHECK I acknowledge and agree that I have read and understand the Background Check Disclosure and further acknowledge that I have read, understand and agree with the statements contained in the additional disclosures. By my electronic signature, I hereby authorize JobCore to obtain consumer reports about me from any CRA at any time after receipt of this authorization and throughout my independent contractor relationship. I agree that I am providing my electronic signature and that my electronic signature is binding just like a signature in ink.'
-                  }
-                </Text>
-                    <View style={{flexDirection: 'row'}}>
-
+                    }
+                  </Text>
+                  <View style={{ flexDirection: 'row' }}>
                     <CheckBox
-                      style={{marginRight: 15}}
+                      style={{ marginRight: 15 }}
                       checked={this.state.agree}
                       onPress={() => {
                         let agree = this.state.agree ? false : true;
-                        this.setState({agree: agree});
+                        this.setState({ agree: agree });
                       }}
                     />
-                        <Text>
-                            I agree and acknowledge
-                        </Text>
-
-                    </View>
-            <Button
+                    <Text>I agree and acknowledge</Text>
+                  </View>
+                  <Button
                     full
                     onPress={this.editProfile}
                     style={{
@@ -416,12 +426,10 @@ class BackgroundCheckScreen extends Component {
                       marginTop: 60,
                       marginBottom: 20,
                     }}>
-                    <Text style={editProfileStyles.textButtom}>
-                      {'SUBMIT'}
-                    </Text>
+                    <Text style={editProfileStyles.textButtom}>{'SUBMIT'}</Text>
                   </Button>
-            </View>
-            </View>
+                </View>
+              </View>
             </Content>
           </Container>
         )}

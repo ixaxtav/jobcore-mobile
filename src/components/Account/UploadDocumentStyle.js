@@ -31,7 +31,7 @@ export default StyleSheet.create({
     backgroundColor: BLUE_DARK,
     borderRadius: 5,
     height: 45,
-    width:'100%',
+    width: '100%',
     marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',

@@ -36,8 +36,10 @@ export default StyleSheet.create({
   },
   viewProfileImgOnboarding: {
     alignSelf: 'center',
+    justifyContent:'center',
     marginTop: 20,
     marginBottom: 15,
+    paddingLeft: 15,
     width: 160,
   },
   viewProfileResumeOnboarding: {

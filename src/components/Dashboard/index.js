@@ -1,4 +1,3 @@
-
 /* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
 import {
@@ -6,7 +5,9 @@ import {
   RefreshControl,
   TouchableOpacity,
   View,
+  Platform,
   FlatList,
+  Alert,
   Dimensions,
 } from 'react-native';
 import { Label, ListItem, Text, Thumbnail, Button, Icon } from 'native-base';
@@ -47,6 +48,7 @@ import StarComponent from './starsComponent';
 import { I18n } from 'react-i18next';
 import { i18next } from '../../i18n';
 import firebase from 'react-native-firebase';
+
 import { NavigationActions } from 'react-navigation';
 import PROFILE_IMG from '../../assets/image/profile.png';
 import { TabHeader } from '../../shared/components/TabHeader';
@@ -75,7 +77,6 @@ class DashboardScreen extends Component {
         type="MaterialCommunityIcons"
         style={{ color: tintColor || 'black' }}
         name="view-dashboard"
-       
       />
     ),
   };
@@ -106,8 +107,10 @@ class DashboardScreen extends Component {
   }
 
   async componentDidMount() {
-
-
+    console.log(
+      'firebase', firebase
+    )
+  
     this.logoutSubscription = accountStore.subscribe(
       'Logout',
       this.logoutHandler,
@@ -125,13 +128,9 @@ class DashboardScreen extends Component {
     this.loginSubscription = accountStore.subscribe('Login', (data) => {
       this.loginHandler(data);
     });
-    this.getEmployeeSubscribe = jobStore.subscribe(
-      'GetEmployee',
-      (data) => {
-        this.getEmployeeHandler(data);
-      },
-    );
-
+    this.getEmployeeSubscribe = jobStore.subscribe('GetEmployee', (data) => {
+      this.getEmployeeHandler(data);
+    });
 
     this.stopReceivingInvitesSubscription = inviteStore.subscribe(
       'StopReceivingInvites',
@@ -139,30 +138,22 @@ class DashboardScreen extends Component {
         this.stopReceivingInvitesHandler(data);
       },
     );
-   
-    this.getI9FormSubscription = accountStore.subscribe(
-      'GetI9Form',
-      (form) => {
-        if(form && Array.isArray(form) && form.length > 0){
-          this.setState({ I9Form: form[0]['status'] });
-        }else{
-          this.setState({ I9Form: 'NONE' });
-        }
 
-      },
-    );
+    this.getI9FormSubscription = accountStore.subscribe('GetI9Form', (form) => {
+      if (form && Array.isArray(form) && form.length > 0) {
+        this.setState({ I9Form: form[0]['status'] });
+      } else {
+        this.setState({ I9Form: 'NONE' });
+      }
+    });
 
-    this.getW4FormSubscription = accountStore.subscribe(
-      'GetW4Form',
-      (form) => {
-        if(form && Array.isArray(form) && form.length > 0){
-          this.setState({ W4Form: form[0]['status'] });
-        }else{
-          this.setState({ W4Form: 'NONE' });
-        }
-
-      },
-    );
+    this.getW4FormSubscription = accountStore.subscribe('GetW4Form', (form) => {
+      if (form && Array.isArray(form) && form.length > 0) {
+        this.setState({ W4Form: form[0]['status'] });
+      } else {
+        this.setState({ W4Form: 'NONE' });
+      }
+    });
     this.getJobInvitesSubscription = inviteStore.subscribe(
       'JobInvites',
       (jobInvites) => {
@@ -224,16 +215,55 @@ class DashboardScreen extends Component {
       .onNotificationOpened((notificationOpen) => {
         if (notificationOpen) {
           // const action = notificationOpen.action;
+          console.log('notificationTest',notificationOpen )
           const notification = notificationOpen.notification;
           this.pushNotificationHandler(notification.data);
         }
       });
 
+    this.unsubscribeFromNotificationListener = firebase.notifications().onNotification((notification) => {
+      if (Platform.OS === 'android') {
+  
+        const localNotification = new firebase.notifications.Notification({
+          sound: 'default',
+          show_in_foreground: true,
+        })
+          .setNotificationId(notification.notificationId)
+          .setTitle(notification.title)
+          .setSubtitle(notification.subtitle)
+          .setBody(notification.body)
+          .setData(notification.data)
+          .android.setChannelId('channelId') // e.g. the id you chose above
+          .android.setSmallIcon('ic_stat_notification') // create this icon in Android Studio
+          .android.setColor('#000000') // you can set a color here
+          .android.setPriority(firebase.notifications.Android.Priority.High);
+  
+        firebase.notifications()
+          .displayNotification(localNotification)
+          .catch(err => console.error(err));
+  
+      } else if (Platform.OS === 'ios') {
+  
+        const localNotification = new firebase.notifications.Notification()
+          .setNotificationId(notification.notificationId)
+          .setTitle(notification.title)
+          .setSubtitle(notification.subtitle)
+          .setBody(notification.body)
+          .setData(notification.data)
+          .ios.setBadge(notification.ios.badge);
+  
+        firebase.notifications()
+          .displayNotification(localNotification)
+          .catch(err => console.error(err));
+  
+      }
+    });
     firebase
       .notifications()
       .getInitialNotification()
       .then((notificationOpen) => {
         if (notificationOpen) {
+          console.log('notificationTest123',notificationOpen )
           // const action = notificationOpen.action;
           const notification = notificationOpen.notification;
           this.pushNotificationHandler(notification.data);
@@ -267,14 +297,11 @@ class DashboardScreen extends Component {
         this.refreshOnAction();
       },
     );
-    
 
     this.loadData();
     this.getEmployeeData();
     accountActions.getI9Form();
     accountActions.getW4Form();
-
- 
   }
 
   componentWillUnmount() {
@@ -311,8 +338,6 @@ class DashboardScreen extends Component {
   logoutHandler = () => {
     this.props.navigation.navigate(AUTH_ROUTE);
   };
-
-
 
   getPaymentsHandler = (payments) => {
     let emptyPayments = false;
@@ -363,11 +388,10 @@ class DashboardScreen extends Component {
   //   // }
   // };
 
-
   getEmployeeHandler = (data) => {
     let status;
-    
-    if(data.employment_verification_status == 'APPROVED') status = 'Approved' 
+
+    if (data.employment_verification_status == 'APPROVED') status = 'Approved';
     else {
       status = 'Not Approved';
     }
@@ -389,7 +413,6 @@ class DashboardScreen extends Component {
       isRefreshing: false,
     });
   };
- 
 
   getJobInvitesHandler = (invites) => {
     this.setState({
@@ -445,10 +468,17 @@ class DashboardScreen extends Component {
         });
       }
     }
-    this.setState({ jobs: [...jobsData], isRefreshing: false, isLoading: false, nextShift });
+    this.setState({
+      jobs: [...jobsData],
+      isRefreshing: false,
+      isLoading: false,
+      nextShift,
+    });
   };
 
   pushNotificationHandler = (notificationData) => {
+
+    console.log('NOTIFICATION - ', notificationData)
     if (!notificationData) {
       return LOG(this, 'no notification data');
     }
@@ -521,7 +551,11 @@ class DashboardScreen extends Component {
         shiftId: job.id,
       });
     }
-    if (this.state.openClockIns && this.state.openClockIns.length > 0 && this.state.openClockIns.find(e => e.shift.id == job.id)) {
+    if (
+      this.state.openClockIns &&
+      this.state.openClockIns.length > 0 &&
+      this.state.openClockIns.find((e) => e.shift.id == job.id)
+    ) {
       return navigation.navigate(WorkModeScreen.routeName, {
         shiftId: job.id,
       });
@@ -626,8 +660,7 @@ class DashboardScreen extends Component {
                 },
                 shadowOpacity: 0.93,
                 shadowRadius: 1.62,
-              }}
-            >
+              }}>
               <Thumbnail
                 medium
                 source={
@@ -705,7 +738,6 @@ class DashboardScreen extends Component {
       tomorrowDay,
       todayDay,
     } = this.state;
-    console.log(this.state);
     return (
       <I18n>
         {(t) => (
@@ -719,45 +751,102 @@ class DashboardScreen extends Component {
               screenName={'dashboard'}
             />
             {this.state.I9Form == 'NONE' ? (
-              <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button full danger onPress={() => this.props.navigation.navigate(UploadDocumentScreen.routeName)}>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Employment Verification Required</Text>
-                  <Icon style={{ color:'white' }} type="FontAwesome" name="angle-right" />
-
+              <View
+                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                <Button
+                  full
+                  danger
+                  small
+                  onPress={() =>
+                    this.props.navigation.navigate(
+                      UploadDocumentScreen.routeName,
+                    )
+                  }>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    Employment Verification Required
+                  </Text>
+                  <Icon
+                    style={{ color: 'white' }}
+                    type="FontAwesome"
+                    name="angle-right"
+                  />
                 </Button>
               </View>
-            ): this.state.I9Form == 'PENDING' ? (
-              <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button full warning onPress={() => this.props.navigation.navigate(UploadDocumentScreen.routeName)}>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Employment Verification Under Review</Text>
-                  <Icon style={{ color:'white' }} type="FontAwesome" name="angle-right" />
-
+            ) : this.state.I9Form == 'PENDING' ? (
+              <View
+                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                <Button
+                  full
+                  small
+                  warning
+                  onPress={() =>
+                    this.props.navigation.navigate(
+                      UploadDocumentScreen.routeName,
+                    )
+                  }>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    Employment Verification Under Review
+                  </Text>
+                  <Icon
+                    style={{ color: 'white' }}
+                    type="FontAwesome"
+                    name="angle-right"
+                  />
                 </Button>
               </View>
-            ) : null }
+            ) : null}
             {this.state.W4Form == 'NONE' ? (
-              <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button full danger onPress={() => this.props.navigation.navigate(FederalW4tScreen.routeName)}>
-                  <Text style={{ fontSize: 14,fontWeight: 'bold' }}>W-4 Form Required</Text>
-                  <Icon style={{ color:'white' }} type="FontAwesome" name="angle-right" />
-
+              <View
+                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                <Button
+                  full
+                  danger
+                  small
+                  onPress={() =>
+                    this.props.navigation.navigate(FederalW4tScreen.routeName)
+                  }>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    W-4 Form Required
+                  </Text>
+                  <Icon
+                    style={{ color: 'white' }}
+                    type="FontAwesome"
+                    name="angle-right"
+                  />
                 </Button>
               </View>
-            ): this.state.W4Form == 'PENDING' ? (
-              <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} >
-                <Button full warning onPress={() => this.props.navigation.navigate(FederalW4tScreen.routeName)}>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>W-4 Under Review</Text>
-                  <Icon style={{ color:'white' }} type="FontAwesome" name="angle-right" />
-
+            ) : this.state.W4Form == 'PENDING' ? (
+              <View
+                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                <Button
+                  full
+                  small
+                  warning
+                  onPress={() =>
+                    this.props.navigation.navigate(FederalW4tScreen.routeName)
+                  }>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    W-4 Under Review
+                  </Text>
+                  <Icon
+                    style={{ color: 'white' }}
+                    type="FontAwesome"
+                    name="angle-right"
+                  />
                 </Button>
               </View>
-            ) : null }
+            ) : null}
             <View style={styles.flexOne}>
               <TouchableOpacity
                 onPress={this.goToProfile}
                 style={styles.containerImg}>
                 <Thumbnail
-                  style={{ width: 66, height: 66, borderRadius: 33, overflow: 'hidden' }}
+                  style={{
+                    width: 66,
+                    height: 66,
+                    borderRadius: 33,
+                    overflow: 'hidden',
+                  }}
                   source={
                     user && user.profile && user.profile.picture
                       ? { uri: user.profile.picture }
@@ -765,7 +854,10 @@ class DashboardScreen extends Component {
                   }
                 />
               </TouchableOpacity>
-              <View style={styles.profileInfoContainer, { justifyContent: 'center' }}>
+              <View
+                style={
+                  (styles.profileInfoContainer, { justifyContent: 'center' })
+                }>
                 {user && (
                   <TouchableOpacity onPress={this.goToEditProfile}>
                     <Text
@@ -780,17 +872,27 @@ class DashboardScreen extends Component {
                   </TouchableOpacity>
                 )}
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.amountText, { fontSize: 12 }}>Status: <Text style={{ color: 'black', fontWeight: '800', fontSize: 12 }}>{this.state.status}</Text></Text>
+                  <Text style={(styles.amountText, { fontSize: 12 })}>
+                    Status:{' '}
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontWeight: '800',
+                        fontSize: 12,
+                      }}>
+                      {this.state.status}
+                    </Text>
+                  </Text>
                 </View>
 
-       
                 <TouchableOpacity
                   onPress={this.goToReviews}
                   style={{
                     flexDirection: 'row',
-            
                   }}>
-                  <Text style={styles.yourRating , { fontSize: 12 }}>Your Rating{' '}</Text>
+                  <Text style={(styles.yourRating, { fontSize: 12 })}>
+                    Your Rating{' '}
+                  </Text>
                   <StarComponent rating={rating} />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -799,7 +901,9 @@ class DashboardScreen extends Component {
                     flexDirection: 'row',
                     paddingBottom: 10,
                   }}>
-                  <Text style={styles.amountText, { fontSize: 12 }}>Amount{' '}</Text>
+                  <Text style={(styles.amountText, { fontSize: 12 })}>
+                    Amount{' '}
+                  </Text>
                   <Text
                     style={{
                       color: 'black',
@@ -807,7 +911,6 @@ class DashboardScreen extends Component {
                       fontSize: 12,
                     }}>
                     ${payments.toFixed(2)}
-                    
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -956,9 +1059,8 @@ class DashboardScreen extends Component {
                       style={{
                         fontSize: 12,
                         color: tabs === 1 ? 'white' : 'black',
-
                       }}>
-                    Invitations ({invites && invites.length})
+                      Invitations ({invites && invites.length})
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -980,11 +1082,9 @@ class DashboardScreen extends Component {
                       style={{
                         fontSize: 12,
                         color: tabs === 2 ? 'white' : 'black',
-
                       }}>
                       Jobs ({jobs && jobs.length})
                     </Text>
-
                   </View>
                 </TouchableOpacity>
               </View>

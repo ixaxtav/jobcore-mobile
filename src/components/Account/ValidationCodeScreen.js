@@ -25,7 +25,7 @@ import {
   VALIDATION_CODE_ROUTE,
   DASHBOARD_ROUTE,
   TERMS_AND_CONDITIONS_ROUTE,
-  POSITION_ONBOARDING_ROUTE
+  POSITION_ONBOARDING_ROUTE,
 } from '../../constants/routes';
 import styles from './RegisterStyle';
 import * as actions from './actions';
@@ -49,47 +49,45 @@ class ValidationCodeScreen extends Component {
       value: '',
       disableResend: false,
       phoneNumber: this.props.navigation.state.params.phone_number,
-      email: this.props.navigation.state.params.email
+      email: this.props.navigation.state.params.email,
     };
   }
 
-
   componentDidMount() {
     this.loginSubscription = store.subscribe('Login', (user) =>
-    console.log('login',user)
+      console.log('login', user),
     );
-    this.validationlinkSubscription = store.subscribe('ValidationLink', (user) =>{
-      if(user.active) this.validateHandler();
-    }
-      
+    this.validationlinkSubscription = store.subscribe(
+      'ValidationLink',
+      (user) => {
+        if (user.active) this.validateHandler();
+      },
     );
     this.accountStoreError = store.subscribe('AccountStoreError', (err) =>
-    this.errorHandler(err),
-  );
+      this.errorHandler(err),
+    );
   }
 
   componentWillUnmount() {
     this.validationlinkSubscription.unsubscribe();
     this.accountStoreError.unsubscribe();
-
   }
 
   validateHandler = () => {
     this.isLoading(false);
     this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE);
-   
   };
 
   errorHandler = (err) => {
-    console.log(err)
+    console.log(err);
     this.isLoading(false);
-    this.setState({value:''})
+    this.setState({ value: '' });
     CustomToast(err, 'danger');
   };
 
-  handleChangeValue = code => {
-      this.setState({value: code });
-  }
+  handleChangeValue = (code) => {
+    this.setState({ value: code });
+  };
 
   render() {
     const { phoneNumber, email } = this.state;
@@ -98,48 +96,76 @@ class ValidationCodeScreen extends Component {
       <I18n>
         {(t) => (
           <Container>
-          <Content contentContainerStyle={{ flexGrow: 1 }}>
-            <View style={styles.container}>
-              {this.state.isLoading ? <Loading /> : null}
-              {/* <Image
-                style={styles.viewBackground}
-                source={require('../../assets/image/bg.jpg')}
-              /> */}
-              <Image
-                style={styles.viewLogo}
-                source={require('../../assets/image/logo1.png')}
-              />
-              <View style={styles.formContainer}>
-                <Text style={styles.codeVerificationTitle}>{t('VALIDATE_CODE.title') + " " + phoneNumber}.</Text>
-                {!this.state.disableResend ? (
-                  <Text style={styles.resendButtomClick} onPress={this.resend}>{t('VALIDATE_CODE.resend')}</Text>
-                ):(
-                  <Text style={styles.resendButtomClick}>{t('VALIDATE_CODE.sent')}</Text>
-                )}
+            <Content contentContainerStyle={{ flexGrow: 1 }}>
+              <View style={{ flex: 1, backgroundColor:'white' }}>
+                {this.state.isLoading ? <Loading /> : null}
+           
+                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    name="arrow-back-sharp"
+                  />
 
-                <ValidationCodeInput
+                </TouchableOpacity>
+                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 35, paddingRight: 35 }}>
+                  
+                  {/* <View style={styles.formContainer}> */}
+                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light',marginBottom: 30 }}>
+                    {t('VALIDATE_CODE.title') + ' ' + phoneNumber}.
+                  </Text>
+
+                 
+                  <Text>
+                    <Text style={{ fontSize: 18,fontFamily:'UberMoveText-Light', color:'#007bff' }}>Didn't receive your code? </Text>
+                    {!this.state.disableResend ? (
+                      <Text
+                        style={styles.resendButtomClick}
+                        onPress={this.resend}>
+                        {t('VALIDATE_CODE.resend')}
+
+                      </Text>
+                    ) : (
+                      <Text style={styles.resendButtomClick}>
+                        {t('VALIDATE_CODE.sent')}
+                      </Text>
+                    )}
+                  </Text>
+
+                  <ValidationCodeInput
                     value={this.state.value}
                     change={this.handleChangeValue}
                     phoneNumber={phoneNumber}
-                />
+                  />
 
-                <Button
-                  full
-                  onPress={this.validate}
-                  style={styles.viewButtomLogin}>
-                  <Text style={styles.textButtom}>{t('VALIDATE_CODE.continue')}</Text>
-                </Button>
-                <TouchableOpacity
-                  full
-                  onPress={() => this.props.navigation.goBack()}
-                  style={styles.viewButtomSignUp}>
-                  <Text style={styles.textButtomSignUp}>
-                    {t('VALIDATE_CODE.goBack')}
-                  </Text>
-                </TouchableOpacity>
+                
+                  <View style={{ flexDirection:'row', justifyContent: 'flex-end' }}>
+
+                    <View style={{ justifyContent:'flex-end' }}>
+             
+
+                    </View>
+                    <View style={{ marginRight: 35 }}>
+                      <Button dark
+                        onPress={this.validate}
+                        disabled = {this.state.value.length != 6}
+                        style={{ borderRadius:0, height: 60 }}
+                      >
+                        {/* <Text style={styles.textButtom}>{t('LOGIN.signUp')}</Text> */}
+                        <Icon
+                          type="Ionicons"
+                          color="#ff0000"
+                          style={{ fontSize: 32 }}
+                          name="arrow-forward-sharp"
+                        />
+                      </Button>
+
+                    </View>
+
+                  </View>
+                </View>
               </View>
-            </View>
-          </Content>
+            </Content>
           </Container>
         )}
       </I18n>
@@ -148,13 +174,17 @@ class ValidationCodeScreen extends Component {
 
   validate = () => {
     this.isLoading(true);
-    actions.validatePhoneNumber(this.state.email,this.state.phoneNumber, this.state.value);
-  }
+    actions.validatePhoneNumber(
+      this.state.email,
+      this.state.phoneNumber,
+      this.state.value,
+    );
+  };
 
   resend = () => {
-    this.setState({disableResend: true})
-    actions.requestSendValidationLink(this.state.email,this.state.phoneNumber);
-  }
+    this.setState({ disableResend: true });
+    actions.requestSendValidationLink(this.state.email, this.state.phoneNumber);
+  };
   isLoading = (isLoading) => {
     this.setState({ isLoading });
   };

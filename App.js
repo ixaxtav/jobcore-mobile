@@ -9,6 +9,7 @@ import { YellowBox } from 'react-native';
 
 import { Root } from 'native-base';
 import LoginScreen from './src/components/Account/LoginScreen';
+import SigninScreen from './src/components/Account/SigninScreen';
 import RegisterScreen from './src/components/Account/RegisterScreen';
 import ValidationCodeScreen from './src/components/Account/ValidationCodeScreen';
 import EditProfile from './src/components/Account/EditProfile';
@@ -49,6 +50,7 @@ import Help from './src/components/Help';
 import {
   DASHBOARD_ROUTE,
   LOGIN_ROUTE,
+  SIGNIN_ROUTE,
   REGISTER_ROUTE,
   VALIDATION_CODE_ROUTE,
   FORGOT_ROUTE,
@@ -104,6 +106,10 @@ export const AuthStack = createStackNavigator({
   [LOGIN_ROUTE]: {
     screen: LoginScreen,
     path: 'login/:email',
+  },
+  [SIGNIN_ROUTE]: {
+    screen: SigninScreen,
+    path: 'signin/:email',
   },
   [REGISTER_ROUTE]: {
     screen: RegisterScreen,
@@ -225,6 +231,6 @@ const prefix = 'https://talent.jobcore.co/';
 
 export default () => (
   <Root>
-    <SwitchNavigator uriPrefix={prefix} />
+    <SwitchNavigator uriPrefix={prefix}/>
   </Root>
 );

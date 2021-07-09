@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, TouchableOpacity, Slider, RefreshControl } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Slider,
+  RefreshControl,
+} from 'react-native';
 import {
   Container,
   Content,
@@ -47,16 +54,15 @@ class JobPreferences extends Component {
   static navigationOptions = {
     header: null,
     tabBarLabel: i18next.t('JOB_PREFERENCES.jobPreferences'),
-    tabBarIcon: ({tintColor}) => (
+    tabBarIcon: ({ tintColor }) => (
       <Icon
         type="MaterialCommunityIcons"
-        style={{color: tintColor}}
+        style={{ color: tintColor }}
         name="file-cog"
-       
       />
     ),
   };
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -159,25 +165,29 @@ class JobPreferences extends Component {
     this.setState({ isRefreshing: false });
     CustomToast(err, 'danger');
   };
-  
-  savePreferences = (err) => {
-    if(this.state.location == '') CustomToast('Please add a location','danger' );
-    if(this.state.positions.length == 0)CustomToast('Please add job positions','danger')
-    else{
-      this.props.navigation.navigate(EditProfile.routeName,{
-        onboarding: true
-      });
-  
-      CustomToast('Preferences Saved. Please complete your profile to continue.');
 
+  savePreferences = (err) => {
+    if (this.state.location == '')
+      CustomToast('Please add a location', 'danger');
+    if (this.state.positions.length == 0)
+      CustomToast('Please add job positions', 'danger');
+    else {
+      this.props.navigation.navigate(EditProfile.routeName, {
+        onboarding: true,
+      });
+
+      CustomToast(
+        'Preferences Saved. Please complete your profile to continue.',
+      );
     }
   };
 
-
   getLocationHandler = (profile) => {
-    console.log(profile)
-    this.setState({ location: profile.location, stopReceivingInvites: !profile.employee.stop_receiving_invites});
-    
+    console.log(profile);
+    this.setState({
+      location: profile.location,
+      stopReceivingInvites: !profile.employee.stop_receiving_invites,
+    });
   };
 
   saveLocationHandler = (profile) => {
@@ -258,14 +268,12 @@ class JobPreferences extends Component {
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.position')}
-                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
-
+                      <Text style={preferencesStyles.textButtonClickHere}>
+                        {'\n' + 'Click here'}
+                      </Text>
                     </Text>
-                 
                   </Button>
-                
-             
-          
+
                   <View style={preferencesStyles.viewPositions}>
                     <Text style={{ textAlign: 'center' }}>
                       {this.state.positions.map((position, index) => {
@@ -318,7 +326,7 @@ class JobPreferences extends Component {
                       value={this.state.minimumHourlyRate}
                       thumbTintColor={'black'}
                       minimumTrackTintColor={'black'}
-                      maximumTrackTintColor={"#D3D3D3"}
+                      maximumTrackTintColor={'#D3D3D3'}
                     />
 
                     <View style={preferencesStyles.viewButtonLocation}>
@@ -331,8 +339,9 @@ class JobPreferences extends Component {
                           uppercase={false}
                           style={preferencesStyles.textButton}>
                           {t('JOB_PREFERENCES.myLocation')}
-                          <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
-
+                          <Text style={preferencesStyles.textButtonClickHere}>
+                            {'\n' + 'Click here'}
+                          </Text>
                         </Text>
                       </Button>
 
@@ -375,7 +384,7 @@ class JobPreferences extends Component {
                       value={this.state.maximumJobDistanceMiles}
                       thumbTintColor={'black'}
                       minimumTrackTintColor={'black'}
-                      maximumTrackTintColor={"#D3D3D3"}
+                      maximumTrackTintColor={'#D3D3D3'}
                     />
                   </Form>
                 </FormViewPreferences>
@@ -392,8 +401,9 @@ class JobPreferences extends Component {
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.availability')}
-                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
-
+                      <Text style={preferencesStyles.textButtonClickHere}>
+                        {'\n' + 'Click here'}
+                      </Text>
                     </Text>
                   </Button>
 
@@ -482,11 +492,8 @@ class JobPreferences extends Component {
                   <Text style={preferencesStyles.itemInvite}>
                     {t('DASHBOARD.n')}
                   </Text>
-    
                 </Segment>
               </View>
-    
-           
             </Content>
           </Container>
         )}

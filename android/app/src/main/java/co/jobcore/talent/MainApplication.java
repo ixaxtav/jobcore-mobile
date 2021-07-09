@@ -3,6 +3,7 @@ package co.jobcore.talent;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.toolbarandroid.ReactToolbarPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -39,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactToolbarPackage(),
             new ReactNativeConfigPackage(),
             new RNDateTimePickerPackage(),
             new RNDeviceInfo(),

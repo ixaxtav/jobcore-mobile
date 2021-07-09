@@ -9,7 +9,6 @@ import { UPDATE_APP_ROUTE } from '../../constants/routes';
 const checkVersionApp = (currentVersion, navigation) => {
   getData('/version/last', false)
     .then((response) => {
-      // console.log('resssponseeee ', response)
       if (currentVersion < response.build_number && response.force_update) {
         navigation.navigate(UPDATE_APP_ROUTE);
       }

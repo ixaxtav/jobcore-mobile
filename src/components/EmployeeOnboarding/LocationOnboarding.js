@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
+import { View, Image, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import {
-  View, Image, Dimensions, Alert, TouchableOpacity 
-} from 'react-native';
-import { H1, H3, H4, Container, Title, Header, Body, Content, List, Button, Text, FooterTab, Footer, Icon } from 'native-base';
+  H1,
+  H3,
+  H4,
+  Container,
+  Title,
+  Header,
+  Body,
+  Content,
+  List,
+  Button,
+  Left,
+  Text,
+  FooterTab,
+  Footer,
+  Icon,
+} from 'native-base';
 import {
   REGISTER_ROUTE,
   FORGOT_ROUTE,
   APP_ROUTE,
   AVAILABILITY_ONBOARDING_ROUTE,
-  JOB_PREFERENCES_ONBOARDING_ROUTE, DASHBOARD_ROUTE
+  JOB_PREFERENCES_ONBOARDING_ROUTE,
+  DASHBOARD_ROUTE,
 } from '../../constants/routes';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import styles from '../Invite/EditLocationStyle';
-import MARKER_IMG from '../../assets/image/map-marker.png';
+import MARKER_IMG from '../../assets/image/map-marker-small.png';
 
 import { GOOGLE_API_KEY } from 'react-native-dotenv';
 
@@ -23,7 +38,13 @@ import { Loading, CustomToast, openMapsApp } from '../../shared/components';
 import MapView, { Marker } from 'react-native-maps';
 import accountStore from '../Account/AccountStore';
 
-import { WHITE_MAIN, BLUE_DARK, BLUE_MAIN, GRAY_LIGHT, BLACK_MAIN} from '../../shared/colorPalette';
+import {
+  WHITE_MAIN,
+  BLUE_DARK,
+  BLUE_MAIN,
+  GRAY_LIGHT,
+  BLACK_MAIN,
+} from '../../shared/colorPalette';
 import { TabHeaderWhite } from '../../shared/components/TabHeaderWhite';
 import inviteStore from '../Invite/InviteStore';
 import * as inviteActions from '../Invite/actions';
@@ -37,7 +58,6 @@ const DEFAULT_LATIDUDE = 25.761681;
 const DEFAULT_LONGITUDE = -80.191788;
 
 class LocationOnboarding extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -73,117 +93,186 @@ class LocationOnboarding extends Component {
     this.setState({ isLoading: false });
     this.props.navigation.navigate(AVAILABILITY_ONBOARDING_ROUTE);
   };
-
+  showMarkers(region) {
+    let zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2)
+    
+  }
   errorHandler = (err) => {
     this.setState({ isLoading: false });
     CustomToast(err, 'danger');
-  }; 
+  };
   render() {
-    console.log('what it do', this.state)
+    console.log('what it do', this.state);
     return (
       <I18n>
         {(t) => (
-            <Container>
-            <TabHeaderWhite
-              goBack
-              onPressBack={() => this.props.navigation.goBack()}
-              // title={t('EDIT_PROFILE.editProfile')}
-            />
+          <Container>
+            <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}>
+              <Left>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
+              </Left>
+              <Body style={{ flex: 0 }}>
+                <Title></Title>
+              </Body>
+            </Header>
             <Content>
-              <View style={{
-                padding: 25
-              }} >
-                
-              <H1 style={{marginBottom: 15, fontWeight: 700, fontSize: 32, lineHeight: 45}}>
-                Where are you located?
-              </H1>
-              <Text style={{fontSize: 18, color: "gray"}}>
-              We'll set you up with nearby employers.
-              </Text>
+              <View
+                style={{
+                  padding: 25,
+                }}>
+                <H1
+                  style={{
+                    marginBottom: 15,
+                    fontWeight: 700,
+                    fontSize: 32,
+                    lineHeight: 45,
+                    fontFamily: 'UberMoveText-Medium',
+                  }}>
+                  Where are you located?
+                </H1>
+                <Text style={{ fontSize: 18, color: 'gray',fontFamily: 'UberMoveText-Light' }}>
+                  We'll set you up with nearby employers.
+                </Text>
+                <GooglePlacesAutocomplete
+                  ref={(instance) => {
+                    this.GooglePlacesRef = instance;
+                  }}
+                  placeholder={t('JOB_PREFERENCES.typeLocation')}
+                  debounce={200}
+                  minLength={2}
+                  placeholderTextColor="#606160"
+                  autoFocus={true}
+                  returnKeyType={'search'}
+                  keyboardShouldPersistTaps={'handled'}
+                  listUnderlayColor={'transparent'}
+                  listViewDisplayed="auto"
+                  fetchDetails={true}
+                  renderDescription={(row) => row.description}
+                  onPress={(data, details = null) => {
+                    const marker = { data, details };
+                    const region = {
+                      latitude: details.geometry.location.lat,
+                      longitude: details.geometry.location.lng,
+                      latitudeDelta: LATITUDE_DELTA,
+                      longitudeDelta: LONGITUDE_DELTA,
+                    };
+
+                    this.GooglePlacesRef.setAddressText('');
+
+                    this.setState({
+                      marker,
+                      region,
+                    });
+                  }}
+                  getDefaultValue={() => ''}
+                  query={{
+                    key: GOOGLE_API_KEY,
+                    language: 'en',
+                    types: 'address',
+                  }}
+                  styles={{
+                    container: {
+                      backgroundColor: 'transparent',
+                      // borderColor: 'black',
+                      borderRadius: 0,
+                      // paddingLeft: 15,
+                      borderColor: '#D9D5DC',
+                      color:'black',
+                      paddingTop: 0,
+                      paddingRight: 10,
+                      paddingBottom: 5,
+                      marginBottom: 10,
+                    },
+                    textInputContainer: {
+                      backgroundColor: 'transparent',
+                      height:50,
+                      fontSize: 20,
+                      borderTopWidth: 0,
+                      // paddingRight: 5,
+                      top: 10,
+                      borderColor: '#D9D5DC',
+                      paddingTop: 3,
+                      paddingBottom: 7,
+                      color: 'black',
+                      flex: 1,
+                    },
+
+                    textInput: {
+                    // paddingLeft: 8,
+                      fontSize: 20,
+                      fontFamily:'UberMoveText-Light',
+                      height: 50,
+                      color: 'black',
+                      flex: 1,
+                      top: 1.5,
+                      paddingRight: 5,
+                      fontSize:20,
+                      paddingLeft: 0,
+                      marginTop: 0,
+                      marginLeft: 0,
+                      marginRight: 0,
+                      paddingTop: 0,
+                      borderColor: '#D9D5DC',
+                      paddingBottom: 0,
+                      backgroundColor: 'transparent',
+                    },
+                    row: {
+                      backgroundColor: 'white',
+                      paddingLeft: 3,
+                      height: 44,
+                      flexDirection: 'row',
+                    },
+                    // listView: {
+                    //   position: 'absolute',
+                    //   zIndex: 500,
+                    //   flex: 1,
+                    //   top: 50,
+                    // },
+                    // row: {
+                    //   backgroundColor: 'white',
+                    //   color: 'black',
+                    //   zIndex: 500,
+                    //   flex:1,
+                    //   elevation: 3,
+                    // },
+                    // description: {
+                    //   color: 'black',
+
+                  // },
+                  }}
+                  currentLocation={false}
+                  currentLocationLabel="Current location"
+                  nearbyPlacesAPI="GooglePlacesSearch"
+                />
               </View>
-              <GooglePlacesAutocomplete
-                ref={(instance) => {
-                  this.GooglePlacesRef = instance;
-                }}
-                placeholder={t('JOB_PREFERENCES.typeLocation')}
-                debounce={200}
-                minLength={2}
-                autoFocus={true}
-                returnKeyType={'search'}
-                listViewDisplayed="auto"
-                fetchDetails={true}
-                renderDescription={(row) => row.description}
-                onPress={(data, details = null) => {
-                  const marker = { data, details };
-                  const region = {
-                    latitude: details.geometry.location.lat,
-                    longitude: details.geometry.location.lng,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  };
-
-                  this.GooglePlacesRef.setAddressText('');
-
-                  this.setState({
-                    marker,
-                    region,
-                  });
-                }}
-                getDefaultValue={() => ''}
-                query={{
-                  key: GOOGLE_API_KEY,
-                  language: 'en',
-                  types: 'address',
-                }}
-                styles={{
-                  textInputContainer: {
-                    height: 70,
-                    width: '100%',
-                    borderTopWidth: 0,
-                    borderBottomWidth: 0,
-                    backgroundColor: 'transparent',
-                  },
-                  textInput: {
-                    backgroundColor: 'transparent',
-                    height: 55,
-                    marginLeft: 15,
-                    marginRight: 15,
-                    borderColor: BLACK_MAIN,
-                    color: BLACK_MAIN,
-                    borderRadius: 0,
-                    borderWidth: 1,
-                  },
-                  description: {
-                    fontSize: 12,
-                  },
-                  predefinedPlacesDescription: {
-                    color: '#1faadb',
-                  },
-                  loader: {
-                    color: BLACK_MAIN,
-                  },
-                  listView: {
-                    backgroundColor: WHITE_MAIN,
-                  },
-                  poweredContainer: {
-                    display: 'none',
-                  },
-                  powered: {
-                    tintColor: 'transparent',
-                  },
-                }}
-                currentLocation={false}
-                currentLocationLabel="Current location"
-                nearbyPlacesAPI="GooglePlacesSearch"
-              />
 
               {this.state.marker ? (
                 <View style={styles.viewLocation}>
                   <TouchableOpacity onPress={this.openMapsApp}>
-                    <Text style={{
-                       textAlign: 'center',
-                       color: BLACK_MAIN,
-                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: BLACK_MAIN,
+                        fontFamily: 'UberMoveText-Medium',
+                      }}>
                       {`${this.state.marker.details.formatted_address}`}
                     </Text>
                   </TouchableOpacity>
@@ -194,7 +283,7 @@ class LocationOnboarding extends Component {
                 <MapView style={styles.map} region={this.state.region}>
                   <Marker
                     image={MARKER_IMG}
-                    centerOffset={{ x: 0, y: 32 }}
+                    centerOffset={{ x: 0, y: -9 }}
                     coordinate={{
                       latitude: this.state.marker.details.geometry.location.lat,
                       longitude: this.state.marker.details.geometry.location
@@ -211,23 +300,29 @@ class LocationOnboarding extends Component {
                 </View>
               )}              */}
             </Content>
-            <Footer style={{backgroundColor:"white", borderBottomWidth: 0, borderTopWidth: 0}}>
-          <FooterTab>
-            {this.state.marker ? (
-            <Button style={{backgroundColor: 'black',  borderRadius: 0}} onPress={this.saveLocationAlert} >
-              <Text style={{color: "white", fontSize: 18}}>Next</Text>
-            </Button>
-            ): (
-              <Button light disabled style={{borderRadius: 0}}>
-              <Text style={{color: "white", fontSize: 18}}>To continue, add a location</Text>
-            </Button>
-            )}
-          </FooterTab>
-        </Footer>
-              
-
+            <Footer
+              style={{
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+              }}>
+              <FooterTab>
+                {this.state.marker ? (
+                  <Button
+                    style={{ backgroundColor: 'black', borderRadius: 0 }}
+                    onPress={this.saveLocationAlert}>
+                    <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>Next</Text>
+                  </Button>
+                ) : (
+                  <Button light disabled style={{ borderRadius: 0 }}>
+                    <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>
+                      To continue, add a location
+                    </Text>
+                  </Button>
+                )}
+              </FooterTab>
+            </Footer>
           </Container>
-
         )}
       </I18n>
     );
@@ -312,7 +407,6 @@ class LocationOnboarding extends Component {
       inviteActions.saveLocation(location);
     });
   };
-  
 }
 
 export default LocationOnboarding;

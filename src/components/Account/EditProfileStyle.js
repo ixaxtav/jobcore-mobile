@@ -103,7 +103,7 @@ export default StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 0,
     height: 45,
-    width: "100%",
+    width: '100%',
     marginBottom: 20,
   },
   viewButtomSignUp: {

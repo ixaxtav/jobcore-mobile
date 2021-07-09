@@ -6,8 +6,8 @@ import { API_URL } from 'react-native-dotenv';
 
 export const getAPIUrl = () => {
   // console.log('API_URL: ', API_URL);
-  return 'https://jobcore.herokuapp.com/api';
-  // return 'https://8000-c50c6f93-a9bc-4720-bd98-2493535a5067.ws-us09.gitpod.io/api';
+  // return 'https://jobcore.herokuapp.com/api';
+  return 'https://8000-c50c6f93-a9bc-4720-bd98-2493535a5067.ws-us11.gitpod.io/api';
 };
 
 /**
@@ -89,7 +89,6 @@ export async function getData(url, isAuth = true) {
     Authorization: isAuth ? `jwt ${accountStore.getState('Login').token}` : '',
   };
   const fullUrl = `${getAPIUrl()}${url}`;
-  console.log(`getData:`, headers, fullUrl);
   return timeout(
     20000,
     fetch(fullUrl, {
@@ -259,12 +258,12 @@ export const checkStatus = (response) => {
     if (response.status === 204) {
       return { status: 'No content response' };
     }
-    console.log('services:checkStatus:response.ok:', response);
+    // console.log('services:checkStatus:response.ok:', response);
     return response.json().then((res) => {
       return Promise.resolve(res);
     });
   } else {
-    console.log('services:checkStatus:code:', response.status, response);
+    // console.log('services:checkStatus:code:', response.status, response);
     return response.json().then((err) => {
       const errorMessage = err[Object.keys(err)[0]];
       if (Array.isArray(errorMessage)) return Promise.reject(errorMessage[0]);

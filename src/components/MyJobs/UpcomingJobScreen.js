@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { View, Dimensions, Alert, ScrollView, Linking, TouchableOpacity} from 'react-native';
-import { Container, List, ListItem, Text, Left, Right, Icon } from 'native-base';
+import {
+  View,
+  Dimensions,
+  Alert,
+  ScrollView,
+  Linking,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  Container,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Right,
+  Icon,
+} from 'native-base';
 import * as jobActions from './actions';
 import { inviteStyles } from '../Invite/InviteDetailsStyle';
 import jobStore from './JobStore';
@@ -19,9 +34,7 @@ import { jobStyles } from './JobStyles';
 import WorkModeScreen from './WorkModeScreen';
 import { canClockIn, getDiffInMinutesToStartShift } from './job-utils';
 import { _round, clockInMixin, clockOutMixin } from '../../shared/mixins';
-import {
-  LOW_RED,
-} from '../../shared/colorPalette'; 
+import { LOW_RED } from '../../shared/colorPalette';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const ASPECT_RATIO = width / height;
@@ -74,14 +87,14 @@ class UpcomingJobScreen extends Component {
       },
       (error) => {
         console.log('DEBUG:error:current::', error);
-        if(error) this.setState({locationError: true})
+        if (error) this.setState({ locationError: true });
       },
     );
 
     this.watchId = navigator.geolocation.watchPosition(
       (newPosition) => {
         console.log('DEBUG:position:', newPosition.coords);
-        this.setState({locationError: false})
+        this.setState({ locationError: false });
         this.latitude = _round(newPosition.coords.latitude);
         this.longitude = _round(newPosition.coords.longitude);
       },
@@ -157,23 +170,35 @@ class UpcomingJobScreen extends Component {
             <ScrollView>
               {this.state.locationError && (
                 <List>
-                <ListItem noIndent style={{ backgroundColor: LOW_RED }}  onPress={() =>{
-                    Linking.openURL('app-settings:')
-                  }}>
-                  <Left>
-                    <Icon
-                        style={{ color: "black", fontSize: 14 }}
+                  <ListItem
+                    noIndent
+                    style={{ backgroundColor: LOW_RED }}
+                    onPress={() => {
+                      Linking.openURL('app-settings:');
+                    }}>
+                    <Left>
+                      <Icon
+                        style={{ color: 'black', fontSize: 14 }}
                         type="FontAwesome"
-                        name={"exclamation-circle"}
+                        name={'exclamation-circle'}
                       />
-                    <Text style={{color: "black", fontWeight: '700', fontSize: 13}}>Turn on location services to be able to clock in/out. </Text>
-                  </Left>
-                  <Right>
-                    <Icon style={{color:"black", fontSize: 14}} name="arrow-forward" />
-                  </Right>
-                </ListItem>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontWeight: '700',
+                          fontSize: 13,
+                        }}>
+                        Turn on location services to be able to clock in/out.{' '}
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black', fontSize: 14 }}
+                        name="arrow-forward"
+                      />
+                    </Right>
+                  </ListItem>
                 </List>
-
               )}
               <JobInformation
                 shift={shift}

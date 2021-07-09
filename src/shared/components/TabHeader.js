@@ -35,7 +35,6 @@ const TabHeader = ({
     <Right>
       {/* {screenName && <HelpIcon onPressHelp={onPressHelp} screenName={screenName} /> } */}
     </Right>
- 
   </Header>
 );
 

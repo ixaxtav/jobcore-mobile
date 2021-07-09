@@ -1,10 +1,11 @@
-
 import React, { Component } from 'react';
 import {
   View,
   // SafeAreaView,
   Image,
+  Linking,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import {
   Container,
@@ -12,6 +13,7 @@ import {
   Input,
   Button,
   Text,
+  Label,
   Form,
   Content,
   Picker,
@@ -22,7 +24,12 @@ import {
   LOGIN_ROUTE,
   TERMS_AND_CONDITIONS_ROUTE,
 } from '../../constants/routes';
-import { BLACK_MAIN, BLUE_MAIN, BLUE_DARK, WHITE_MAIN } from '../../shared/colorPalette';
+import {
+  BLACK_MAIN,
+  BLUE_MAIN,
+  BLUE_DARK,
+  WHITE_MAIN,
+} from '../../shared/colorPalette';
 
 import styles from './RegisterStyle';
 import * as actions from './actions';
@@ -45,7 +52,7 @@ class RegisterScreen extends Component {
       email: '',
       password: '',
       firstName: '',
-      phoneNumber:'',
+      phoneNumber: '',
       lastName: '',
       wroteCity: '',
       cities: [],
@@ -91,61 +98,96 @@ class RegisterScreen extends Component {
   errorHandler = (err) => {
     this.isLoading(false);
     CustomToast(err, 'danger');
+    this.setState({ error: err })
   };
 
   render() {
     const { cities, city, acceptTerms } = this.state;
-    console.log('wrote ', this.state);
     return (
       <I18n>
         {(t) => (
           <Container>
-
-       
-            <Content contentContainerStyle={{ flexGrow: 1, backgroundColor: 'red' }} >
-              <View style={styles.container}>
+            <Content
+              contentContainerStyle={{ flexGrow: 1, backgroundColor: 'red' }}>
+              <View style={{ flex: 1, backgroundColor:'white' }}>
                 {this.state.isLoading ? <Loading /> : null}
+                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    name="arrow-back-sharp"
+                  />
+
+                </TouchableOpacity>
                 {/* <Image
                 style={styles.viewBackground}
                 source={require('../../assets/image/bg.jpg')}
               /> */}
-                <Image
+                {/* <Image
                   style={styles.viewLogo}
                   source={require('../../assets/image/logo1.png')}
-                />
+                /> */}
+                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 15 }}>
+                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light' }}>{'Let\'s start with creating your account'}</Text>
+
+                </View>
                 <View style={styles.viewForm}>
                   <Form>
-                    <Item style={styles.viewInput} inlineLabel rounded>
-                      <Input
-                        value={this.state.firstName}
-                        style={{ color:'black' }}
-                        placeholder={t('REGISTER.firstName')}
-                        onChangeText={(text) =>
-                          this.setState({ firstName: text })
-                        }
-                      />
+
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                      <View style={{ flex: 1 }}>
+                        <Item floatingLabel style={{ height:60 }}>
+                          <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.firstName')}</Label>
+                          <Input  clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }} value={this.state.firstName} onChangeText={(text) => this.setState({ firstName: text, error: null })}/>
+                        </Item>
+                        {this.state.error === 'Enter your first name' && (
+                          <Text style={{ color: 'red', fontFamily:'UberMoveText-Light',paddingLeft: 15 }}>{this.state.error}</Text>
+                        )}
+                      </View>
+                      <View
+                        style={{ flex: 1, paddingRight: 10 }}>
+                        <Item floatingLabel style={{ height:60 }}>
+                          <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.lastName')}</Label>
+                          <Input   clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }}  value={this.state.lastName} onChangeText={(text) => this.setState({ lastName: text, error: null })}/>
+                        </Item>
+                        {this.state.error === 'Enter your last name' && (
+                          <Text style={{ color: 'red', fontFamily:'UberMoveText-Light',paddingLeft: 15 }}>{this.state.error}</Text>
+                        )}
+                      </View>
+                    </View>
+                    <Item floatingLabel style={{ height:60 }}>
+                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.email')}</Label>
+                      <Input autoCapitalize={'none'} keyboardType={'email-address'} clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }}  value={this.state.email} onChangeText={(text) => this.setState({ email: text, error: null })}/>
                     </Item>
-                    <Item style={styles.viewInput} inlineLabel rounded>
-                      <Input
-                        value={this.state.lastName}
-                        style={{ color:'black' }}
-                        placeholder={t('REGISTER.lastName')}
-                        onChangeText={(text) => this.setState({ lastName: text })}
-                      />
+                    {this.state.error === 'This email already exist.' && (
+                      <Text style={{ color: 'red',fontFamily:'UberMoveText-Light', paddingLeft: 15 }}>{this.state.error}</Text>
+                    )}
+
+                    <Item floatingLabel style={{ height:60 }}>
+                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.phoneNumber')}</Label>
+                      <Input autoCapitalize={'none'} keyboardType={'number-pad'} clearButtonMode="always"  maxLength={11} autoCorrect={false} style={{ fontSize: 20,fontFamily:'UberMoveText-Light' }}  value={this.state.phoneNumber} onChangeText={(text) => this.setState({ phoneNumber: text, error: null })}/>
                     </Item>
-                    <Item style={styles.viewInput} inlineLabel rounded>
+                    <Item floatingLabel style={{ height:60, marginBottom:15 }}>
+                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.password')}</Label>
+                      <Input autoCapitalize={'none'} clearButtonMode="always" autoCorrect={false} style={{ fontSize: 20, fontFamily:'UberMoveText-Light' }}  secureTextEntry={true} value={this.state.password} onChangeText={(text) => this.setState({ password: text, error: null })}/>
+                    </Item>
+                    <Text style={{ fontFamily:'UberMoveText-Light',fontSize: 12, color: 'gray', paddingLeft: 15 }}>Your password must be greater than 8 characters. </Text>
+           
+                    {/* <Item style={styles.viewInput} inlineLabel rounded>
                       <Input
                         keyboardType={'number-pad'}
                         autoCapitalize={'none'}
-                        style={{ color:'black' }}
+                        style={{ color: 'black' }}
                         value={this.state.phoneNumber}
                         placeholder={t('REGISTER.phoneNumber')}
-                        onChangeText={(text) => this.setState({ phoneNumber: text })}
+                        onChangeText={(text) =>
+                          this.setState({ phoneNumber: text })
+                        }
                       />
-                    </Item>
+                    </Item> */}
                     {/* <Item style={styles.viewInput} inlineLabel rounded> */}
                     {/* <Picker
-                      mode="dropdown"
+                      mode="dropdown" 
                       iosHeader={t('REGISTER.city')}
                       placeholder={t('REGISTER.city')}
                       placeholderStyle={{ color: '#575757', paddingLeft: 7 }}
@@ -183,25 +225,26 @@ class RegisterScreen extends Component {
                       />
                     </Item>
                   ) : null} */}
-
+              
                     <GooglePlacesAutocomplete
                       placeholder={t('REGISTER.wroteCity')}
-                      placeholderTextColor= "#606160"
+                      placeholderTextColor="#606160"
                       minLength={2}
                       autoFocus={false}
                       returnKeyType={'default'}
                       listViewDisplayed={this.state.showPlacesList}
-                      keyboardShouldPersistTaps = {'handled'}
-                      listUnderlayColor = {'transparent'}
-                        
-                      textInputProps={{
-                        // onFocus: () => this.setState({ showPlacesList: true }),
-                        // onBlur: () => this.setState({ showPlacesList: false }),
-                      }}
+                      keyboardShouldPersistTaps={'handled'}
+                      listUnderlayColor={'transparent'}
+                      textInputProps={
+                        {
+                          // onFocus: () => this.setState({ showPlacesList: true }),
+                          // onBlur: () => this.setState({ showPlacesList: false }),
+                        }
+                      }
                       onPress={(data, details = null) => {
                         this.setState({
                           wroteCity: data.description,
-                        })
+                        });
                       }}
                       query={{
                         key: GOOGLE_API_KEY,
@@ -210,12 +253,13 @@ class RegisterScreen extends Component {
                         components: 'country:us',
                       }}
                       styles={{
-                        container: { 
+                        container: {
                           backgroundColor: 'transparent',
-                          borderColor: 'black',
+                          // borderColor: 'black',
                           borderRadius: 0,
-                          borderWidth: 1,
-                          paddingLeft: 20,
+                          paddingLeft: 15,
+                          borderColor: '#D9D5DC',
+                          color:'black',
                           paddingTop: 0,
                           paddingRight: 10,
                           paddingBottom: 5,
@@ -223,26 +267,42 @@ class RegisterScreen extends Component {
                         },
                         textInputContainer: {
                           backgroundColor: 'transparent',
+                          height:50,
+                          fontSize: 20,
                           borderTopWidth: 0,
-                          borderBottomWidth: 0,
+                          paddingRight: 5,
+                          top: 10,
+                          borderColor: '#D9D5DC',
+                          paddingTop: 3,
+                          paddingBottom: 7,
+                          color: 'black',
                           flex: 1,
                         },
-                
+
                         textInput: {
-                          paddingLeft: 8,
-                          fontSize: 17,
+                          // paddingLeft: 8,
+                          fontSize: 20,
+                          fontFamily:'UberMoveText-Light',
                           height: 50,
                           color: 'black',
                           flex: 1,
                           top: 1.5,
                           paddingRight: 5,
+                          fontSize:20,
+                          paddingLeft: 0,
                           marginTop: 0,
                           marginLeft: 0,
                           marginRight: 0,
-                          paddingTop:0,
-                          paddingBottom:0,
+                          paddingTop: 0,
+                          borderColor: '#D9D5DC',
+                          paddingBottom: 0,
                           backgroundColor: 'transparent',
-              
+                        },
+                        row: {
+                          backgroundColor: 'white',
+                          paddingLeft: 3,
+                          height: 44,
+                          flexDirection: 'row',
                         },
                         // listView: {
                         //   position: 'absolute',
@@ -259,14 +319,12 @@ class RegisterScreen extends Component {
                         // },
                         // description: {
                         //   color: 'black',
-        
-                        // },
-                     
-                      }}
-                    />                  
-                  
 
-                    <Item style={styles.viewInput} inlineLabel rounded>
+                        // },
+                      }}
+                    />
+
+                    {/* <Item style={styles.viewInput} inlineLabel rounded>
                       <Input
                         keyboardType={'email-address'}
                         autoCapitalize={'none'}
@@ -281,10 +339,15 @@ class RegisterScreen extends Component {
                         value={this.state.password}
                         style={{ color: 'black' }}
                         placeholder={t('REGISTER.password')}
-                        onChangeText={(text) => this.setState({ password: text })}
+                        onChangeText={(text) =>
+                          this.setState({ password: text })
+                        }
                         secureTextEntry={true}
                       />
-                    </Item>
+                    </Item> */}
+                    {this.state.error === 'Enter a city' && (
+                      <Text style={{ color: 'red', paddingLeft: 15, fontFamily:'UberMoveText-Light' }}>{this.state.error}</Text>
+                    )}
                     <View
                       style={{
                         flexDirection: 'row',
@@ -297,15 +360,9 @@ class RegisterScreen extends Component {
                         actions.editTermsAndCondition(!acceptTerms)
                       }
                     /> */}
-                      <View
-                        style={styles.termsTitleContainer}
-                        onPress={() =>
-                          this.props.navigation.navigate(
-                            TERMS_AND_CONDITIONS_ROUTE,
-                          )
-                        }>
+                      <View style={{ paddingLeft: 15, paddingTop: 15, paddingBottom: 30  }}>
                         {/* <Text>{t('TERMS_AND_CONDITIONS.accept')}</Text> */}
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() =>
                             this.props.navigation.navigate(
                               TERMS_AND_CONDITIONS_ROUTE,
@@ -313,23 +370,41 @@ class RegisterScreen extends Component {
                           }>
                           <Text>
                             <Text style={styles.termsAndConditionsTitle}>
-                              {'By proceeding, I agree to JobCore\'s Terms of Use '}
+                              {
+                                'By proceeding, I agree to JobCore\'s Terms of Use '
+                              }
                             </Text>
                             <Text style={styles.termsAndConditionsTermTitle}>
                               {t('TERMS_AND_CONDITIONS.title')}
                             </Text>
                           </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <Text style={{ fontFamily:'UberMoveText-Light' }}>{'By proceeding, I agree to JobCore\'s '}
+                          <Text
+                            style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
+                            onPress={() => {Linking.openURL('https://jobcore.co/legal')}}
+                          >
+                            {'Terms of Use '}
+                          </Text>
+                          <Text  style={{ fontFamily:'UberMoveText-Light' }}>and acknowledge that I have read the</Text>
+                          <Text
+                            style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
+                            onPress={() => {Linking.openURL('https://jobcore.co/privacy')}}
+                          >
+                            {' Privacy Notice.'}
+                          </Text>
+                        </Text>
                       </View>
                     </View>
                     <Button
                       full
                       onPress={this.register}
-                      style={styles.viewButtomLogin}
-                    >
-                      <Text style={styles.textButtom}>{t('REGISTER.signUp')}</Text>
+                      style={styles.viewButtomLogin}>
+                      <Text style={{ fontFamily:'UberMoveText-Medium', fontSize: 20, color: 'white' }}>
+                        {t('REGISTER.signUp')}
+                      </Text>
                     </Button>
-
+                    {/* 
                     <TouchableOpacity
                       full
                       onPress={() => this.props.navigation.goBack()}
@@ -337,9 +412,8 @@ class RegisterScreen extends Component {
                       <Text style={styles.textButtomSignUp}>
                         {t('REGISTER.goBack')}
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </Form>
-    
                 </View>
               </View>
             </Content>

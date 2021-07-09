@@ -194,7 +194,7 @@ class EditProfile extends Component {
 
   saveDocumentAlert = (docName, res) => {
     Alert.alert(
-      "Are you sure to upload resume:",
+      'Are you sure to upload resume:',
       ` ${docName}?`,
       [
         {
@@ -204,8 +204,8 @@ class EditProfile extends Component {
           },
         },
         {
-          text: "Upload",
-          onPress: () =>  actions.uploadDocument(res)
+          text: 'Upload',
+          onPress: () => actions.uploadDocument(res),
         },
       ],
       { cancelable: false },
@@ -226,22 +226,23 @@ class EditProfile extends Component {
     this.isLoading(false);
     CustomToast(i18next.t('EDIT_PROFILE.profileUpdated'));
     this.setUser(data);
-    if (this.props.navigation.state.params && this.props.navigation.state.params.onboarding) {
+    if (
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.onboarding
+    ) {
       this.props.navigation.navigate(UploadDocumentScreen.routeName);
       CustomToast('Profile Saved. Please upload your documents to continue.');
-
     } else {
-      this.props.navigation.goBack();    
+      this.props.navigation.goBack();
     }
- 
   };
 
   handleClickResume = (resume) => {
-    Linking.canOpenURL(resume).then(supported => {
+    Linking.canOpenURL(resume).then((supported) => {
       if (supported) {
         Linking.openURL(resume);
       } else {
-        console.log("Don't know how to open URI: " + this.props.url);
+        console.log('Don\'t know how to open URI: ' + this.props.url);
       }
     });
   };
@@ -263,7 +264,7 @@ class EditProfile extends Component {
       isLoading,
     } = this.state;
 
-    console.log('edit profile', this.state)
+    console.log('edit profile', this.state);
     return (
       <I18n>
         {(t) => (
@@ -359,49 +360,47 @@ class EditProfile extends Component {
                         onChangeText={(text) => this.setState({ bio: text })}
                       />
                     </Item>
-                 
+
                     <Item
                       onPress={this.focusTextarea}
-                      style={{alignContent:"center", justifyContent:"center", textAlign:"center", marginLeft: 0, marginTop: 10}}
-                      >{
-                        this.state.selectedResume && this.state.selectedResume.uri
-                          ? (
-                            <Button
+                      style={{
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        marginLeft: 0,
+                        marginTop: 10,
+                      }}>
+                      {this.state.selectedResume &&
+                      this.state.selectedResume.uri ? (
+                          <Button
                             full
                             onPress={this.openResumePicker}
                             style={editProfileStyles.viewButtonResume}>
                             <Text style={editProfileStyles.textButtom}>
-                              {"Edit Resume"}
+                              {'Edit Resume'}
                             </Text>
-                         
                           </Button>
-                            )
-                          : this.state.resume
-                            ? (
-                              <View>
-                              <Button
-                              full
-                              onPress={this.openResumePicker}
-                              style={editProfileStyles.viewButtonResume}>
-                              <Text style={editProfileStyles.textButtom}>
-                                {"Edit Resume"}
-                              </Text>
-                            </Button>
-                           
-                     
-                         </View>
-                              )
-                            : (
+                        ) : this.state.resume ? (
+                          <View>
                             <Button
                               full
                               onPress={this.openResumePicker}
                               style={editProfileStyles.viewButtonResume}>
                               <Text style={editProfileStyles.textButtom}>
-                                {t('EDIT_PROFILE.uploadResume')}
+                                {'Edit Resume'}
                               </Text>
                             </Button>
-                            )
-                      }
+                          </View>
+                        ) : (
+                          <Button
+                            full
+                            onPress={this.openResumePicker}
+                            style={editProfileStyles.viewButtonResume}>
+                            <Text style={editProfileStyles.textButtom}>
+                              {t('EDIT_PROFILE.uploadResume')}
+                            </Text>
+                          </Button>
+                        )}
                     </Item>
                     {/* <Item
                       style={editProfileStyles.viewInput}
@@ -502,11 +501,16 @@ class EditProfile extends Component {
                     {(showDatePicker || Platform.OS === 'ios') && (
                       <View>
                         {/* <Text style={preferencesStyles.sliderLabel}> */}
-                        <Text style={{color: "black", fontWeight:"bold", marginTop: 5}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontWeight: 'bold',
+                            marginTop: 5,
+                          }}>
                           Enter your date of birth:
                         </Text>
                         <DateTimePicker
-                          style={{height: 75}}
+                          style={{ height: 75 }}
                           value={_userBirthDate ? _userBirthDate : new Date()}
                           mode={'date'}
                           display="calendar"
@@ -610,8 +614,10 @@ class EditProfile extends Component {
   };
 
   editProfileAlert = () => {
-   
-    if((this.state.selectedImage && this.state.selectedImage.uri) || !this.state.picture.includes("default")){
+    if (
+      (this.state.selectedImage && this.state.selectedImage.uri) ||
+      !this.state.picture.includes('default')
+    ) {
       Alert.alert(
         i18next.t('EDIT_PROFILE.wantToEditProfile'),
         '',
@@ -637,30 +643,34 @@ class EditProfile extends Component {
         ],
         { cancelable: false },
       );
-    }else{
+    } else {
       CustomToast('Please upload a profile picture', 'danger');
-
     }
   };
   editResumeAlert = () => {
-   
-    if((this.state.selectedImage && this.state.selectedImage.uri) || !this.state.picture.includes("default")){
+    if (
+      (this.state.selectedImage && this.state.selectedImage.uri) ||
+      !this.state.picture.includes('default')
+    ) {
       Alert.alert(
         i18next.t('EDIT_PROFILE.wantToEditProfile'),
         '',
         [
           {
-            text: "Cancel",
+            text: 'Cancel',
             onPress: () => {
               LOG(this, 'Cancel edit resume');
             },
           },
           {
-            text: "Upload",
+            text: 'Upload',
             onPress: () => {
               this.setState({ isLoading: true }, () => {
                 LOG(this, this.state);
-                if (this.state.selectedResume && this.state.selectedResume.uri) {
+                if (
+                  this.state.selectedResume &&
+                  this.state.selectedResume.uri
+                ) {
                   return actions.editProfileResume(this.state.selectedImage);
                 }
                 this.editProfile();
@@ -670,9 +680,8 @@ class EditProfile extends Component {
         ],
         { cancelable: false },
       );
-    }else{
+    } else {
       CustomToast('Please upload a profile picture', 'danger');
-
     }
   };
 
@@ -799,7 +808,7 @@ class EditProfile extends Component {
         name,
       };
       actions.editProfileResume(selectedResume);
-      this.setState({ selectedResume});
+      this.setState({ selectedResume });
     }
   };
   goToJobPreferences = () => {

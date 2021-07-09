@@ -112,16 +112,20 @@ class BankAccounts extends FluxView {
               <View style={bankAccountsStyle.container}>
                 <View>
                   {bankAccounts.length > 0 && (
-                    <View style={{
-                      paddingTop: 5,
-                    }} >
-                
-                      <Text style={{ marginBottom: 15, fontWeight: 700, fontSize: 24, lineHeight: 45 }}>
+                    <View
+                      style={{
+                        paddingTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          marginBottom: 15,
+                          fontWeight: 700,
+                          fontSize: 24,
+                          lineHeight: 45,
+                        }}>
                         {'Your bank account is ready to receive payment.'}
                       </Text>
-      
                     </View>
-
                   )}
                   <Form>
                     {bankAccounts.length > 0 ? (
@@ -134,11 +138,16 @@ class BankAccounts extends FluxView {
                                 inlineLabel
                                 rounded>
                                 <Label>
-                                  <Text style={{ fontWeight: 500 }}>{bankAccount.institution_name + '\n' + bankAccount.name + ' - ' + bankAccount.account}</Text>
+                                  <Text style={{ fontWeight: 500 }}>
+                                    {bankAccount.institution_name +
+                                      '\n' +
+                                      bankAccount.name +
+                                      ' - ' +
+                                      bankAccount.account}
+                                  </Text>
                                 </Label>
-                 
                               </Item>
-                             
+
                               <TouchableOpacity
                                 onPress={() =>
                                   this.deleteBankAccountAlert(bankAccount)

@@ -102,8 +102,6 @@ class AddBankAccount extends View {
       </I18n>
     );
   }
-
-
 }
 
 AddBankAccount.routeName = 'AddBankAccount';

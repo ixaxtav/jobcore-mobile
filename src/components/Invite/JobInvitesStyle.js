@@ -1,4 +1,4 @@
-import { StyleSheet,Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import {
   BLUE_MAIN,
   VIOLET_MAIN,
@@ -20,7 +20,7 @@ const inviteStyles = StyleSheet.create({
   badge: {
     backgroundColor: RED_MAIN,
     position: 'absolute',
-    right:10,
+    right: 10,
     top: 1,
   },
   titleHeader: {
@@ -53,7 +53,7 @@ const inviteStyles = StyleSheet.create({
   viewListItem: {
     paddingLeft: 5,
     paddingRight: 75,
-    marginLeft: 5
+    marginLeft: 5,
   },
   viewDataOffers: {
     flexDirection: 'column',

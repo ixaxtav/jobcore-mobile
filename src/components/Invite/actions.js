@@ -290,21 +290,16 @@ const getProfile = () => {
 };
 
 export const postI9Form = (data) => {
-  postData(`/employees/me/i9-form`, 
-    data,
-  )
+  postData(`/employees/me/i9-form`, data)
     .then((data) => {
       Flux.dispatchEvent('I9Form', data);
-      
     })
     .catch((err) => {
       Flux.dispatchEvent('I9FormError', err);
     });
 };
 export const putI9Form = (data) => {
-  putData(`/employees/me/i9-form`, 
-    data,
-  )
+  putData(`/employees/me/i9-form`, data)
     .then((data) => {
       Flux.dispatchEvent('I9Form', data);
     })
@@ -314,9 +309,7 @@ export const putI9Form = (data) => {
 };
 
 export const postW4Form = (data) => {
-  postData(`/employees/me/w4-form`, 
-    data,
-  )
+  postData(`/employees/me/w4-form`, data)
     .then((data) => {
       Flux.dispatchEvent('W4Form', data);
     })
@@ -325,9 +318,7 @@ export const postW4Form = (data) => {
     });
 };
 export const putW4Form = (data) => {
-  putData(`/employees/me/w4-form`, 
-    data,
-  )
+  putData(`/employees/me/w4-form`, data)
     .then((data) => {
       Flux.dispatchEvent('W4Form', data);
     })

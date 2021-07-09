@@ -1,8 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import {
-  WHITE_MAIN,
-  BLUE_LIGHT,
-} from '../../shared/colorPalette';
+import { WHITE_MAIN, BLUE_LIGHT } from '../../shared/colorPalette';
 
 export default StyleSheet.create({
   container: {
@@ -38,6 +35,7 @@ export default StyleSheet.create({
     marginRight: 10,
   },
   textAlldayOr: {
+    fontFamily: 'UberMoveText-Light',
     color: 'black',
     textAlign: 'center',
     fontSize: 12,

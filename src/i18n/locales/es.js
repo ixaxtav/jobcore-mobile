@@ -45,13 +45,14 @@ export default {
     last_4dig_ssn_placeholder: '####',
     userBirthDate: 'Fecha de nacimiento',
   },
-  VALIDATE_CODE: { 
-    title: "Para continuar, porfavor ingrese el codigo de verificacion enviado a su móvil ",
-    resend: "Re-enviar Codigo",
-    continue: "Continuar",
+  VALIDATE_CODE: {
+    title:
+      'Para continuar, porfavor ingrese el codigo de verificacion enviado a su móvil ',
+    resend: 'Re-enviar Codigo',
+    continue: 'Continuar',
     goBack: 'Ir atrás',
     welcome: 'Bienvenido a JobCore!',
-    sent: 'Enviado!'
+    sent: 'Enviado!',
   },
   EDIT_PROFILE: {
     editProfile: 'Editar perfil',

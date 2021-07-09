@@ -1,7 +1,7 @@
 // import {check, PERMISSIONS, RESULTS, requestNotifications} from 'react-native-permissions';
 // import {Platform} from 'react-native';
 
-// class AppPermission { 
+// class AppPermission {
 
 //     checkPermission = async (type) : Promise<boolean> => {
 //         console.log("AppPermission checkPermission type: ", type)
@@ -35,7 +35,7 @@
 //     }
 
 //     requestNotifyPermission = async (): Promise<boolean> => {
-//         if (Platform.OS === 'android') { 
+//         if (Platform.OS === 'android') {
 //             return true
 //         }
 //         const {status, settings} = await requestNotifications(['alert', 'sound', 'badge'])

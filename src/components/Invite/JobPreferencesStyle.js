@@ -1,9 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import {
-  WHITE_MAIN,
-  BLUE_LIGHT,
-  GRAY_LIGHT,
-} from '../../shared/colorPalette';
+import { WHITE_MAIN, BLUE_LIGHT, GRAY_LIGHT } from '../../shared/colorPalette';
 
 export default StyleSheet.create({
   container: {
@@ -13,6 +9,7 @@ export default StyleSheet.create({
   },
   sliderLabel: {
     textAlign: 'center',
+    fontFamily:'UberMoveText-Light',
     color: 'black',
   },
   textButton: {
@@ -23,7 +20,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   textButtonWhite: {
     textAlign: 'center',
@@ -36,26 +33,26 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   buttonLeftActive: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderColor: '#D3D3D3',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
   buttonLeftInactive: {
     backgroundColor: 'transparent',
-    borderColor: "#D3D3D3",
+    borderColor: '#D3D3D3',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
   buttonRightActive: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderColor: '#D3D3D3',
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
   },
   buttonRightInactive: {
     backgroundColor: 'transparent',
-    borderColor: "#D3D3D3",
+    borderColor: '#D3D3D3',
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
   },
@@ -71,13 +68,13 @@ export default StyleSheet.create({
   textPositions: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: 'black',
   },
   buttonRounded: {
     textAlign: 'center',
-    backgroundColor: "transparent",
-    height:50,
+    backgroundColor: 'transparent',
+    height: 50,
     borderColor: 'black',
     // backgroundColor: 'black',
     borderWidth: 1,
@@ -93,7 +90,7 @@ export default StyleSheet.create({
     width: '50%',
     height: '30%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   viewButtonPosition: {
     marginTop: 15,
@@ -143,7 +140,7 @@ export default StyleSheet.create({
     color: 'black',
   },
   headerCustom: {
-    backgroundColor: "#D3D3D3",
+    backgroundColor: '#D3D3D3',
   },
   titleHeader: {
     color: WHITE_MAIN,
@@ -165,7 +162,7 @@ export default StyleSheet.create({
   contentScroll: {
     height: 350,
     borderWidth: 1,
-    borderColor: "#D3D3D3",
+    borderColor: '#D3D3D3',
     borderRadius: 35,
     paddingBottom: 50,
     paddingTop: 5,
@@ -202,7 +199,7 @@ export default StyleSheet.create({
   textLocation: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: 'black',
   },
   accordionPosition: {
@@ -236,17 +233,17 @@ export default StyleSheet.create({
   },
   buttomRight: {
     backgroundColor: 'transparent',
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 1,
   },
   textButtomRight: {
-    color: "black",
+    color: 'black',
   },
   viewInput: {
     backgroundColor: 'transparent',
     height: 55,
     width: '100%',
-    borderColor: "#D3D3D3",
+    borderColor: '#D3D3D3',
     color: 'black',
     borderRadius: 0,
     borderWidth: 1,

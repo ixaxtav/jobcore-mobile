@@ -44,13 +44,14 @@ export default {
     last_4dig_ssn_placeholder: '####',
     userBirthDate: 'Birthdate',
   },
-  VALIDATE_CODE: { 
-    title: "To continue, please enter the 6-digit verification code sent to your phone ",
-    resend: "Resend Code",
-    continue: "Continue",
+  VALIDATE_CODE: {
+    title:
+      'To continue, please enter the 6-digit verification code sent to your phone ',
+    resend: 'Resend Code',
+    continue: 'Continue',
     goBack: 'Go back',
     welcome: 'Welcome to JobCore!',
-    sent: 'Sent!'
+    sent: 'Sent!',
   },
   EDIT_PROFILE: {
     editProfile: 'Update profile',

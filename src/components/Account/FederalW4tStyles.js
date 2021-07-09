@@ -26,7 +26,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: BLUE_DARK,
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   textButtonWhite: {
     textAlign: 'center',
@@ -74,13 +74,13 @@ export default StyleSheet.create({
   textPositions: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: BLUE_DARK,
   },
   buttonRounded: {
     textAlign: 'center',
     backgroundColor: BLUE_LIGHT,
-    height:50
+    height: 50,
   },
   buttonRoundedDark: {
     marginTop: 15,
@@ -93,7 +93,7 @@ export default StyleSheet.create({
     width: '50%',
     height: '30%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   viewButtonPosition: {
     marginTop: 15,
@@ -202,7 +202,7 @@ export default StyleSheet.create({
   textLocation: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: BLUE_DARK,
   },
   accordionPosition: {

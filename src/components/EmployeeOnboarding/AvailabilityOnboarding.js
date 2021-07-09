@@ -1,14 +1,37 @@
 import React, { Component } from 'react';
 import {
-  View, Image, RefreshControl, Alert, TouchableOpacity 
+  View,
+  Image,
+  RefreshControl,
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
-import { H1, H3, H4, Container, ListItem, Header, Body, Content, List, Button, Text, FooterTab, Footer, Icon } from 'native-base';
+import {
+  H1,
+  H3,
+  H4,
+  Container,
+  ListItem,
+  Header,
+  Body,
+  Content,
+  List,
+  Left,
+  Title,
+  Button,
+  Text,
+  FooterTab,
+  Footer,
+  Icon,
+} from 'native-base';
 import {
   REGISTER_ROUTE,
   FORGOT_ROUTE,
   APP_ROUTE,
   VALIDATION_CODE_ROUTE,
-  JOB_PREFERENCES_ONBOARDING_ROUTE, DASHBOARD_ROUTE,PICTURE_ONBOARDING_ROUTE
+  JOB_PREFERENCES_ONBOARDING_ROUTE,
+  DASHBOARD_ROUTE,
+  PICTURE_ONBOARDING_ROUTE,
 } from '../../constants/routes';
 import { TabHeaderWhite } from '../../shared/components/TabHeaderWhite';
 
@@ -26,7 +49,6 @@ import { ModalHeader } from '../../shared/components/ModalHeader';
 import { availabilityModel } from '../Invite/availability-model';
 
 class AvailabilityOnboarding extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -115,40 +137,68 @@ class AvailabilityOnboarding extends Component {
     this.setState({ isRefreshing: false });
   };
   render() {
-
     return (
       <I18n>
         {(t) => (
-            <Container>
-            <TabHeaderWhite
-              goBack
-              onPressBack={() => this.props.navigation.goBack()}
-              // title={t('EDIT_PROFILE.editProfile')}
-            />
-              <Content
-              
+          <Container>
+            <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}>
+              <Left>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black',fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
+              </Left>
+              <Body style={{ flex: 0 }}>
+                <Title></Title>
+              </Body>
+            </Header>
+            <Content
               refreshControl={
                 <RefreshControl
                   refreshing={this.state.isRefreshing}
                   onRefresh={this.refreshAvailability}
                 />
               }>
-              <View style={{
-                paddingLeft: 25,
-                paddingTop: 25,
-                paddingRight: 25,
-              }} >
-                
-              <H1 style={{marginBottom: 15, fontWeight: 700, fontSize: 32, lineHeight: 45}}>
-                What is your availability to work?
-              </H1>
-              {/* <Text style={{fontSize: 18, color: "gray"}}>
+              <View
+                style={{
+                  paddingLeft: 25,
+                  paddingTop: 25,
+                  paddingRight: 25,
+                }}>
+                <H1
+                  style={{
+                    marginBottom: 15,
+                    fontWeight: 700,
+                    fontSize: 32,
+                    lineHeight: 45,
+                    fontFamily: 'UberMoveText-Medium',
+                  }}>
+                  What is your availability to work?
+                </H1>
+                {/* <Text style={{fontSize: 18, color: "gray"}}>
               We'll set you up with nearby employers.
               </Text> */}
               </View>
               <DateTimePicker
                 mode={'time'}
                 is24Hour={false}
+                display="spinner"
+                datePickerContainerStyleIOS={{ paddingHorizontal: 15 }}
                 isVisible={this.state.startTimePickerVisible}
                 onConfirm={(date) => this.handleStartTimePicked(date)}
                 onCancel={this.hideStartTimePicker}
@@ -156,6 +206,8 @@ class AvailabilityOnboarding extends Component {
               <DateTimePicker
                 mode={'time'}
                 is24Hour={false}
+                display="spinner"
+                datePickerContainerStyleIOS={{ paddingHorizontal: 15 }}
                 isVisible={this.state.endTimePickerVisible}
                 onConfirm={(date) => this.handleEndTimePicked(date)}
                 onCancel={this.hideEndTimePicker}
@@ -266,7 +318,6 @@ class AvailabilityOnboarding extends Component {
                                     this.showStartTimePicker(block)
                                   }
                                   style={styles.buttonHour}
-                                  rounded
                                   bordered
                                   small>
                                   <Text style={styles.textHour}>
@@ -285,7 +336,6 @@ class AvailabilityOnboarding extends Component {
                                     this.showEndTimePicker(block)
                                   }
                                   style={styles.buttonHour}
-                                  rounded
                                   bordered
                                   small>
                                   <Text style={styles.textHour}>
@@ -304,17 +354,24 @@ class AvailabilityOnboarding extends Component {
                 </List>
               </View>
             </Content>
-            <Footer style={{backgroundColor:"white", borderBottomWidth: 0, borderTopWidth: 0}}>
-          <FooterTab>
-            <Button full style={{backgroundColor: 'black',  borderRadius: 0}} onPress={() => this.props.navigation.navigate(PICTURE_ONBOARDING_ROUTE)}>
-              <Text style={{color: "white", fontSize: 18}}>Next</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-              
-
+            <Footer
+              style={{
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+              }}>
+              <FooterTab>
+                <Button
+                  full
+                  style={{ backgroundColor: 'black', borderRadius: 0 }}
+                  onPress={() =>
+                    this.props.navigation.navigate(PICTURE_ONBOARDING_ROUTE)
+                  }>
+                  <Text style={{ color: 'white', fontSize: 18 }}>Next</Text>
+                </Button>
+              </FooterTab>
+            </Footer>
           </Container>
-
         )}
       </I18n>
     );

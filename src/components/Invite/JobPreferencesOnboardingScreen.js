@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, TouchableOpacity, Slider, RefreshControl } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Slider,
+  RefreshControl,
+} from 'react-native';
 import {
   Container,
   Content,
@@ -46,8 +53,6 @@ function NarrowPreferencesMessage() {
 }
 
 class JobPreferencesONBOARDING extends Component {
-
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -152,21 +157,23 @@ class JobPreferencesONBOARDING extends Component {
     this.setState({ isRefreshing: false });
     CustomToast(err, 'danger');
   };
-  
+
   savePreferences = (err) => {
-    if(this.state.location == '') CustomToast('Please add a location','danger' );
-    if(this.state.positions.length == 0)CustomToast('Please add job positions','danger')
-    else if(this.state.location != "" && this.state.positions.length != 0){
+    if (this.state.location == '')
+      CustomToast('Please add a location', 'danger');
+    if (this.state.positions.length == 0)
+      CustomToast('Please add job positions', 'danger');
+    else if (this.state.location != '' && this.state.positions.length != 0) {
       this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE);
       this.getEmployeeData();
-
     }
   };
 
-
   getLocationHandler = (profile) => {
-    this.setState({ location: profile.location, stopReceivingInvites: !profile.employee.stop_receiving_invites});
-    
+    this.setState({
+      location: profile.location,
+      stopReceivingInvites: !profile.employee.stop_receiving_invites,
+    });
   };
 
   saveLocationHandler = (profile) => {
@@ -218,7 +225,7 @@ class JobPreferencesONBOARDING extends Component {
       if (hours <= narrowPreferences.minimum_availability_hours)
         hasTooNarrowPreferences = true;
     }
-    console.log('DASHBOARD?????')
+    console.log('DASHBOARD?????');
     return (
       <I18n>
         {(t) => (
@@ -230,7 +237,6 @@ class JobPreferencesONBOARDING extends Component {
               onPress={this.goToEditProfile}
               onPressBack={() => this.goToOnboarding()}
               goBack={true}
-
             />
             {hasTooNarrowPreferences && <NarrowPreferencesMessage />}
             <Content
@@ -240,8 +246,7 @@ class JobPreferencesONBOARDING extends Component {
                   refreshing={this.state.isRefreshing}
                   onRefresh={this.refreshPreferences}
                 />
-              }
-              >
+              }>
               <ScrollView>
                 <View style={preferencesStyles.viewButtonPosition}>
                   <Button
@@ -255,9 +260,10 @@ class JobPreferencesONBOARDING extends Component {
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.position')}
-                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
+                      <Text style={preferencesStyles.textButtonClickHere}>
+                        {'\n' + 'Click here'}
+                      </Text>
                     </Text>
-                  
                   </Button>
 
                   <View style={preferencesStyles.viewPositions}>
@@ -325,8 +331,9 @@ class JobPreferencesONBOARDING extends Component {
                           uppercase={false}
                           style={preferencesStyles.textButton}>
                           {t('JOB_PREFERENCES.myLocation')}
-                          <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
-
+                          <Text style={preferencesStyles.textButtonClickHere}>
+                            {'\n' + 'Click here'}
+                          </Text>
                         </Text>
                       </Button>
 
@@ -386,8 +393,9 @@ class JobPreferencesONBOARDING extends Component {
                       uppercase={false}
                       style={preferencesStyles.textButton}>
                       {t('JOB_PREFERENCES.availability')}
-                      <Text style={preferencesStyles.textButtonClickHere}>{"\n" + "Click here"}</Text>
-
+                      <Text style={preferencesStyles.textButtonClickHere}>
+                        {'\n' + 'Click here'}
+                      </Text>
                     </Text>
                   </Button>
 
@@ -476,12 +484,11 @@ class JobPreferencesONBOARDING extends Component {
                   <Text style={preferencesStyles.itemInvite}>
                     {t('DASHBOARD.n')}
                   </Text>
-    
                 </Segment>
               </View>
-              <TouchableOpacity >
+              <TouchableOpacity>
                 <View>
-                <Button
+                  <Button
                     full
                     rounded
                     onPress={this.savePreferences}
@@ -489,12 +496,11 @@ class JobPreferencesONBOARDING extends Component {
                     <Text
                       uppercase={false}
                       style={preferencesStyles.textButtonWhite}>
-                      {"Save Preferences"}
+                      {'Save Preferences'}
                     </Text>
                   </Button>
                 </View>
               </TouchableOpacity>
-           
             </Content>
           </Container>
         )}

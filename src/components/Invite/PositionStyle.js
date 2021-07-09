@@ -1,8 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import {
-  WHITE_MAIN,
-  BLUE_LIGHT,
-} from '../../shared/colorPalette';
+import { WHITE_MAIN, BLUE_LIGHT } from '../../shared/colorPalette';
 
 export default StyleSheet.create({
   container: {
@@ -12,26 +9,26 @@ export default StyleSheet.create({
   },
   sliderLabel: {
     textAlign: 'center',
-    color: "black",
+    color: 'black',
     marginTop: 20,
   },
   sliderValue: {
     marginLeft: 0,
     marginRight: 0,
     textAlign: 'left',
-    color: "black",
+    color: 'black',
   },
   sliderMaxValue: {
     fontSize: 12,
     textAlign: 'left',
-    color: "black",
+    color: 'black',
   },
   buttonPosition: {
     textAlign: 'center',
     backgroundColor: BLUE_LIGHT,
   },
   headerCustom: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
   titleHeader: {
     color: WHITE_MAIN,
@@ -53,7 +50,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   textHeader: {
-    color: "black",
+    color: 'black',
     fontSize: 14,
     textAlign: 'center',
   },
@@ -67,7 +64,7 @@ export default StyleSheet.create({
     width: '99%',
     height: 350,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     borderRadius: 35,
     paddingBottom: 50,
     paddingTop: 25,
@@ -86,13 +83,13 @@ export default StyleSheet.create({
   },
   IconCheck: {
     fontSize: 20,
-    color: "black",
+    color: 'black',
   },
   textList: {
-    color: "black",
+    color: 'black',
   },
   weekendsText: {
-    color: "black",
+    color: 'black',
   },
   accordionAvailability: {
     borderColor: 'transparent',
@@ -102,7 +99,7 @@ export default StyleSheet.create({
   },
   textAvailability: {
     textAlign: 'center',
-    color: "black",
+    color: 'black',
     fontSize: 16,
   },
   accordionPosition: {
@@ -115,8 +112,8 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     height: 55,
     width: '100%',
-    borderColor: "black",
-    color: "black",
+    borderColor: 'black',
+    color: 'black',
     borderRadius: 0,
     borderWidth: 1,
     paddingLeft: 20,
@@ -140,22 +137,22 @@ export default StyleSheet.create({
     marginTop: 50,
   },
   titleInvite: {
-    color: "black",
+    color: 'black',
     fontSize: 14,
     marginBottom: 10,
   },
   itemInvite: {
     padding: 14,
     fontSize: 14,
-    color: "black",
+    color: 'black',
   },
   labelForm: {
-    color: "black",
+    color: 'black',
   },
   textViolet: {
-    color: "black",
+    color: 'black',
   },
   textBlue: {
-    color: "black",
+    color: 'black',
   },
 });

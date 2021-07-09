@@ -135,11 +135,7 @@ class Position extends Component {
                     <View>
                       <Icon
                         type="FontAwesome"
-                        name={
-                          isPositionSelected
-                            ? 'check-circle'
-                            : 'circle-o'
-                        }
+                        name={isPositionSelected ? 'check-circle' : 'circle-o'}
                         style={{ fontSize: 20, color: 'black' }}
                       />
                     </View>

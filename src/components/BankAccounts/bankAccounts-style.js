@@ -58,7 +58,7 @@ export const bankAccountsStyle = StyleSheet.create({
     width: 20,
     height: 24,
     marginLeft: 10,
-    color:'black',
+    color: 'black',
   },
   formStyle: {
     flexDirection: 'row',

@@ -1,5 +1,3 @@
-
-
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
 import { BLUE_MAIN, BLUE_DARK, WHITE_MAIN } from '../../shared/colorPalette';
@@ -9,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: WHITE_MAIN
+    backgroundColor: WHITE_MAIN,
   },
 
   viewLogo: {
@@ -25,7 +23,6 @@ export default StyleSheet.create({
     }),
   },
 
- 
   viewBackground: {
     backgroundColor: '#ccc',
     flex: 1,
@@ -36,10 +33,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   viewForm: {
-    width: width,
-    paddingLeft: 35,
-    paddingRight: 35,
-    marginTop: '10%',
+    // width: width,
+    paddingLeft: 20,
+    paddingRight: 20,
+    // marginTop: '10%',
     marginBottom: 20,
   },
   viewButtomLogin: {
@@ -67,7 +64,7 @@ export default StyleSheet.create({
   termsAndConditionsTermTitle: {
     marginLeft: 5,
     color: 'black',
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   termsTitleContainer: {
     flexDirection: 'row',
@@ -114,7 +111,7 @@ export default StyleSheet.create({
     paddingTop: 0,
     paddingRight: 10,
     marginBottom: 10,
-    zIndex: 9999
+    zIndex: 9999,
   },
   borderNone: {
     borderBottomColor: 'transparent',
@@ -125,16 +122,15 @@ export default StyleSheet.create({
   formContainer: {
     marginTop: 20,
   },
-  codeVerificationTitle: {textAlign: 'center', color: 'black', fontSize: 18},
+  codeVerificationTitle: { textAlign: 'center', color: 'black', fontSize: 18 },
 
   resendButtomClick: {
     fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
+    fontFamily:'UberMoveText-Light',
+    
     marginTop: 15,
     marginBottom: 40,
     textDecorationLine: 'underline',
     color: 'black',
   },
 });
-
