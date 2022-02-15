@@ -19,6 +19,7 @@ import {
   Content,
   Thumbnail,
   Body,
+  Right,
   Title,
   Textarea,
   FooterTab,
@@ -115,6 +116,22 @@ class PictureOnboarding extends Component {
   render() {
     const { isLoading } = this.state;
 
+    var picture = this.state.picture;
+    var hasPicture = false;
+
+    if (
+      !picture ||
+      picture ===
+        'https://res.cloudinary.com/hq02xjols/image/upload/v1560365062/static/default_profile3.png' ||
+      picture ===
+        'https://res.cloudinary.com/hq02xjols/image/upload/v1560367698/static/default_profile2.png' ||
+      picture ===
+        'https://res.cloudinary.com/hq02xjols/image/upload/v1560365062/static/default_profile1.png'
+    ) {
+      picture =
+        'https://res.cloudinary.com/hq02xjols/image/upload/v1626297800/example.jpg';
+    } else hasPicture = true;
+
     console.log('estado', this.state);
     return (
       <I18n>
@@ -138,7 +155,7 @@ class PictureOnboarding extends Component {
                   onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -146,6 +163,7 @@ class PictureOnboarding extends Component {
               <Body style={{ flex: 0 }}>
                 <Title></Title>
               </Body>
+              <Right></Right>
             </Header>
             <Content>
               <View
@@ -155,24 +173,42 @@ class PictureOnboarding extends Component {
                 <H1
                   style={{
                     marginBottom: 15,
-                    fontWeight: 700,
+                    fontWeight: '700',
                     fontSize: 32,
-                    fontFamily:'UberMoveText-Medium',
+                    fontFamily: 'UberMoveText-Medium',
                     lineHeight: 45,
                   }}>
                   Upload your profile photo
                 </H1>
-                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: 10,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
                   1. Be as professional as possible
                 </Text>
-                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
-                  2. Show your whole face and tops of your shoulders
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: 10,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
+                  2. Show your whole face
                 </Text>
-                <Text style={{ fontSize: 18, marginTop: 10, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: 10,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
                   3. Take your hat off and sunglasses
                 </Text>
               </View>
-              <View style={editProfileStyles.container}>
+              <View>
                 <TouchableOpacity onPress={this.openImagePicker}>
                   <View style={profileStyles.viewProfileImgOnboarding}>
                     <Thumbnail
@@ -180,9 +216,9 @@ class PictureOnboarding extends Component {
                       source={
                         this.state.selectedImage && this.state.selectedImage.uri
                           ? { uri: this.state.selectedImage.uri }
-                          : this.state.picture
-                            ? { uri: this.state.picture }
-                            : PROFILE_IMG
+                          : picture
+                            ? { uri: picture }
+                            : 'https://res.cloudinary.com/hq02xjols/image/upload/v1626297800/example.jpg'
                       }
                     />
                     <View style={profileStyles.viewCameraCircleOnboarding}>
@@ -202,7 +238,7 @@ class PictureOnboarding extends Component {
                 borderTopWidth: 0,
               }}>
               <FooterTab>
-                {this.state.selectedImage || this.state.picture !== 'https://res.cloudinary.com/hq02xjols/image/upload/v1560365062/static/default_profile3.png'? (
+                {this.state.selectedImage || hasPicture ? (
                   <Button
                     full
                     style={{ backgroundColor: 'black', borderRadius: 0 }}
@@ -215,11 +251,11 @@ class PictureOnboarding extends Component {
 
                       this.props.navigation.navigate(RESUME_ONBOARDING_ROUTE);
                     }}>
-                    <Text style={{ color: 'white', fontSize: 18 }}>Next</Text>
+                    <Text style={{ color: 'white', fontSize: 16 }}>Next</Text>
                   </Button>
                 ) : (
                   <Button full light disabled style={{ borderRadius: 0 }}>
-                    <Text style={{ color: 'white', fontSize: 18 }}>
+                    <Text style={{ color: 'white', fontSize: 16 }}>
                       To continue, upload picture
                     </Text>
                   </Button>

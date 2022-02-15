@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   View,
@@ -9,7 +8,18 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Container, Content, Item, Input, Button, Text, Form, Toast, Icon, Label } from 'native-base';
+import {
+  Container,
+  Content,
+  Item,
+  Input,
+  Button,
+  Text,
+  Form,
+  Toast,
+  Icon,
+  Label,
+} from 'native-base';
 import styles from './LoginStyle';
 import {
   REGISTER_ROUTE,
@@ -161,7 +171,7 @@ class LoginScreen extends Component {
       token = response.token;
       status = response.user.profile.status;
       phoneNumber = response.user.profile.phone_number;
-      email= response.user.email;
+      email = response.user.email;
     } catch (e) {
       return LOG(this, e);
     }
@@ -182,10 +192,10 @@ class LoginScreen extends Component {
       // });
 
       // accountActions.requestSendValidationLink(email,phoneNumber);
-      this.props.navigation.navigate(VALIDATION_CODE_ROUTE,{
+      this.props.navigation.navigate(VALIDATION_CODE_ROUTE, {
         email: email,
         phone_number: phoneNumber,
-      })
+      });
       this.isLoading(false);
       // const _storeData = async () => {
       //   try {
@@ -196,14 +206,14 @@ class LoginScreen extends Component {
       // };
 
       return;
-    }else if(status == 'PAUSED'){
-      this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE)
+    } else if (status == 'PAUSED') {
+      this.props.navigation.navigate(POSITION_ONBOARDING_ROUTE);
       this.isLoading(false);
       return;
-    } 
+    }
 
     if (token) {
-      console.log('token', token)
+      console.log('token', token);
       this.isLoading(false);
       if (this.state.biometrySupport) {
         if (permissionTouchId) {
@@ -223,7 +233,7 @@ class LoginScreen extends Component {
               ],
               { cancelable: false },
             );
-          }else {
+          } else {
             this.props.navigation.navigate(APP_ROUTE);
           }
         } else {
@@ -232,7 +242,7 @@ class LoginScreen extends Component {
       } else {
         this.props.navigation.navigate(APP_ROUTE);
       }
-    }else {
+    } else {
       this.isLoading(false);
     }
   };
@@ -240,7 +250,7 @@ class LoginScreen extends Component {
   errorHandler = (err) => {
     this.isLoading(false);
     // CustomToast(err, 'danger');
-    this.setState({ error: err })
+    this.setState({ error: err });
   };
 
   render() {
@@ -252,20 +262,33 @@ class LoginScreen extends Component {
         {(t) => (
           <Container>
             <Content contentContainerStyle={{ flexGrow: 1 }}>
-              <View style={{ flex: 1, backgroundColor:'white' }}>
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    style={{
+                      color: 'black',
+                      fontSize: 38,
+                      paddingRight: 35,
+                      paddingLeft: 32,
+                      paddingTop: 15,
+                    }}
                     name="arrow-back-sharp"
                   />
-
                 </TouchableOpacity>
 
                 {this.state.isLoading ? <Loading /> : null}
-                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 35 }}>
-                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light' }}>Please sign in</Text>
-
+                <View
+                  style={{
+                    paddingTop: 35,
+                    paddingLeft: 35,
+                    paddingBottom: 35,
+                  }}>
+                  <Text
+                    style={{ fontSize: 24, fontFamily: 'UberMoveText-Light' }}>
+                    Please sign in
+                  </Text>
                 </View>
                 {/* <FormView> */}
                 <Form>
@@ -278,21 +301,65 @@ class LoginScreen extends Component {
                       placeholder={t('LOGIN.email')}
                       onChangeText={(text) => this.setState({ email: text })}
                     /> */}
-                  <Item floatingLabel style={{ marginLeft: 35, marginRight: 35, height:60 }}>
-                    <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>Email address</Label>
-                    <Input autoFocus={true}  clearButtonMode="always" autoCorrect={false} style={{ fontSize: 20, fontFamily:'UberMoveText-Light' }}autoCapitalize={'none'} keyboardType={'email-address'} onChangeText={(text) => this.setState({ email: text, error: null })}/>
+                  <Item
+                    floatingLabel
+                    style={{ marginLeft: 35, marginRight: 35, height: 60 }}>
+                    <Label
+                      style={{
+                        fontFamily: 'UberMoveText-Light',
+                        fontSize: 20,
+                      }}>
+                      Email address
+                    </Label>
+                    <Input
+                      autoFocus={true}
+                      clearButtonMode="always"
+                      autoCorrect={false}
+                      style={{ fontSize: 20, fontFamily: 'UberMoveText-Light' }}
+                      autoCapitalize={'none'}
+                      keyboardType={'email-address'}
+                      onChangeText={(text) =>
+                        this.setState({ email: text, error: null })
+                      }
+                    />
 
                     {/* </Item> */}
                   </Item>
-                  <Item floatingLabel style={{ marginLeft: 35, marginRight: 35, height:60 }}>
-                    <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>Password</Label>
-                    <Input  clearButtonMode="always" secureTextEntry={true} autoCorrect={false} style={{ fontSize: 20, fontFamily:'UberMoveText-Light' }} autoCapitalize={'none'} keyboardType={'email-address'} onChangeText={(text) => this.setState({ password: text, error: null })}/>
+                  <Item
+                    floatingLabel
+                    style={{ marginLeft: 35, marginRight: 35, height: 60 }}>
+                    <Label
+                      style={{
+                        fontFamily: 'UberMoveText-Light',
+                        fontSize: 20,
+                      }}>
+                      Password
+                    </Label>
+                    <Input
+                      clearButtonMode="always"
+                      secureTextEntry={true}
+                      autoCorrect={false}
+                      style={{ fontSize: 20, fontFamily: 'UberMoveText-Light' }}
+                      autoCapitalize={'none'}
+                      keyboardType={'email-address'}
+                      onChangeText={(text) =>
+                        this.setState({ password: text, error: null })
+                      }
+                    />
 
                     {/* </Item> */}
                   </Item>
 
                   {this.state.error && (
-                    <Text style={{ color:'red', paddingLeft: 35, paddingTop: 15, paddingRight: 35 }}>{this.state.error + '. Please try again.'}</Text>
+                    <Text
+                      style={{
+                        color: 'red',
+                        paddingLeft: 35,
+                        paddingTop: 15,
+                        paddingRight: 35,
+                      }}>
+                      {this.state.error + '. Please try again.'}
+                    </Text>
                   )}
                   {/* <Item style={styles.viewInput} inlineLabel rounded floatingLabel>
                     <Input
@@ -306,7 +373,6 @@ class LoginScreen extends Component {
                     />
                     
                   </Item> */}
-            
                 </Form>
                 {/* <View>
                   <TouchableOpacity
@@ -349,26 +415,33 @@ class LoginScreen extends Component {
                   </Text>
                 </Button> */}
 
-                <View style={{ flexDirection:'row', justifyContent: 'space-between', marginTop: 30, paddingTop: 50 }}>
-
-                  <View style={{ justifyContent:'center' }}>
-                    <TouchableOpacity
-                      full
-                      onPress={this.userForgot.bind(this)}
-                    
-                    >
-                      <Text style={{ fontFamily:'UberMoveText-Light', paddingLeft: 35, fontSize: 16, color:'#007bff', textAlignVertical:'center' }}>
-                      I forgot my password
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 30,
+                    paddingTop: 50,
+                  }}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <TouchableOpacity full onPress={this.userForgot.bind(this)}>
+                      <Text
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          paddingLeft: 35,
+                          fontSize: 16,
+                          color: '#007bff',
+                          textAlignVertical: 'center',
+                        }}>
+                        I forgot my password
                       </Text>
                     </TouchableOpacity>
-
                   </View>
                   <View style={{ marginRight: 35 }}>
-                    <Button dark
+                    <Button
+                      dark
                       onPress={this.login}
-                      disabled = {!this.state.email || !this.state.password}
-                      style={{ borderRadius:0, height: 60 }}
-                    >
+                      disabled={!this.state.email || !this.state.password}
+                      style={{ borderRadius: 0, height: 60 }}>
                       {/* <Text style={styles.textButtom}>{t('LOGIN.signUp')}</Text> */}
                       <Icon
                         type="Ionicons"
@@ -377,9 +450,7 @@ class LoginScreen extends Component {
                         name="arrow-forward-sharp"
                       />
                     </Button>
-
                   </View>
-                  
                 </View>
                 {/* <TouchableOpacity
                   full
@@ -396,7 +467,6 @@ class LoginScreen extends Component {
               </View>
             </Content>
           </Container>
-
         )}
       </I18n>
     );

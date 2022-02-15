@@ -51,9 +51,36 @@ class AddBankAccount extends View {
     });
   }
 
+  render() {
+    return (
+      <I18n>
+        {(t) => (
+          <Container>
+            {this.state.isLoading ? <Loading /> : null}
+            <TabHeader
+              onPressBack={() => this.props.navigation.goBack()}
+              // goBack
+              title={t('BANK_ACCOUNTS.addBankAccountTitle')}
+            />
+            {this.state.isPlaidLoading ? <Loading /> : null}
+            <PlaidAuthenticator
+              onMessage={this.onPlaidMessage}
+              publicKey={PLAID_PUBLIC_KEY}
+              env={PLAID_ENVIRONMENT}
+              product="auth"
+            />
+          </Container>
+        )}
+      </I18n>
+    );
+  }
   onPlaidMessage = (e) => {
     console.log(`AddBankAccount:onPlaidMessage:`, e);
+
     const { metadata } = e;
+
+    console.log('E-', e);
+    console.log('METADA-', metadata);
     // Finish loading the Page
     // if (e.action === 'plaid_link-undefined::ready')
     if (e.eventName === 'OPEN') return this.setState({ isPlaidLoading: false });
@@ -78,30 +105,37 @@ class AddBankAccount extends View {
       this.props.navigation.goBack();
     });
   };
+  onPlaidMessage = (e) => {
+    console.log(`AddBankAccount:onPlaidMessage:`, e);
 
-  render() {
-    return (
-      <I18n>
-        {(t) => (
-          <Container>
-            {this.state.isLoading ? <Loading /> : null}
-            <TabHeader
-              onPressBack={() => this.props.navigation.goBack()}
-              // goBack
-              title={t('BANK_ACCOUNTS.addBankAccountTitle')}
-            />
-            {this.state.isPlaidLoading ? <Loading /> : null}
-            <PlaidAuthenticator
-              onMessage={this.onPlaidMessage}
-              publicKey={PLAID_PUBLIC_KEY}
-              env={PLAID_ENVIRONMENT}
-              product="auth"
-            />
-          </Container>
-        )}
-      </I18n>
-    );
-  }
+    const { metadata } = e;
+
+    console.log('EEEEEE---', e);
+    console.log('METADA---', metadata);
+    // Finish loading the Page
+    // if (e.action === 'plaid_link-undefined::ready')
+    if (e.eventName === 'OPEN') return this.setState({ isPlaidLoading: false });
+
+    // Getting out
+    if (e.eventName === 'EXIT' || e.action === 'plaid_link-undefined::exit')
+      return this.props.navigation.goBack();
+
+    if (e.action === 'plaid_link-undefined::connected') {
+      // const { public_token, institution, accounts } = metadata;
+      const { public_token, institution } = metadata;
+      return saveBankAccounts(public_token, institution.name || '');
+    }
+
+    if (IGNORED_PLAID_ACTIONS.includes(e.action)) return;
+
+    console.log(`AddBankAccount: onPlaidMessage: ERROR:`, e);
+    const errorMsg = metadata.error_message
+      ? metadata.error_message
+      : 'Something went wrong connecting with Plaid';
+    CustomToast(errorMsg, 'danger', () => {
+      this.props.navigation.goBack();
+    });
+  };
 }
 
 AddBankAccount.routeName = 'AddBankAccount';

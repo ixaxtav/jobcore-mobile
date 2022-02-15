@@ -9,6 +9,7 @@ import {
   Header,
   Body,
   Content,
+  Right,
   List,
   Button,
   Left,
@@ -94,19 +95,43 @@ class LocationOnboarding extends Component {
     this.props.navigation.navigate(AVAILABILITY_ONBOARDING_ROUTE);
   };
   showMarkers(region) {
-    let zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2)
-    
+    let zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
   }
   errorHandler = (err) => {
     this.setState({ isLoading: false });
     CustomToast(err, 'danger');
   };
   render() {
-    console.log('what it do', this.state);
     return (
       <I18n>
         {(t) => (
           <Container>
+            {/* <Header
+              androidStatusBarColor={'#FFFFFF'}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}>
+              <Left>
+                <Button
+                  style={{ marginLeft: 10 }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    type="Ionicons"
+                    style={{ color: 'black', fontSize: 38 }}
+                    name="arrow-back-sharp"
+                  />
+                </Button>
+              </Left>
+              <Body style={{ flex: 0 }}>
+                <Title></Title>
+              </Body>
+            </Header> */}
             <Header
               androidStatusBarColor={'#FFFFFF'}
               style={{
@@ -124,7 +149,7 @@ class LocationOnboarding extends Component {
                   onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -132,6 +157,7 @@ class LocationOnboarding extends Component {
               <Body style={{ flex: 0 }}>
                 <Title></Title>
               </Body>
+              <Right></Right>
             </Header>
             <Content>
               <View
@@ -141,14 +167,19 @@ class LocationOnboarding extends Component {
                 <H1
                   style={{
                     marginBottom: 15,
-                    fontWeight: 700,
+                    fontWeight: '700',
                     fontSize: 32,
                     lineHeight: 45,
                     fontFamily: 'UberMoveText-Medium',
                   }}>
-                  Where are you located?
+                  Where are you located (enter your address)?
                 </H1>
-                <Text style={{ fontSize: 18, color: 'gray',fontFamily: 'UberMoveText-Light' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
                   We'll set you up with nearby employers.
                 </Text>
                 <GooglePlacesAutocomplete
@@ -195,7 +226,7 @@ class LocationOnboarding extends Component {
                       borderRadius: 0,
                       // paddingLeft: 15,
                       borderColor: '#D9D5DC',
-                      color:'black',
+                      color: 'black',
                       paddingTop: 0,
                       paddingRight: 10,
                       paddingBottom: 5,
@@ -203,7 +234,7 @@ class LocationOnboarding extends Component {
                     },
                     textInputContainer: {
                       backgroundColor: 'transparent',
-                      height:50,
+                      height: 50,
                       fontSize: 20,
                       borderTopWidth: 0,
                       // paddingRight: 5,
@@ -216,15 +247,15 @@ class LocationOnboarding extends Component {
                     },
 
                     textInput: {
-                    // paddingLeft: 8,
+                      // paddingLeft: 8,
                       fontSize: 20,
-                      fontFamily:'UberMoveText-Light',
+                      fontFamily: 'UberMoveText-Light',
                       height: 50,
                       color: 'black',
                       flex: 1,
                       top: 1.5,
                       paddingRight: 5,
-                      fontSize:20,
+                      fontSize: 20,
                       paddingLeft: 0,
                       marginTop: 0,
                       marginLeft: 0,
@@ -256,7 +287,7 @@ class LocationOnboarding extends Component {
                     // description: {
                     //   color: 'black',
 
-                  // },
+                    // },
                   }}
                   currentLocation={false}
                   currentLocationLabel="Current location"
@@ -311,11 +342,23 @@ class LocationOnboarding extends Component {
                   <Button
                     style={{ backgroundColor: 'black', borderRadius: 0 }}
                     onPress={this.saveLocationAlert}>
-                    <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>Next</Text>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 16,
+                        fontFamily: 'UberMoveText-Medium',
+                      }}>
+                      Next
+                    </Text>
                   </Button>
                 ) : (
                   <Button light disabled style={{ borderRadius: 0 }}>
-                    <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 16,
+                        fontFamily: 'UberMoveText-Medium',
+                      }}>
                       To continue, add a location
                     </Text>
                   </Button>

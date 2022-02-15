@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import {
   View,
   TouchableOpacity,
+  WebView,
   Alert,
   Image,
   Switch,
   Platform,
   Linking,
+  NavState,
 } from 'react-native';
 import {
   Item,
@@ -40,7 +42,6 @@ import PROFILE_IMG from '../../assets/image/profile.png';
 import { GRAY_MAIN, BG_GRAY_LIGHT, BLUE_DARK } from '../../shared/colorPalette';
 import { TabHeader } from '../../shared/components/TabHeader';
 import moment from 'moment';
-import preferencesStyles from '../Invite/JobPreferencesStyle';
 
 const icon = require('../../assets/image/tab/profile.png');
 
@@ -251,6 +252,13 @@ class EditProfile extends Component {
     CustomToast(err, 'danger');
   };
 
+  handleNavigationStateChange = (event: NavState) => {
+    if (event.url) {
+      this.webview.stopLoading();
+      Linking.openURL(event.url);
+    }
+  };
+
   render() {
     const {
       loginAutoSave,
@@ -368,7 +376,8 @@ class EditProfile extends Component {
                         justifyContent: 'center',
                         textAlign: 'center',
                         marginLeft: 0,
-                        marginTop: 10,
+                        marginTop: 5,
+                        borderBottomWidth: 0,
                       }}>
                       {this.state.selectedResume &&
                       this.state.selectedResume.uri ? (
@@ -401,7 +410,23 @@ class EditProfile extends Component {
                             </Text>
                           </Button>
                         )}
+
+                      {this.state.resume ? (
+                        <Text
+                          style={{
+                            flex: 1,
+                            color: 'blue',
+                            textAlign: 'center',
+                            display: 'flex',
+                            textAlignVertical: 'center',
+                            alignContent: 'center',
+                          }}
+                          onPress={() => Linking.openURL(this.state.resume)}>
+                          Preview
+                        </Text>
+                      ) : null}
                     </Item>
+
                     {/* <Item
                       style={editProfileStyles.viewInput}
                       inlineLabel
@@ -504,7 +529,7 @@ class EditProfile extends Component {
                         <Text
                           style={{
                             color: 'black',
-                            fontWeight: 'bold',
+                            fontWeight: '700',
                             marginTop: 5,
                           }}>
                           Enter your date of birth:

@@ -101,8 +101,8 @@ android {
         applicationId "co.jobcore.talent"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 136
-        versionName "1.5.90"
+        versionCode 148
+        versionName "1.7.2"
         ndk {
 //            abiFilters "armeabi-v7a", "x86"
             abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
@@ -150,11 +150,17 @@ android {
 }
 
 dependencies {
+//    implementation project(':rn-fetch-blob')
+//    implementation project(':react-native-version-check')
+//    implementation project(':react-native-pdf')
+//    implementation project(':@react-native-community_progress-view')
+//    implementation project(':@react-native-community_progress-bar-android')
+//    implementation project(':react-native-fs')
     implementation project(':@react-native-community_toolbar-android')
-    implementation project(':react-native-config')
+//    implementation project(':react-native-config')
     implementation project(':@react-native-community_datetimepicker')
     implementation project(':react-native-device-info')
-    // implementation project(':react-native-webview')
+     implementation project(':react-native-webview')
     implementation project(':react-native-signature-capture')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-touch-id')

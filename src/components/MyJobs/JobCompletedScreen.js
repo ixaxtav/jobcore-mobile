@@ -134,7 +134,7 @@ class JobCompletedScreen extends Component {
                 progress={minutesPassedPct}
                 width={270}
                 height={30}
-                color={'#ff7272'}
+                color={'#63ace5'}
                 unfilledColor={'transparent'}
                 borderColor={'black'}>
                 <Text

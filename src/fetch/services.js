@@ -6,8 +6,8 @@ import { API_URL } from 'react-native-dotenv';
 
 export const getAPIUrl = () => {
   // console.log('API_URL: ', API_URL);
-  // return 'https://jobcore.herokuapp.com/api';
-  return 'https://8000-c50c6f93-a9bc-4720-bd98-2493535a5067.ws-us11.gitpod.io/api';
+  return 'https://jobcore.herokuapp.com/api';
+  // return 'https://8000-c50c6f93-a9bc-4720-bd98-2493535a5067.ws-us18.gitpod.io/api';
 };
 
 /**

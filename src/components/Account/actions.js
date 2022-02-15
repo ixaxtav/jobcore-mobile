@@ -139,7 +139,7 @@ const register = (
       Flux.dispatchEvent('Register', data);
     })
     .catch((err) => {
-      console.log('erroneous', err)
+      console.log('erroneous', err);
       Flux.dispatchEvent('AccountStoreError', err);
     });
 };
@@ -216,9 +216,10 @@ const editProfile = (
     });
 };
 
-const editStatus = (status, loginStore) => {
+const editStatus = (birthDate, loginStore) => {
   let data = {
     status: 'ACTIVE',
+    birth_date: birthDate,
   };
   let newLoginStore;
   if (loginStore) {
@@ -226,7 +227,6 @@ const editStatus = (status, loginStore) => {
     newLoginStore['user']['profile']['status'] = 'ACTIVE';
   }
 
-  console.log('newLoginStore', newLoginStore);
   putData(`/profiles/me`, data)
     .then((data) => {
       Flux.dispatchEvent('Login', newLoginStore);

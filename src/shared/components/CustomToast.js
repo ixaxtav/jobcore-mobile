@@ -26,7 +26,7 @@ const CustomToast = (
     text: text,
     type: type,
     style: { top: 25, borderRadius: 0 },
-    textStyle: { fontFamily:'UberMoveText-Medium' },
+    textStyle: { fontFamily: 'UberMoveText-Medium' },
     duration: duration,
     position: position,
     buttonText: 'Ok',

@@ -34,10 +34,11 @@ export default StyleSheet.create({
   },
   viewForm: {
     // width: width,
-    paddingLeft: 20,
-    paddingRight: 20,
+    justifyContent: 'center',
+    // paddingLeft: 20,
+    // paddingRight: 20,
     // marginTop: '10%',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   viewButtomLogin: {
     marginBottom: 0,
@@ -64,7 +65,7 @@ export default StyleSheet.create({
   termsAndConditionsTermTitle: {
     marginLeft: 5,
     color: 'black',
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   termsTitleContainer: {
     flexDirection: 'row',
@@ -126,8 +127,8 @@ export default StyleSheet.create({
 
   resendButtomClick: {
     fontSize: 18,
-    fontFamily:'UberMoveText-Light',
-    
+    fontFamily: 'UberMoveText-Light',
+
     marginTop: 15,
     marginBottom: 40,
     textDecorationLine: 'underline',

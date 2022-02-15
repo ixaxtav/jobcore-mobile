@@ -74,6 +74,8 @@ PODS:
     - React
   - react-native-signature-capture (0.4.11):
     - React
+  - react-native-webview (7.5.2):
+    - React
   - React/Core (0.59.10):
     - yoga (= 0.59.10.React)
   - React/fishhook (0.59.10)
@@ -127,6 +129,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-signature-capture (from `../node_modules/react-native-signature-capture/react-native-signature-capture.podspec`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
@@ -171,6 +174,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-signature-capture:
     :path: "../node_modules/react-native-signature-capture/react-native-signature-capture.podspec"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNDateTimePicker:
@@ -204,6 +209,7 @@ SPEC CHECKSUMS:
   react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
   react-native-netinfo: 27d908bc7ee7b9f29400c02938a0b2a27a1015be
   react-native-signature-capture: 12762c4939e37106840643092460738900576b15
+  react-native-webview: 7eefdb64f283cae1bebe82ebd8ddeb4b805900c0
   RNCAsyncStorage: db711e29e5e0500d9bd21aa0c2e397efa45302b1
   RNDateTimePicker: dc9dab744823a2c734dbc7362cdf57a3adba3c43
   RNDeviceInfo: 67607dfe9cfbed105838144c40187a8392aa404d
@@ -213,6 +219,6 @@ SPEC CHECKSUMS:
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: dfbf63c1cc8ce0111bf15f4e35c111c6fb58c352
+PODFILE CHECKSUM: 42ce16f7cb91c3ffef77042fd5acfb73bda324a0
 
 COCOAPODS: 1.10.1

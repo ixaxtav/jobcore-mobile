@@ -101,7 +101,6 @@ class BankAccounts extends FluxView {
 
   render() {
     const { isLoading, bankAccounts } = this.state;
-    console.log('banco estado', this.state);
     return (
       <I18n>
         {(t) => (
@@ -119,7 +118,7 @@ class BankAccounts extends FluxView {
                       <Text
                         style={{
                           marginBottom: 15,
-                          fontWeight: 700,
+                          fontWeight: '700',
                           fontSize: 24,
                           lineHeight: 45,
                         }}>
@@ -138,7 +137,7 @@ class BankAccounts extends FluxView {
                                 inlineLabel
                                 rounded>
                                 <Label>
-                                  <Text style={{ fontWeight: 500 }}>
+                                  <Text style={{ fontWeight: '500' }}>
                                     {bankAccount.institution_name +
                                       '\n' +
                                       bankAccount.name +

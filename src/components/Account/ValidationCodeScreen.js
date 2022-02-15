@@ -97,33 +97,54 @@ class ValidationCodeScreen extends Component {
         {(t) => (
           <Container>
             <Content contentContainerStyle={{ flexGrow: 1 }}>
-              <View style={{ flex: 1, backgroundColor:'white' }}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
                 {this.state.isLoading ? <Loading /> : null}
-           
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    style={{
+                      color: 'black',
+                      fontSize: 38,
+                      paddingRight: 35,
+                      paddingLeft: 32,
+                      paddingTop: 15,
+                    }}
                     name="arrow-back-sharp"
                   />
-
                 </TouchableOpacity>
-                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 35, paddingRight: 35 }}>
-                  
+                <View
+                  style={{
+                    paddingTop: 35,
+                    paddingLeft: 35,
+                    paddingBottom: 35,
+                    paddingRight: 35,
+                  }}>
                   {/* <View style={styles.formContainer}> */}
-                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light',marginBottom: 30 }}>
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      fontFamily: 'UberMoveText-Light',
+                      marginBottom: 30,
+                    }}>
                     {t('VALIDATE_CODE.title') + ' ' + phoneNumber}.
                   </Text>
 
-                 
                   <Text>
-                    <Text style={{ fontSize: 18,fontFamily:'UberMoveText-Light', color:'#007bff' }}>Didn't receive your code? </Text>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: 'UberMoveText-Light',
+                        color: '#007bff',
+                      }}>
+                      Didn't receive your code?{' '}
+                    </Text>
                     {!this.state.disableResend ? (
                       <Text
                         style={styles.resendButtomClick}
                         onPress={this.resend}>
                         {t('VALIDATE_CODE.resend')}
-
                       </Text>
                     ) : (
                       <Text style={styles.resendButtomClick}>
@@ -138,19 +159,18 @@ class ValidationCodeScreen extends Component {
                     phoneNumber={phoneNumber}
                   />
 
-                
-                  <View style={{ flexDirection:'row', justifyContent: 'flex-end' }}>
-
-                    <View style={{ justifyContent:'flex-end' }}>
-             
-
-                    </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                    }}>
+                    <View style={{ justifyContent: 'flex-end' }}></View>
                     <View style={{ marginRight: 35 }}>
-                      <Button dark
+                      <Button
+                        dark
                         onPress={this.validate}
-                        disabled = {this.state.value.length != 6}
-                        style={{ borderRadius:0, height: 60 }}
-                      >
+                        disabled={this.state.value.length != 6}
+                        style={{ borderRadius: 0, height: 60 }}>
                         {/* <Text style={styles.textButtom}>{t('LOGIN.signUp')}</Text> */}
                         <Icon
                           type="Ionicons"
@@ -159,9 +179,7 @@ class ValidationCodeScreen extends Component {
                           name="arrow-forward-sharp"
                         />
                       </Button>
-
                     </View>
-
                   </View>
                 </View>
               </View>

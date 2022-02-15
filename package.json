@@ -47,7 +47,7 @@
     "react-native-stars": "^1.1.6",
     "react-native-touch-id": "^4.4.1",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-webview": "^11.6.5",
+    "react-native-webview": "^7.5.2",
     "react-navigation": "2.18.2",
     "rxjs": "^5.5.10",
     "snake-case": "^2.1.0"

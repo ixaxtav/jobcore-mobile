@@ -68,7 +68,7 @@ class LoginScreen extends Component {
       toValue: 1,
       duration: 4000,
     }).start();
-    
+
     TouchID.isSupported(optionalConfigObject)
       .then((biometryType) => {
         if (biometryType === 'FaceID') {
@@ -257,7 +257,7 @@ class LoginScreen extends Component {
     this.isLoading(false);
     // CustomToast(err, 'danger');
   };
-  
+
   fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(this.state.fadeAnim, {
@@ -269,36 +269,93 @@ class LoginScreen extends Component {
     const { loginAuto, biometrySupport } = this.state;
     // console.log('loginn autoo ',loginAuto)
     // console.log('biometry ', biometrySupport)
- 
+
     return (
       <I18n>
         {(t) => (
-          <Container >
-            <SafeAreaView style={{ flex:0, backgroundColor: 'black' }}>
-              <Text style={{ color: 'white', fontSize:14, fontWeight:'bold', marginLeft:15, marginBottom: 15 }}>JobCore Talent </Text>
-
+          <Container>
+            <SafeAreaView style={{ flex: 0, backgroundColor: 'black' }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 14,
+                  fontWeight: '700',
+                  marginLeft: 15,
+                  marginBottom: 15,
+                }}>
+                JobCore Talent{' '}
+              </Text>
             </SafeAreaView>
-            <Content contentContainerStyle={{ flexDirection: 'column', flex: 1 }}>
+            <Content
+              contentContainerStyle={{ flexDirection: 'column', flex: 1 }}>
               {/* <View style={styles.container}> */}
               {this.state.isLoading ? <Loading /> : null}
-              <ImageBackground  source={require('../../assets/image/employee.jpg')}style={{ flex: 4, resizeMode:'cover', justifyContent:'center', backgroundColor:'black' }} imageStyle={{ opacity: 0.3 }}>
+              <ImageBackground
+                source={require('../../assets/image/employee.jpg')}
+                style={{
+                  flex: 4,
+                  resizeMode: 'cover',
+                  justifyContent: 'center',
+                  backgroundColor: 'black',
+                }}
+                imageStyle={{ opacity: 0.3 }}>
                 <Animated.View style={{ opacity: this.state.fadeAnim }}>
-                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, marginBottom: 10, textAlign:'center', fontFamily: 'UberMoveText-Light' }}>Find Jobs </Text>
-                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, marginBottom: 10, textAlign:'center', fontFamily: 'UberMoveText-Light'   }}>Get Hired </Text>
-                  <Text style={{ color: 'white', fontSize:38, marginLeft:10, textAlign:'center', fontFamily: 'UberMoveText-Light'   }}>Get Paid Faster </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 38,
+                      marginLeft: 10,
+                      marginBottom: 10,
+                      textAlign: 'center',
+                      fontFamily: 'UberMoveText-Light',
+                    }}>
+                    Find Jobs{' '}
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 38,
+                      marginLeft: 10,
+                      marginBottom: 10,
+                      textAlign: 'center',
+                      fontFamily: 'UberMoveText-Light',
+                    }}>
+                    Get Hired{' '}
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 38,
+                      marginLeft: 10,
+                      textAlign: 'center',
+                      fontFamily: 'UberMoveText-Light',
+                    }}>
+                    Get Paid Faster{' '}
+                  </Text>
                 </Animated.View>
               </ImageBackground>
-              
-              <View style={{ flex: 2, backgroundColor: 'white', justifyContent:'center', marginLeft: 15, marginTop: 30 }}>
-                <Text style={{ fontSize: 26, fontFamily:'UberMoveText-Light' }}>
+
+              <View
+                style={{
+                  flex: 2,
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  marginLeft: 15,
+                  marginTop: 30,
+                }}>
+                <Text
+                  style={{ fontSize: 26, fontFamily: 'UberMoveText-Light' }}>
                   Welcome to the
                 </Text>
-                <Text style={{ fontSize: 26, fontFamily:'UberMoveText-Light', marginTop: 5 }}>
-                  JobCore app
+                <Text
+                  style={{
+                    fontSize: 26,
+                    fontFamily: 'UberMoveText-Light',
+                    marginTop: 5,
+                  }}>
+                  JobCore Talent app
                 </Text>
                 <View style={{ marginTop: 15 }}>
-
-            
                   {/* <Button
                     style={{ ...styles.viewButtomLogin,  flex: 1 }}
                     full
@@ -313,25 +370,28 @@ class LoginScreen extends Component {
                   >
                     <Text style={styles.textButtomRegister}>{t('LOGIN.signIn')}</Text>
                   </Button> */}
-
-
                 </View>
                 <Button
                   full
                   dark
                   onPress={this.userRegister.bind(this)}
-                  style={{ marginBottom: 15, marginRight: 15 }}
-                >
-                  <Text style={styles.textButtomLogin}>{t('LOGIN.signUp')}</Text>
+                  style={{ marginBottom: 15, marginRight: 15 }}>
+                  <Text style={styles.textButtomLogin}>
+                    {t('LOGIN.signUp')}
+                  </Text>
                 </Button>
                 <Button
                   full
-                  
                   onPress={this.userLogin.bind(this)}
-                  style={{ marginBottom: 15, marginRight: 15, backgroundColor:'#ededed' }}
-                >
-                  <Text style={styles.textButtomRegister}>{t('LOGIN.signIn')}</Text>
-                </Button> 
+                  style={{
+                    marginBottom: 15,
+                    marginRight: 15,
+                    backgroundColor: '#ededed',
+                  }}>
+                  <Text style={styles.textButtomRegister}>
+                    {t('LOGIN.signIn')}
+                  </Text>
+                </Button>
               </View>
               {/* <Image
                   style={styles.viewBackground}
@@ -464,4 +524,3 @@ class LoginScreen extends Component {
 }
 
 export default LoginScreen;
-

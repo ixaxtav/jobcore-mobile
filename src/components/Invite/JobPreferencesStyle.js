@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
   sliderLabel: {
     textAlign: 'center',
-    fontFamily:'UberMoveText-Light',
+    fontFamily: 'UberMoveText-Light',
     color: 'black',
   },
   textButton: {
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   textButtonWhite: {
     textAlign: 'center',
@@ -68,7 +68,7 @@ export default StyleSheet.create({
   textPositions: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: 'black',
   },
   buttonRounded: {
@@ -199,7 +199,7 @@ export default StyleSheet.create({
   textLocation: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: 'black',
   },
   accordionPosition: {

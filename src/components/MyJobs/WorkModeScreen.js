@@ -170,7 +170,7 @@ class WorkModeScreen extends Component {
                 progress={minutesPassedPct}
                 width={270}
                 height={30}
-                color={BLUE_MAIN}
+                color={'#63ace5'}
                 unfilledColor={'transparent'}
                 borderColor={BLUE_DARK}>
                 <Text

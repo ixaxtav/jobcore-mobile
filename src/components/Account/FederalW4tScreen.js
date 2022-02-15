@@ -1092,16 +1092,6 @@ class FederalW4tScreen extends Component {
                   marginTop: 30,
                   marginBottom: 15,
                 }}>
-                <Text
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 15,
-                  }}>
-                  Under penalties of perjury, I declare that this certificate,
-                  to the best of my knowledge and belief, is true, correct, and
-                  complete.
-                </Text>
                 <View>
                   <Text>Signature of Employee</Text>
                   <Text>Today's Date: {moment().format('MM/DD/YYYY')}</Text>
@@ -1141,6 +1131,11 @@ class FederalW4tScreen extends Component {
                     </TouchableHighlight>
  
                 </View> */}
+                {!this.state.data.employee_signature && (
+                  <Text style={{ color: 'red', fontWeight: '700' }}>
+                    - Employee Signature is required
+                  </Text>
+                )}
               </View>
             </Content>
             <Footer>

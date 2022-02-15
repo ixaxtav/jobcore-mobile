@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { Alert, Dimensions, View, ScrollView } from 'react-native';
+import { Alert, Dimensions, View, ScrollView, Linking } from 'react-native';
 import { Button, Container, Text } from 'native-base';
 import { inviteStyles } from './InviteDetailsStyle';
 import { I18n } from 'react-i18next';
@@ -13,6 +13,7 @@ import MARKER_IMG from '../../assets/image/map-marker.png';
 import { ModalHeader } from '../../shared/components/ModalHeader';
 import { JobInformation } from '../../shared/components/JobInformation';
 import inviteStore from './InviteStore';
+import moment from 'moment';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -114,6 +115,7 @@ class InviteDetailsV2 extends Component {
 
   render() {
     const { isLoading, invite } = this.state;
+    console.log('this state', this.state);
     const renderInvite = (t, invite) => {
       const { shift } = invite;
       return (
@@ -179,6 +181,27 @@ class InviteDetailsV2 extends Component {
                   </Button>
                 </View>
               </View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginLeft: 15,
+                  marginRight: 15,
+                  marginTop: 15,
+                }}>
+                By you applying, you agree to the{' '}
+                <Text
+                  style={{ color: 'blue' }}
+                  onPress={() => {
+                    if (invite && invite.sender === 1) {
+                      Linking.openURL(
+                        'https://res.cloudinary.com/hq02xjols/image/upload/v1627310498/code-of-conducts/Code_of_Conduct_FINAL.docx.pdf',
+                      );
+                    }
+                  }}>
+                  code of conduct
+                </Text>{' '}
+                of this company
+              </Text>
             </ScrollView>
           </ViewFlex>
         </>
@@ -257,6 +280,26 @@ class InviteDetailsV2 extends Component {
     }
 
     if (!jobTitle) return;
+
+    if (
+      this.state.invite &&
+      this.state.invite.employee.employment_verification_status ===
+        'NOT_APPROVED' &&
+      this.state.invite.employee.user.date_joined
+    ) {
+      if (
+        moment(this.state.invite.employee.user.date_joined, 'YYYYMMDD').isAfter(
+          moment('20210925'),
+        )
+      ) {
+        return Alert.alert(
+          'Employment Verification Requiered',
+          'Please, submit both your W-4 and I-9 Employment Verification. Once approved you will be able to accepet shift invites in JobCore Talent. ', // <- this part is optional, you can pass an empty string
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+          { cancelable: false },
+        );
+      }
+    }
 
     Alert.alert(
       i18next.t('JOB_INVITES.applyJob'),

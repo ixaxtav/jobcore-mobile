@@ -36,10 +36,10 @@ export default StyleSheet.create({
   },
   viewProfileImgOnboarding: {
     alignSelf: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 15,
-    paddingLeft: 15,
+    // paddingLeft: 15,
     width: 160,
   },
   viewProfileResumeOnboarding: {
@@ -82,7 +82,7 @@ export default StyleSheet.create({
   },
   textName: {
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: BLUE_DARK,
     marginBottom: 10,
   },
@@ -95,7 +95,7 @@ export default StyleSheet.create({
   textRowTitle: {
     textAlign: 'center',
     color: BLUE_DARK,
-    fontWeight: 'bold',
+    fontWeight: '700',
     margin: 0,
   },
   textRowNumber: {
@@ -122,7 +122,7 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
   },
   textSubtitle: {
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: BLUE_DARK,
     marginBottom: 10,
   },
@@ -157,7 +157,7 @@ export default StyleSheet.create({
     paddingLeft: 35,
   },
   titleProfile: {
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: BLUE_DARK,
   },
   textProfile: {

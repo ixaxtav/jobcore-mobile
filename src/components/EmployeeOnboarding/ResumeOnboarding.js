@@ -13,6 +13,7 @@ import {
   Button,
   Left,
   Body,
+  Right,
   Title,
   Text,
   Form,
@@ -130,7 +131,7 @@ class ResumeOnboarding extends Component {
                   onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -138,6 +139,7 @@ class ResumeOnboarding extends Component {
               <Body style={{ flex: 0 }}>
                 <Title></Title>
               </Body>
+              <Right></Right>
             </Header>
             <Content>
               <View
@@ -147,14 +149,20 @@ class ResumeOnboarding extends Component {
                 <H1
                   style={{
                     marginBottom: 15,
-                    fontWeight: 700,
+                    fontWeight: '700',
                     fontSize: 32,
                     lineHeight: 45,
-                    fontFamily:'UberMoveText-Medium',
+                    fontFamily: 'UberMoveText-Medium',
                   }}>
                   Upload your Resume
                 </H1>
-                <Text style={{ fontSize: 18, marginTop: 10,fontFamily:'UberMoveText-Light', color: 'gray' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: 10,
+                    fontFamily: 'UberMoveText-Light',
+                    color: 'gray',
+                  }}>
                   Employers will have access to your resume. Make sure you
                   upload the most updated version of your resume.
                 </Text>
@@ -172,9 +180,9 @@ class ResumeOnboarding extends Component {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 'bold',
+                            fontWeight: '700',
                             textAlign: 'center',
-                            fontFamily:'UberMoveText-Medium',
+                            fontFamily: 'UberMoveText-Medium',
                             marginTop: 15,
                             color: '#4BB543',
                           }}>
@@ -184,9 +192,9 @@ class ResumeOnboarding extends Component {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 'bold',
+                            fontWeight: '700',
                             textAlign: 'center',
-                            fontFamily:'UberMoveText-Medium',
+                            fontFamily: 'UberMoveText-Medium',
                             marginTop: 15,
                           }}>
                         Upload Or Skip This Step
@@ -218,7 +226,14 @@ class ResumeOnboarding extends Component {
 
                         this.props.navigation.navigate(DOB_ONBOARDING_ROUTE);
                       }}>
-                      <Text style={{ color: 'white',fontFamily:'UberMoveText-Medium', fontSize: 18 }}>Next</Text>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontFamily: 'UberMoveText-Medium',
+                          fontSize: 16,
+                        }}>
+                      Next
+                      </Text>
                     </Button>
                   ) : (
                     <Button
@@ -227,7 +242,14 @@ class ResumeOnboarding extends Component {
                       onPress={() =>
                         this.props.navigation.navigate(DOB_ONBOARDING_ROUTE)
                       }>
-                      <Text style={{ color: 'white',fontFamily:'UberMoveText-Medium', fontSize: 18 }}>Next</Text>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontFamily: 'UberMoveText-Medium',
+                          fontSize: 16,
+                        }}>
+                      Next
+                      </Text>
                     </Button>
                   )}
               </FooterTab>

@@ -89,10 +89,10 @@ export default StyleSheet.create({
     fontFamily: 'UberMoveText-Medium',
     fontWeight: '500',
     textAlign: 'center',
-    color:'white',
+    color: 'white',
     ...Platform.select({
       android: {
-        color: 'black',
+        color: 'white',
         alignItems: 'center',
         justifyContent: 'center',
       },
@@ -103,7 +103,7 @@ export default StyleSheet.create({
     fontFamily: 'UberMoveText-Medium',
     fontWeight: '500',
     textAlign: 'center',
-    color:'black',
+    color: 'black',
     ...Platform.select({
       android: {
         color: 'black',
@@ -123,7 +123,7 @@ export default StyleSheet.create({
   },
   // textButtomRegister: {
   //   fontSize: 18,
-  //   fontWeight: '500',
+  //   fontWeight: "500",
   //   textAlign: 'center',
   //   color: 'black',
   // },

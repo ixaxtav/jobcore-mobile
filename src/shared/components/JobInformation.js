@@ -43,7 +43,7 @@ const JobInformation = (props) => {
       </View>
       {shift.description != '' && (
         <View style={{ paddingRight: 10, paddingLeft: 10, paddingBottom: 10 }}>
-          <Text style={{ fontWeight: 700 }}>Shift Description:</Text>
+          <Text style={{ fontWeight: '700' }}>Shift Description:</Text>
           <Text>{shift.description}</Text>
         </View>
       )}

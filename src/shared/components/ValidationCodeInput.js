@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 30,
     textAlign: 'center',
-    fontFamily: 'UberMoveText-Light', 
+    fontFamily: 'UberMoveText-Light',
   },
   focusCell: {
     borderBottomColor: 'black',

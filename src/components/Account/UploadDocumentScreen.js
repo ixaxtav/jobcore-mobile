@@ -151,9 +151,9 @@ class UploadDocumentScreen extends Component {
         last_name: accountStore.getState('Login').user.last_name || '',
         middle_initial: '',
         other_last_name: '',
-        address: '' ,
+        address: '',
         apt_number: '',
-        state: '' ,
+        state: '',
         city: '',
         zipcode: '',
         date_of_birth: '',
@@ -233,17 +233,17 @@ class UploadDocumentScreen extends Component {
     this.getUserSubscription = accountStore.subscribe('getUser', (user) => {
       console.log('el user', user);
       // this.setState({ user });
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         user,
-        data: {                 
-          ...prevState.data,   
-          city: user.city,      
-          address: user.location,      
-          state: user.state,      
-          date_of_birth: user.birth_date,      
-          phone: user.phone_number,      
+        data: {
+          ...prevState.data,
+          city: user.city,
+          address: user.location,
+          state: user.state,
+          date_of_birth: user.birth_date,
+          phone: user.phone_number,
         },
-      }))
+      }));
     });
     this.accountStoreError = accountStore.subscribe(
       'AccountStoreError',
@@ -253,7 +253,6 @@ class UploadDocumentScreen extends Component {
     getDocumentsTypes();
     getUser();
     getI9Form();
-    
   }
 
   componentWillUnmount() {
@@ -449,10 +448,53 @@ class UploadDocumentScreen extends Component {
     this.setState((prev) => ({ data: { ...prev.data, social_security: r } }));
   }
 
+  documentError(a, b, c) {
+    console.log('a', a);
+    console.log('b', b);
+    console.log('c', c);
+    if (
+      Array.isArray(this.state.documents) &&
+      this.state.documents.length > 0
+    ) {
+      if (a) {
+        return console.log('success');
+      } else if (b & c) {
+        return console.log('success');
+      } else if (!a) {
+        if (b & c) {
+          return console.log('success');
+        } else if (b || c) {
+          return (
+            <Text style={{ color: 'red', fontWeight: '700' }}>
+              - Please upload one document from Document B and another one from
+              Document C. Or one Document A
+            </Text>
+          );
+        } else
+          return (
+            <Text style={{ color: 'red', fontWeight: '700' }}>
+              - Please upload one document from Document A list (Passport,
+              Resident Card, Employment Authorization Document).{' '}
+            </Text>
+          );
+      } else if (b & c) {
+        if (a) {
+          return console.log('success');
+        } else {
+          return (
+            <Text style={{ color: 'red', fontWeight: '700' }}>
+              - Please upload one document from Document B and another one from
+              Document C.{' '}
+            </Text>
+          );
+        }
+      }
+    }
+  }
+
   handleChange = (name, value) => {
     this.setState((prev) => ({ data: { ...prev.data, [name]: value } }));
   };
-
 
   render() {
     const { user, showWarning, documentsTypes } = this.state;
@@ -486,7 +528,23 @@ class UploadDocumentScreen extends Component {
       : '';
 
     console.log('estados', this.state);
-    console.log('store', accountStore.getState('Login').user);
+
+    var hasDocumentA = false;
+    var hasDocumentB = false;
+    var hasDocumentC = false;
+
+    if (Array.isArray(documents) && documents.length > 0) {
+      if (documents.some((e) => e.document_type.document_a === true)) {
+        hasDocumentA = true;
+      }
+      if (documents.some((e) => e.document_type.document_b === true)) {
+        hasDocumentB = true;
+      }
+      if (documents.some((e) => e.document_type.document_c === true)) {
+        hasDocumentC = true;
+      }
+    }
+
     return (
       <I18n>
         {(t) => (
@@ -1124,9 +1182,11 @@ class UploadDocumentScreen extends Component {
                       <View style={UploadDocumentStyle.stepCirle}>
                         <Text style={UploadDocumentStyle.stepCirleText}>1</Text>
                       </View>
-                      <Text style={{ display:'flex' }}>{'Upload one document from List A'}</Text>
+                      <Text style={{ display: 'flex' }}>
+                        {'Upload one document from List A'}
+                      </Text>
                     </View>
-               
+
                     {/* Step 2 */}
 
                     <View style={UploadDocumentStyle.step1Container}>
@@ -1139,7 +1199,7 @@ class UploadDocumentScreen extends Component {
                         }
                       </Text>
                     </View>
-                  
+
                     {documents.length > 0
                       ? documents.map((doc, i) => (
                         <Document
@@ -1218,7 +1278,38 @@ class UploadDocumentScreen extends Component {
                   }}
                 />
               </Modal>
-              
+              {!this.state.data.social_security && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Social Security is required
+                </Text>
+              )}
+              {!this.state.data.address && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Address is required
+                </Text>
+              )}
+              {!this.state.data.employee_signature && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Employee Signature is required
+                </Text>
+              )}
+              {!this.state.data.city && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Employee City is required
+                </Text>
+              )}
+              {!this.state.data.date_of_birth && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Employee Date Of Birth is required
+                </Text>
+              )}
+              {documents.length === 0 && (
+                <Text style={{ color: 'red', fontWeight: '700' }}>
+                  - Please upload employment verification documents
+                </Text>
+              )}
+              {documents.length > 0 &&
+                this.documentError(hasDocumentA, hasDocumentB, hasDocumentC)}
             </Content>
             <Footer>
               <FooterTab style={{ backgroundColor: 'black' }}>
@@ -1228,6 +1319,8 @@ class UploadDocumentScreen extends Component {
                       !this.state.data.social_security ||
                       !this.state.data.address ||
                       !this.state.data.employee_signature ||
+                      !this.state.data.city ||
+                      !this.state.data.date_of_birth ||
                       documents.length === 0
                     ) {
                       Alert.alert('Error', 'Please fill required fields', [

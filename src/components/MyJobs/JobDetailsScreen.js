@@ -268,7 +268,7 @@ class JobDetailsScreen extends Component {
                 {this.showClockOutButton() ? (
                   <Button
                     block
-                    rounded
+                    // rounded
                     style={{
                       marginVertical: 15,
                       backgroundColor: VIOLET_MAIN,

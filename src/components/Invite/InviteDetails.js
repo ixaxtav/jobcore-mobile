@@ -127,13 +127,14 @@ class InviteDetails extends Component {
               screenName="inviteDetails"
               title={t('JOB_INVITES.inviteDetails')}
             />
+
             <Content>
               <View style={styles.viewShift}>
                 {this.state.invite && this.state.invite.shift ? (
                   <JobDetails isInvite shift={this.state.invite.shift} />
                 ) : null}
               </View>
-
+              <Text>What sup</Text>
               <MapView
                 style={styles.map}
                 region={this.state.region}

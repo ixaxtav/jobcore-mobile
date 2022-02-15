@@ -23,6 +23,7 @@ import {
 import {
   LOGIN_ROUTE,
   TERMS_AND_CONDITIONS_ROUTE,
+  SIGNIN_ROUTE,
 } from '../../constants/routes';
 import {
   BLACK_MAIN,
@@ -59,6 +60,7 @@ class RegisterScreen extends Component {
       city: 'others',
       profile_city: 'others',
       isRegisterOpen: true,
+      passwordHelp: false,
       acceptTerms: store.getState('TermsAndCondition'),
     };
   }
@@ -91,14 +93,14 @@ class RegisterScreen extends Component {
 
   registerHandler = () => {
     this.isLoading(false);
-    this.props.navigation.navigate(LOGIN_ROUTE);
+    this.props.navigation.navigate(SIGNIN_ROUTE);
     CustomToast(i18next.t('REGISTER.youHaveRegistered'));
   };
 
   errorHandler = (err) => {
     this.isLoading(false);
     CustomToast(err, 'danger');
-    this.setState({ error: err })
+    this.setState({ error: err });
   };
 
   render() {
@@ -108,16 +110,26 @@ class RegisterScreen extends Component {
         {(t) => (
           <Container>
             <Content
-              contentContainerStyle={{ flexGrow: 1, backgroundColor: 'red' }}>
-              <View style={{ flex: 1, backgroundColor:'white' }}>
+              contentContainerStyle={{
+                flexGrow: 1,
+                backgroundColor: 'transparent',
+                paddingRight: 15,
+                paddingLeft: 15,
+              }}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
                 {this.state.isLoading ? <Loading /> : null}
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    style={{
+                      color: 'black',
+                      fontSize: 38,
+
+                      paddingTop: 15,
+                    }}
                     name="arrow-back-sharp"
                   />
-
                 </TouchableOpacity>
                 {/* <Image
                 style={styles.viewBackground}
@@ -127,52 +139,202 @@ class RegisterScreen extends Component {
                   style={styles.viewLogo}
                   source={require('../../assets/image/logo1.png')}
                 /> */}
-                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 15 }}>
-                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light' }}>{'Let\'s start with creating your account'}</Text>
-
+                <View
+                  style={{
+                    paddingTop: 35,
+                    paddingLeft: 15,
+                  }}>
+                  <Text
+                    style={{ fontSize: 26, fontFamily: 'UberMoveText-Light' }}>
+                    {'Let\'s start by creating your account'}
+                  </Text>
                 </View>
-                <View style={styles.viewForm}>
+                <View>
                   <Form>
-
-                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                      }}>
                       <View style={{ flex: 1 }}>
-                        <Item floatingLabel style={{ height:60 }}>
-                          <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.firstName')}</Label>
-                          <Input  clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }} value={this.state.firstName} onChangeText={(text) => this.setState({ firstName: text, error: null })}/>
+                        <Item floatingLabel style={{ height: 60 }}>
+                          <Label
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              fontSize: 20,
+                            }}>
+                            {t('REGISTER.firstName')}
+                          </Label>
+                          <Input
+                            clearButtonMode="always"
+                            autoCorrect={false}
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              fontSize: 20,
+                            }}
+                            value={this.state.firstName}
+                            onChangeText={(text) =>
+                              this.setState({ firstName: text, error: null })
+                            }
+                          />
                         </Item>
                         {this.state.error === 'Enter your first name' && (
-                          <Text style={{ color: 'red', fontFamily:'UberMoveText-Light',paddingLeft: 15 }}>{this.state.error}</Text>
+                          <Text
+                            style={{
+                              color: 'red',
+                              fontFamily: 'UberMoveText-Light',
+                              paddingLeft: 15,
+                            }}>
+                            {this.state.error}
+                          </Text>
                         )}
                       </View>
-                      <View
-                        style={{ flex: 1, paddingRight: 10 }}>
-                        <Item floatingLabel style={{ height:60 }}>
-                          <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.lastName')}</Label>
-                          <Input   clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }}  value={this.state.lastName} onChangeText={(text) => this.setState({ lastName: text, error: null })}/>
+                      <View style={{ flex: 1, paddingRight: 10 }}>
+                        <Item floatingLabel style={{ height: 60 }}>
+                          <Label
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              fontSize: 20,
+                            }}>
+                            {t('REGISTER.lastName')}
+                          </Label>
+                          <Input
+                            clearButtonMode="always"
+                            autoCorrect={false}
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              fontSize: 20,
+                            }}
+                            value={this.state.lastName}
+                            onChangeText={(text) =>
+                              this.setState({ lastName: text, error: null })
+                            }
+                          />
                         </Item>
                         {this.state.error === 'Enter your last name' && (
-                          <Text style={{ color: 'red', fontFamily:'UberMoveText-Light',paddingLeft: 15 }}>{this.state.error}</Text>
+                          <Text
+                            style={{
+                              color: 'red',
+                              fontFamily: 'UberMoveText-Light',
+                              paddingLeft: 15,
+                            }}>
+                            {this.state.error}
+                          </Text>
                         )}
                       </View>
                     </View>
-                    <Item floatingLabel style={{ height:60 }}>
-                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.email')}</Label>
-                      <Input autoCapitalize={'none'} keyboardType={'email-address'} clearButtonMode="always" autoCorrect={false} style={{ fontFamily:'UberMoveText-Light',fontSize: 20 }}  value={this.state.email} onChangeText={(text) => this.setState({ email: text, error: null })}/>
+                    <Item floatingLabel style={{ height: 60 }}>
+                      <Label
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          fontSize: 20,
+                        }}>
+                        {t('REGISTER.email')}
+                      </Label>
+                      <Input
+                        autoCapitalize={'none'}
+                        keyboardType={'email-address'}
+                        clearButtonMode="always"
+                        autoCorrect={false}
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          fontSize: 20,
+                        }}
+                        value={this.state.email}
+                        onChangeText={(text) =>
+                          this.setState({ email: text, error: null })
+                        }
+                      />
                     </Item>
                     {this.state.error === 'This email already exist.' && (
-                      <Text style={{ color: 'red',fontFamily:'UberMoveText-Light', paddingLeft: 15 }}>{this.state.error}</Text>
+                      <Text
+                        style={{
+                          color: 'red',
+                          fontFamily: 'UberMoveText-Light',
+                          paddingLeft: 15,
+                        }}>
+                        {this.state.error}
+                      </Text>
                     )}
 
-                    <Item floatingLabel style={{ height:60 }}>
-                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.phoneNumber')}</Label>
-                      <Input autoCapitalize={'none'} keyboardType={'number-pad'} clearButtonMode="always"  maxLength={11} autoCorrect={false} style={{ fontSize: 20,fontFamily:'UberMoveText-Light' }}  value={this.state.phoneNumber} onChangeText={(text) => this.setState({ phoneNumber: text, error: null })}/>
+                    <Item floatingLabel style={{ height: 60 }}>
+                      <Label
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          fontSize: 20,
+                        }}>
+                        {t('REGISTER.phoneNumber')}
+                      </Label>
+                      <Input
+                        autoCapitalize={'none'}
+                        keyboardType={'number-pad'}
+                        clearButtonMode="always"
+                        maxLength={11}
+                        autoCorrect={false}
+                        style={{
+                          fontSize: 20,
+                          fontFamily: 'UberMoveText-Light',
+                        }}
+                        value={this.state.phoneNumber}
+                        onChangeText={(text) =>
+                          this.setState({ phoneNumber: text, error: null })
+                        }
+                      />
                     </Item>
-                    <Item floatingLabel style={{ height:60, marginBottom:15 }}>
-                      <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>{t('REGISTER.password')}</Label>
-                      <Input autoCapitalize={'none'} clearButtonMode="always" autoCorrect={false} style={{ fontSize: 20, fontFamily:'UberMoveText-Light' }}  secureTextEntry={true} value={this.state.password} onChangeText={(text) => this.setState({ password: text, error: null })}/>
+                    <Item
+                      floatingLabel
+                      style={{ height: 60, marginBottom: 15 }}>
+                      <Label
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          fontSize: 20,
+                        }}>
+                        {t('REGISTER.password')}
+                      </Label>
+                      <Icon
+                        type="FontAwesome"
+                        style={{
+                          color: 'black',
+                          fontSize: 18,
+                        }}
+                        onPress={() =>
+                          this.setState({
+                            passwordHelp: !this.state.passwordHelp,
+                          })
+                        }
+                        name="question-circle"
+                      />
+                      <Input
+                        autoCapitalize={'none'}
+                        clearButtonMode="always"
+                        autoCorrect={false}
+                        style={{
+                          fontSize: 20,
+                          fontFamily: 'UberMoveText-Light',
+                        }}
+                        secureTextEntry={true}
+                        value={this.state.password}
+                        onChangeText={(text) =>
+                          this.setState({ password: text, error: null })
+                        }
+                      />
                     </Item>
-                    <Text style={{ fontFamily:'UberMoveText-Light',fontSize: 12, color: 'gray', paddingLeft: 15 }}>Your password must be greater than 8 characters. </Text>
-           
+                    {this.state.passwordHelp && (
+                      <Item style={{ borderBottomWidth: 0 }}>
+                        <Text
+                          style={{
+                            fontFamily: 'UberMoveText-Light',
+                            fontSize: 14,
+                            color: 'gray',
+                          }}>
+                          - Your password must be greater than 8 characters.
+                          {'\n'}- At least 1 of the following: uppercase,
+                          lowercase, numeric, or special characters.{'\n'}
+                        </Text>
+                      </Item>
+                    )}
+
                     {/* <Item style={styles.viewInput} inlineLabel rounded>
                       <Input
                         keyboardType={'number-pad'}
@@ -225,7 +387,7 @@ class RegisterScreen extends Component {
                       />
                     </Item>
                   ) : null} */}
-              
+
                     <GooglePlacesAutocomplete
                       placeholder={t('REGISTER.wroteCity')}
                       placeholderTextColor="#606160"
@@ -259,7 +421,7 @@ class RegisterScreen extends Component {
                           borderRadius: 0,
                           paddingLeft: 15,
                           borderColor: '#D9D5DC',
-                          color:'black',
+                          color: 'black',
                           paddingTop: 0,
                           paddingRight: 10,
                           paddingBottom: 5,
@@ -267,7 +429,7 @@ class RegisterScreen extends Component {
                         },
                         textInputContainer: {
                           backgroundColor: 'transparent',
-                          height:50,
+                          height: 50,
                           fontSize: 20,
                           borderTopWidth: 0,
                           paddingRight: 5,
@@ -282,13 +444,13 @@ class RegisterScreen extends Component {
                         textInput: {
                           // paddingLeft: 8,
                           fontSize: 20,
-                          fontFamily:'UberMoveText-Light',
+                          fontFamily: 'UberMoveText-Light',
                           height: 50,
                           color: 'black',
                           flex: 1,
                           top: 1.5,
                           paddingRight: 5,
-                          fontSize:20,
+                          fontSize: 20,
                           paddingLeft: 0,
                           marginTop: 0,
                           marginLeft: 0,
@@ -346,7 +508,14 @@ class RegisterScreen extends Component {
                       />
                     </Item> */}
                     {this.state.error === 'Enter a city' && (
-                      <Text style={{ color: 'red', paddingLeft: 15, fontFamily:'UberMoveText-Light' }}>{this.state.error}</Text>
+                      <Text
+                        style={{
+                          color: 'red',
+                          paddingLeft: 15,
+                          fontFamily: 'UberMoveText-Light',
+                        }}>
+                        {this.state.error}
+                      </Text>
                     )}
                     <View
                       style={{
@@ -360,7 +529,11 @@ class RegisterScreen extends Component {
                         actions.editTermsAndCondition(!acceptTerms)
                       }
                     /> */}
-                      <View style={{ paddingLeft: 15, paddingTop: 15, paddingBottom: 30  }}>
+                      <View
+                        style={{
+                          paddingLeft: 15,
+                          paddingTop: 15,
+                        }}>
                         {/* <Text>{t('TERMS_AND_CONDITIONS.accept')}</Text> */}
                         {/* <TouchableOpacity
                           onPress={() =>
@@ -379,18 +552,29 @@ class RegisterScreen extends Component {
                             </Text>
                           </Text>
                         </TouchableOpacity> */}
-                        <Text style={{ fontFamily:'UberMoveText-Light' }}>{'By proceeding, I agree to JobCore\'s '}
+                        <Text style={{ fontFamily: 'UberMoveText-Light' }}>
+                          {'By proceeding, I agree to JobCore\'s '}
                           <Text
-                            style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
-                            onPress={() => {Linking.openURL('https://jobcore.co/legal')}}
-                          >
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              color: '#007bff',
+                            }}
+                            onPress={() => {
+                              Linking.openURL('https://jobcore.co/legal');
+                            }}>
                             {'Terms of Use '}
                           </Text>
-                          <Text  style={{ fontFamily:'UberMoveText-Light' }}>and acknowledge that I have read the</Text>
+                          <Text style={{ fontFamily: 'UberMoveText-Light' }}>
+                            and acknowledge that I have read the
+                          </Text>
                           <Text
-                            style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
-                            onPress={() => {Linking.openURL('https://jobcore.co/privacy')}}
-                          >
+                            style={{
+                              fontFamily: 'UberMoveText-Light',
+                              color: '#007bff',
+                            }}
+                            onPress={() => {
+                              Linking.openURL('https://jobcore.co/privacy');
+                            }}>
                             {' Privacy Notice.'}
                           </Text>
                         </Text>
@@ -399,8 +583,13 @@ class RegisterScreen extends Component {
                     <Button
                       full
                       onPress={this.register}
-                      style={styles.viewButtomLogin}>
-                      <Text style={{ fontFamily:'UberMoveText-Medium', fontSize: 20, color: 'white' }}>
+                      style={{ margin: 15, backgroundColor: 'black' }}>
+                      <Text
+                        style={{
+                          fontFamily: 'UberMoveText-Medium',
+                          fontSize: 26,
+                          color: 'white',
+                        }}>
                         {t('REGISTER.signUp')}
                       </Text>
                     </Button>

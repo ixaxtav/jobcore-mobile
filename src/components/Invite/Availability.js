@@ -18,7 +18,7 @@ import { I18n } from 'react-i18next';
 import { i18next } from '../../i18n';
 import { LOG } from '../../shared';
 import { Loading } from '../../shared/components';
-import { DateTimePicker as ModalDateTimePicker } from 'react-native-modal-datetime-picker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { ModalHeader } from '../../shared/components/ModalHeader';
 import { availabilityModel } from './availability-model';
@@ -140,14 +140,14 @@ class AddAvailability extends Component {
                   onRefresh={this.refreshAvailability}
                 />
               }>
-              <ModalDateTimePicker
+              <DateTimePicker
                 mode={'time'}
                 is24Hour={false}
                 isVisible={this.state.startTimePickerVisible}
                 onConfirm={(date) => this.handleStartTimePicked(date)}
                 onCancel={this.hideStartTimePicker}
               />
-              <ModalDateTimePicker
+              <DateTimePicker
                 mode={'time'}
                 is24Hour={false}
                 isVisible={this.state.endTimePickerVisible}

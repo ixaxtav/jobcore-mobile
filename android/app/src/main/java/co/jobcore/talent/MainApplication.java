@@ -3,11 +3,17 @@ package co.jobcore.talent;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+//import com.RNFetchBlob.RNFetchBlobPackage;
+//import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
+//import org.wonday.pdf.RCTPdfView;
+//import com.reactnativecommunity.progressview.RNCProgressViewPackage;
+//import com.reactnativecommunity.androidprogressbar.RNCProgressBarPackage;
+//import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.toolbarandroid.ReactToolbarPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+//import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-// import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -40,11 +46,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+//            new RNFetchBlobPackage(),
+//            new RNVersionCheckPackage(),
+//            new RCTPdfView(),
+//            new RNCProgressViewPackage(),
+//            new RNCProgressBarPackage(),
+//            new RNFSPackage(),
             new ReactToolbarPackage(),
-            new ReactNativeConfigPackage(),
+//            new ReactNativeConfigPackage(),
             new RNDateTimePickerPackage(),
             new RNDeviceInfo(),
-            // new RNCWebViewPackage(),
+              new RNCWebViewPackage(),
             new RSSignatureCapturePackage(),
             new VectorIconsPackage(),
             new FingerprintAuthPackage(),

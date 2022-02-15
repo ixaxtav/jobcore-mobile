@@ -31,7 +31,6 @@ const ClockInButton = ({ canClockIn, diffInMinutes, onClick }) => {
         onPress={onClick}
         style={inviteStyles.clockInButton}
         full
-        rounded
         bordered>
         <Text style={inviteStyles.textWhite}>Clock In Now!</Text>
       </Button>
@@ -44,7 +43,6 @@ const ClockInButton = ({ canClockIn, diffInMinutes, onClick }) => {
         onPress={() => {}}
         style={inviteStyles.clockInButtonDisabled}
         full
-        rounded
         bordered>
         <Text style={inviteStyles.textWhite}>The Shift already started!</Text>
       </Button>
@@ -55,7 +53,6 @@ const ClockInButton = ({ canClockIn, diffInMinutes, onClick }) => {
       onPress={() => {}}
       style={inviteStyles.clockInButtonDisabled}
       full
-      rounded
       bordered>
       <Text style={inviteStyles.textWhite}>CLOCK-IN IN {time}</Text>
     </Button>

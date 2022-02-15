@@ -19,9 +19,7 @@ import { i18next } from '../../i18n';
 import { CustomToast, Loading } from '../../shared/components';
 import { FormView } from '../../shared/platform';
 import { BLACK_MAIN } from '../../shared/colorPalette';
-import {
-  REGISTER_ROUTE,
-} from '../../constants/routes';
+import { REGISTER_ROUTE } from '../../constants/routes';
 class ForgotScreen extends Component {
   static navigationOptions = { header: null };
 
@@ -57,7 +55,7 @@ class ForgotScreen extends Component {
 
   errorHandler = (err) => {
     this.isLoading(false);
-    this.setState({ error: err })
+    this.setState({ error: err });
     // CustomToast(err, 'danger');
   };
   userRegister() {
@@ -69,7 +67,7 @@ class ForgotScreen extends Component {
         {(t) => (
           <Container>
             <Content contentContainerStyle={{ flexGrow: 1 }}>
-              <View style={{ flex: 1, backgroundColor:'white' }}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
                 {this.state.isLoading ? <Loading /> : null}
 
                 {/* <Image
@@ -80,18 +78,31 @@ class ForgotScreen extends Component {
                   style={styles.viewLogo}
                   source={require('../../assets/image/logo1.png')}
                 /> */}
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38, paddingRight: 35, paddingLeft: 32, paddingTop: 15 }}
+                    style={{
+                      color: 'black',
+                      fontSize: 38,
+                      paddingRight: 35,
+                      paddingLeft: 32,
+                      paddingTop: 15,
+                    }}
                     name="arrow-back-sharp"
                   />
-
                 </TouchableOpacity>
 
-                <View style={{ paddingTop: 35, paddingLeft: 35, paddingBottom: 35 }}>
-                  <Text style={{ fontSize: 24,fontFamily:'UberMoveText-Light' }}>Forgot Password</Text>
-
+                <View
+                  style={{
+                    paddingTop: 35,
+                    paddingLeft: 35,
+                    paddingBottom: 35,
+                  }}>
+                  <Text
+                    style={{ fontSize: 24, fontFamily: 'UberMoveText-Light' }}>
+                    Forgot Password
+                  </Text>
                 </View>
                 {/* <FormView> */}
                 <Form>
@@ -105,14 +116,41 @@ class ForgotScreen extends Component {
                       onChangeText={(text) => this.setState({ email: text })}
                     />
                   </Item> */}
-                  <Item floatingLabel style={{ marginLeft: 35, marginRight: 35, height:60 }}>
-                    <Label style={{ fontFamily:'UberMoveText-Light', fontSize: 20 }}>Email address</Label>
-                    <Input autoFocus={true}  clearButtonMode="always" value={this.state.email} autoCorrect={false} style={{ fontSize: 20 }}autoCapitalize={'none'} keyboardType={'email-address'} onChangeText={(text) => this.setState({ email: text, error: null })}/>
+                  <Item
+                    floatingLabel
+                    style={{ marginLeft: 35, marginRight: 35, height: 60 }}>
+                    <Label
+                      style={{
+                        fontFamily: 'UberMoveText-Light',
+                        fontSize: 20,
+                      }}>
+                      Email address
+                    </Label>
+                    <Input
+                      autoFocus={true}
+                      clearButtonMode="always"
+                      value={this.state.email}
+                      autoCorrect={false}
+                      style={{ fontSize: 20 }}
+                      autoCapitalize={'none'}
+                      keyboardType={'email-address'}
+                      onChangeText={(text) =>
+                        this.setState({ email: text, error: null })
+                      }
+                    />
 
                     {/* </Item> */}
                   </Item>
                   {this.state.error && (
-                    <Text style={{ color:'red', paddingLeft: 35, paddingTop: 15, paddingRight: 35 }}>{this.state.error + '. Please try again.'}</Text>
+                    <Text
+                      style={{
+                        color: 'red',
+                        paddingLeft: 35,
+                        paddingTop: 15,
+                        paddingRight: 35,
+                      }}>
+                      {this.state.error + '. Please try again.'}
+                    </Text>
                   )}
                 </Form>
                 {/* <Button
@@ -123,37 +161,49 @@ class ForgotScreen extends Component {
                     {t('FORGOT.sendInstructions')}
                   </Text>
                 </Button> */}
-                <View style={{ flexDirection:'row', justifyContent: 'space-between', marginTop: 30, paddingTop: 50 }}>
-
-                  <View style={{ marginVertical:'auto', paddingLeft:35 }}>
-                    
-                 
-                    <Text style={{ fontFamily:'UberMoveText-Light', paddingBottom: 15 }}>{'Don\'t have an account ?'}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 30,
+                    paddingTop: 50,
+                  }}>
+                  <View style={{ marginVertical: 'auto', paddingLeft: 35 }}>
+                    <Text
+                      style={{
+                        fontFamily: 'UberMoveText-Light',
+                        paddingBottom: 15,
+                      }}>
+                      {'Don\'t have an account ?'}
                       <Text
-                        style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
-                        onPress={this.userRegister.bind(this)}
-                      >
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          color: '#007bff',
+                        }}
+                        onPress={this.userRegister.bind(this)}>
                         {' ' + 'Sign up'}
                       </Text>
-
                     </Text>
-                    <Text style={{ fontFamily:'UberMoveText-Light' }}>Having trouble ? 
+                    <Text style={{ fontFamily: 'UberMoveText-Light' }}>
+                      Having trouble ?
                       <Text
-                        style={{  fontFamily:'UberMoveText-Light', color: '#007bff' }}
-                        onPress={() => {Linking.openURL('https://jobcore.co/contact')}}
-                      >
+                        style={{
+                          fontFamily: 'UberMoveText-Light',
+                          color: '#007bff',
+                        }}
+                        onPress={() => {
+                          Linking.openURL('https://jobcore.co/contact');
+                        }}>
                         {' ' + 'Get Help'}
                       </Text>
-
                     </Text>
-
                   </View>
                   <View style={{ marginRight: 35 }}>
-                    <Button dark
+                    <Button
+                      dark
                       onPress={() => this.passwordReset()}
-                      disabled = {!this.state.email}
-                      style={{ borderRadius:0, height: 60 }}
-                    >
+                      disabled={!this.state.email}
+                      style={{ borderRadius: 0, height: 60 }}>
                       {/* <Text style={styles.textButtom}>{t('LOGIN.signUp')}</Text> */}
                       <Icon
                         type="Ionicons"
@@ -162,9 +212,7 @@ class ForgotScreen extends Component {
                         name="arrow-forward-sharp"
                       />
                     </Button>
-
                   </View>
-
                 </View>
                 {/* <Button
                   full

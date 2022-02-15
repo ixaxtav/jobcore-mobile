@@ -9,7 +9,7 @@ const ClockOutButton = ({ onClick }) => {
       onPress={onClick}
       style={inviteStyles.clockOutButton}
       full
-      rounded
+      // rounded
       bordered>
       <Text style={inviteStyles.textWhite}>Clock Out</Text>
     </Button>

@@ -26,7 +26,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: BLUE_DARK,
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   textButtonWhite: {
     textAlign: 'center',
@@ -74,7 +74,7 @@ export default StyleSheet.create({
   textPositions: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: BLUE_DARK,
   },
   buttonRounded: {
@@ -202,7 +202,7 @@ export default StyleSheet.create({
   textLocation: {
     textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: BLUE_DARK,
   },
   accordionPosition: {

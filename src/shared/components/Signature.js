@@ -78,7 +78,7 @@ export default Signature;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     height: 250,
   },
   titleStyle: {
@@ -88,15 +88,17 @@ const styles = StyleSheet.create({
   },
   signature: {
     flex: 1,
-    borderColor: '#000033',
-    borderWidth: 1,
+    borderColor: '#000000',
+    // backgroundColor: 'gray',
+    color: '#000000',
+    borderWidth: 4,
   },
   buttonStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#eeeeee',
+    // backgroundColor: '#eeeeee',
     margin: 10,
   },
 });

@@ -15,6 +15,7 @@ import {
   Header,
   Body,
   Content,
+  Right,
   List,
   Left,
   Title,
@@ -137,6 +138,7 @@ class AvailabilityOnboarding extends Component {
     this.setState({ isRefreshing: false });
   };
   render() {
+    console.log('estas', this.state);
     return (
       <I18n>
         {(t) => (
@@ -158,7 +160,7 @@ class AvailabilityOnboarding extends Component {
                   onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -166,6 +168,7 @@ class AvailabilityOnboarding extends Component {
               <Body style={{ flex: 0 }}>
                 <Title></Title>
               </Body>
+              <Right></Right>
             </Header>
             <Content
               refreshControl={
@@ -183,7 +186,7 @@ class AvailabilityOnboarding extends Component {
                 <H1
                   style={{
                     marginBottom: 15,
-                    fontWeight: 700,
+                    fontWeight: '700',
                     fontSize: 32,
                     lineHeight: 45,
                     fontFamily: 'UberMoveText-Medium',
@@ -367,7 +370,7 @@ class AvailabilityOnboarding extends Component {
                   onPress={() =>
                     this.props.navigation.navigate(PICTURE_ONBOARDING_ROUTE)
                   }>
-                  <Text style={{ color: 'white', fontSize: 18 }}>Next</Text>
+                  <Text style={{ color: 'white', fontSize: 16 }}>Next</Text>
                 </Button>
               </FooterTab>
             </Footer>

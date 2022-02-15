@@ -16,6 +16,7 @@ import {
   Container,
   Title,
   Header,
+  Right,
   Body,
   Content,
   List,
@@ -79,7 +80,7 @@ class DOBOnboarding extends Component {
       showDatePicker: false,
       userBirthDate: null,
       chosenDate: new Date(),
-      _userBirthDate: moment(),
+      _userBirthDate: new Date(2000, 1, 1),
       positionList: inviteStore.getState('GetPositions') || [],
       positions: Object.assign(
         [],
@@ -108,7 +109,7 @@ class DOBOnboarding extends Component {
 
   render() {
     const { _userBirthDate, showDatePicker, isLoading } = this.state;
-
+    console.log('dob state', this.state);
     return (
       <I18n>
         {(t) => (
@@ -130,7 +131,7 @@ class DOBOnboarding extends Component {
                   onPress={() => this.props.navigation.goBack()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -138,6 +139,7 @@ class DOBOnboarding extends Component {
               <Body style={{ flex: 0 }}>
                 <Title></Title>
               </Body>
+              <Right></Right>
             </Header>
             <Content>
               <View
@@ -147,14 +149,19 @@ class DOBOnboarding extends Component {
                 <H1
                   style={{
                     marginBottom: 15,
-                    fontWeight: 700,
+                    fontWeight: '700',
                     fontSize: 32,
-                    fontFamily:'UberMoveText-Medium',
+                    fontFamily: 'UberMoveText-Medium',
                     lineHeight: 45,
                   }}>
                   What is your date of birth?
                 </H1>
-                <Text style={{ fontSize: 18, color: 'gray',fontFamily:'UberMoveText-Light' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
                   You must be at least 18 years old to work shifts on JobCore.
                 </Text>
                 <View style={{ marginTop: 30 }}>
@@ -209,14 +216,17 @@ class DOBOnboarding extends Component {
                   <Button
                     style={{ backgroundColor: 'black', borderRadius: 0 }}
                     onPress={() => {
-                      accountActions.editStatus('ACTIVE', this.state.user);
+                      accountActions.editStatus(
+                        moment(_userBirthDate).format('YYYY-MM-DD'),
+                        this.state.user,
+                      );
                       this.props.navigation.navigate(DASHBOARD_ROUTE);
                     }}>
-                    <Text style={{ color: 'white', fontSize: 18 }}>Next</Text>
+                    <Text style={{ color: 'white', fontSize: 16 }}>Next</Text>
                   </Button>
                 ) : (
                   <Button full light disabled style={{ borderRadius: 0 }}>
-                    <Text style={{ color: 'white', fontSize: 18 }}>
+                    <Text style={{ color: 'white', fontSize: 16 }}>
                       To continue, enter a date
                     </Text>
                   </Button>

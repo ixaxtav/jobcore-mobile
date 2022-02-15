@@ -101,16 +101,15 @@ class DashboardScreen extends Component {
       todayDay: false,
       nextShift: null,
       jobsCompleted: [],
+      openClockIns: null,
       activeShift: null,
       tabs: 1,
     };
   }
 
   async componentDidMount() {
-    console.log(
-      'firebase', firebase
-    )
-  
+    console.log('firebase', firebase);
+
     this.logoutSubscription = accountStore.subscribe(
       'Logout',
       this.logoutHandler,
@@ -141,17 +140,17 @@ class DashboardScreen extends Component {
 
     this.getI9FormSubscription = accountStore.subscribe('GetI9Form', (form) => {
       if (form && Array.isArray(form) && form.length > 0) {
-        this.setState({ I9Form: form[0]['status'] });
+        this.setState({ I9Form: form[0]['status'], isRefreshing: false });
       } else {
-        this.setState({ I9Form: 'NONE' });
+        this.setState({ I9Form: 'NONE', isRefreshing: false });
       }
     });
 
     this.getW4FormSubscription = accountStore.subscribe('GetW4Form', (form) => {
       if (form && Array.isArray(form) && form.length > 0) {
-        this.setState({ W4Form: form[0]['status'] });
+        this.setState({ W4Form: form[0]['status'], isRefreshing: false });
       } else {
-        this.setState({ W4Form: 'NONE' });
+        this.setState({ W4Form: 'NONE', isRefreshing: false });
       }
     });
     this.getJobInvitesSubscription = inviteStore.subscribe(
@@ -166,12 +165,12 @@ class DashboardScreen extends Component {
         this.getJobsHandler(data);
       },
     );
-    this.getCompletedJobsSubscription = jobStore.subscribe(
-      'GetCompletedJobsDash',
-      (data) => {
-        this.getJobsHandler(data);
-      },
-    );
+    // this.getCompletedJobsSubscription = jobStore.subscribe(
+    //   'GetCompletedJobsDash',
+    //   (data) => {
+    //     this.getJobsHandler(data);
+    //   },
+    // );
 
     this.updateTokenSubscription = fcmStore.subscribe(
       'UpdateFcmToken',
@@ -215,55 +214,54 @@ class DashboardScreen extends Component {
       .onNotificationOpened((notificationOpen) => {
         if (notificationOpen) {
           // const action = notificationOpen.action;
-          console.log('notificationTest',notificationOpen )
+          console.log('notificationTest', notificationOpen);
           const notification = notificationOpen.notification;
           this.pushNotificationHandler(notification.data);
         }
       });
 
-    this.unsubscribeFromNotificationListener = firebase.notifications().onNotification((notification) => {
-      if (Platform.OS === 'android') {
-  
-        const localNotification = new firebase.notifications.Notification({
-          sound: 'default',
-          show_in_foreground: true,
-        })
-          .setNotificationId(notification.notificationId)
-          .setTitle(notification.title)
-          .setSubtitle(notification.subtitle)
-          .setBody(notification.body)
-          .setData(notification.data)
-          .android.setChannelId('channelId') // e.g. the id you chose above
-          .android.setSmallIcon('ic_stat_notification') // create this icon in Android Studio
-          .android.setColor('#000000') // you can set a color here
-          .android.setPriority(firebase.notifications.Android.Priority.High);
-  
-        firebase.notifications()
-          .displayNotification(localNotification)
-          .catch(err => console.error(err));
-  
-      } else if (Platform.OS === 'ios') {
-  
-        const localNotification = new firebase.notifications.Notification()
-          .setNotificationId(notification.notificationId)
-          .setTitle(notification.title)
-          .setSubtitle(notification.subtitle)
-          .setBody(notification.body)
-          .setData(notification.data)
-          .ios.setBadge(notification.ios.badge);
-  
-        firebase.notifications()
-          .displayNotification(localNotification)
-          .catch(err => console.error(err));
-  
-      }
-    });
+    this.unsubscribeFromNotificationListener = firebase
+      .notifications()
+      .onNotification((notification) => {
+        if (Platform.OS === 'android') {
+          const localNotification = new firebase.notifications.Notification({
+            sound: 'default',
+            show_in_foreground: true,
+          })
+            .setNotificationId(notification.notificationId)
+            .setTitle(notification.title)
+            .setSubtitle(notification.subtitle)
+            .setBody(notification.body)
+            .setData(notification.data)
+            .android.setChannelId('channelId') // e.g. the id you chose above
+            .android.setSmallIcon('ic_stat_notification') // create this icon in Android Studio
+            .android.setColor('#000000') // you can set a color here
+            .android.setPriority(firebase.notifications.Android.Priority.High);
+
+          firebase
+            .notifications()
+            .displayNotification(localNotification)
+            .catch((err) => console.error(err));
+        } else if (Platform.OS === 'ios') {
+          const localNotification = new firebase.notifications.Notification()
+            .setNotificationId(notification.notificationId)
+            .setTitle(notification.title)
+            .setSubtitle(notification.subtitle)
+            .setBody(notification.body)
+            .setData(notification.data)
+            .ios.setBadge(notification.ios.badge);
+
+          firebase
+            .notifications()
+            .displayNotification(localNotification)
+            .catch((err) => console.error(err));
+        }
+      });
     firebase
       .notifications()
       .getInitialNotification()
       .then((notificationOpen) => {
         if (notificationOpen) {
-          console.log('notificationTest123',notificationOpen )
           // const action = notificationOpen.action;
           const notification = notificationOpen.notification;
           this.pushNotificationHandler(notification.data);
@@ -340,6 +338,7 @@ class DashboardScreen extends Component {
   };
 
   getPaymentsHandler = (payments) => {
+    console.log('payment', payments);
     let emptyPayments = false;
     let totalAmount = 0,
       totalHours = 0;
@@ -389,6 +388,7 @@ class DashboardScreen extends Component {
   // };
 
   getEmployeeHandler = (data) => {
+    console.log('EMPLOYEE', data);
     let status;
 
     if (data.employment_verification_status == 'APPROVED') status = 'Approved';
@@ -418,6 +418,7 @@ class DashboardScreen extends Component {
     this.setState({
       invites,
       isRefreshing: false,
+      isLoading: false,
     });
 
     // set invitationCount param for the badge on invitations tab
@@ -432,6 +433,7 @@ class DashboardScreen extends Component {
   };
 
   getJobsHandler = async (jobsData) => {
+    let activeShift;
     let nextShift =
       (await jobsData) &&
       jobsData.filter(
@@ -439,10 +441,13 @@ class DashboardScreen extends Component {
           moment(job.starting_at)
             .tz(moment.tz.guess())
             .format() >
-          moment(new Date())
+          moment()
             .tz(moment.tz.guess())
             .format(),
-      )[0];
+      );
+
+    if (Array.isArray(nextShift) && nextShift.length > 0)
+      nextShift = nextShift[nextShift.length - 1];
 
     if (nextShift) {
       const today = new Date();
@@ -468,17 +473,42 @@ class DashboardScreen extends Component {
         });
       }
     }
+    // else{
+    if (
+      moment(jobsData[0].ending_at)
+        .tz(moment.tz.guess())
+        .isSameOrBefore(moment()) &&
+      moment(jobsData[0].starting_at)
+        .tz(moment.tz.guess())
+        .isSameOrAfter(moment())
+    ) {
+      activeShift = jobsData[0];
+    } else {
+      activeShift = this.state.activeShift;
+    }
+    // }
+    let sortedJobs = [...jobsData];
+
+    if (Array.isArray(sortedJobs) && sortedJobs.length > 1) {
+      sortedJobs = [...jobsData].sort((a, b) =>
+        moment(a.starting_at, 'DD-MM-YYYY').isBefore(
+          moment(b.starting_at, 'DD-MM-YYYY'),
+        )
+          ? -1
+          : 1,
+      );
+    }
+
     this.setState({
-      jobs: [...jobsData],
+      jobs: sortedJobs,
       isRefreshing: false,
       isLoading: false,
       nextShift,
+      activeShift,
     });
   };
 
   pushNotificationHandler = (notificationData) => {
-
-    console.log('NOTIFICATION - ', notificationData)
     if (!notificationData) {
       return LOG(this, 'no notification data');
     }
@@ -520,7 +550,6 @@ class DashboardScreen extends Component {
   };
 
   goToJobDetails = (job) => {
-    console.log('JOB', job);
     const { navigation } = this.props;
     if (!job) return;
     if (
@@ -733,11 +762,13 @@ class DashboardScreen extends Component {
       rating,
       jobs,
       tabs,
+      openClockIns,
       isRefreshing,
       nextShift,
       tomorrowDay,
       todayDay,
     } = this.state;
+
     return (
       <I18n>
         {(t) => (
@@ -750,92 +781,96 @@ class DashboardScreen extends Component {
               title={t('DASHBOARD.dashboard')}
               screenName={'dashboard'}
             />
-            {this.state.I9Form == 'NONE' ? (
-              <View
-                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button
-                  full
-                  danger
-                  small
-                  onPress={() =>
-                    this.props.navigation.navigate(
-                      UploadDocumentScreen.routeName,
-                    )
-                  }>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+            {this.state.I9Form == 'NONE' &&
+            this.state.employment_verification_status !== 'APPROVED' ? (
+                <View
+                  style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                  <Button
+                    full
+                    danger
+                    small
+                    onPress={() =>
+                      this.props.navigation.navigate(
+                        UploadDocumentScreen.routeName,
+                      )
+                    }>
+                    <Text style={{ fontSize: 14, fontWeight: '700' }}>
                     Employment Verification Required
-                  </Text>
-                  <Icon
-                    style={{ color: 'white' }}
-                    type="FontAwesome"
-                    name="angle-right"
-                  />
-                </Button>
-              </View>
-            ) : this.state.I9Form == 'PENDING' ? (
-              <View
-                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button
-                  full
-                  small
-                  warning
-                  onPress={() =>
-                    this.props.navigation.navigate(
-                      UploadDocumentScreen.routeName,
-                    )
-                  }>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    </Text>
+                    <Icon
+                      style={{ color: 'white' }}
+                      type="FontAwesome"
+                      name="angle-right"
+                    />
+                  </Button>
+                </View>
+              ) : this.state.I9Form == 'PENDING' &&
+              this.state.employment_verification_status !== 'APPROVED' ? (
+                  <View
+                    style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                    <Button
+                      full
+                      small
+                      warning
+                      onPress={() =>
+                        this.props.navigation.navigate(
+                          UploadDocumentScreen.routeName,
+                        )
+                      }>
+                      <Text style={{ fontSize: 14, fontWeight: '700' }}>
                     Employment Verification Under Review
-                  </Text>
-                  <Icon
-                    style={{ color: 'white' }}
-                    type="FontAwesome"
-                    name="angle-right"
-                  />
-                </Button>
-              </View>
-            ) : null}
-            {this.state.W4Form == 'NONE' ? (
-              <View
-                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button
-                  full
-                  danger
-                  small
-                  onPress={() =>
-                    this.props.navigation.navigate(FederalW4tScreen.routeName)
-                  }>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                      </Text>
+                      <Icon
+                        style={{ color: 'white' }}
+                        type="FontAwesome"
+                        name="angle-right"
+                      />
+                    </Button>
+                  </View>
+                ) : null}
+            {this.state.W4Form == 'NONE' &&
+            this.state.employment_verification_status !== 'APPROVED' ? (
+                <View
+                  style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                  <Button
+                    full
+                    danger
+                    small
+                    onPress={() =>
+                      this.props.navigation.navigate(FederalW4tScreen.routeName)
+                    }>
+                    <Text style={{ fontSize: 14, fontWeight: '700' }}>
                     W-4 Form Required
-                  </Text>
-                  <Icon
-                    style={{ color: 'white' }}
-                    type="FontAwesome"
-                    name="angle-right"
-                  />
-                </Button>
-              </View>
-            ) : this.state.W4Form == 'PENDING' ? (
-              <View
-                style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <Button
-                  full
-                  small
-                  warning
-                  onPress={() =>
-                    this.props.navigation.navigate(FederalW4tScreen.routeName)
-                  }>
-                  <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    </Text>
+                    <Icon
+                      style={{ color: 'white' }}
+                      type="FontAwesome"
+                      name="angle-right"
+                    />
+                  </Button>
+                </View>
+              ) : this.state.W4Form == 'PENDING' &&
+              this.state.employment_verification_status !== 'APPROVED' ? (
+                  <View
+                    style={{ borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                    <Button
+                      full
+                      small
+                      warning
+                      onPress={() =>
+                        this.props.navigation.navigate(FederalW4tScreen.routeName)
+                      }>
+                      <Text style={{ fontSize: 14, fontWeight: '700' }}>
                     W-4 Under Review
-                  </Text>
-                  <Icon
-                    style={{ color: 'white' }}
-                    type="FontAwesome"
-                    name="angle-right"
-                  />
-                </Button>
-              </View>
-            ) : null}
+                      </Text>
+                      <Icon
+                        style={{ color: 'white' }}
+                        type="FontAwesome"
+                        name="angle-right"
+                      />
+                    </Button>
+                  </View>
+                ) : null}
             <View style={styles.flexOne}>
               <TouchableOpacity
                 onPress={this.goToProfile}
@@ -863,7 +898,7 @@ class DashboardScreen extends Component {
                     <Text
                       style={{
                         color: 'black',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         fontSize:
                           Dimensions.get('window').width <= 400 ? 17 : 19,
                       }}>
@@ -871,7 +906,12 @@ class DashboardScreen extends Component {
                     </Text>
                   </TouchableOpacity>
                 )}
-                <View style={{ flexDirection: 'row' }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingTop: 2,
+                    paddingBottom: 2,
+                  }}>
                   <Text style={(styles.amountText, { fontSize: 12 })}>
                     Status:{' '}
                     <Text
@@ -880,7 +920,7 @@ class DashboardScreen extends Component {
                         fontWeight: '800',
                         fontSize: 12,
                       }}>
-                      {this.state.status}
+                      {this.state.status || 'Approved'}
                     </Text>
                   </Text>
                 </View>
@@ -889,9 +929,11 @@ class DashboardScreen extends Component {
                   onPress={this.goToReviews}
                   style={{
                     flexDirection: 'row',
+                    paddingTop: 2,
+                    paddingBottom: 2,
                   }}>
                   <Text style={(styles.yourRating, { fontSize: 12 })}>
-                    Your Rating{' '}
+                    Your Rating:{' '}
                   </Text>
                   <StarComponent rating={rating} />
                 </TouchableOpacity>
@@ -899,10 +941,11 @@ class DashboardScreen extends Component {
                   onPress={this.goToPayments}
                   style={{
                     flexDirection: 'row',
-                    paddingBottom: 10,
+                    paddingTop: 2,
+                    paddingBottom: 2,
                   }}>
                   <Text style={(styles.amountText, { fontSize: 12 })}>
-                    Amount{' '}
+                    Pending Amount:{' '}
                   </Text>
                   <Text
                     style={{
@@ -915,125 +958,144 @@ class DashboardScreen extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            <View
-              style={[
-                styles.flexTwo,
-                {
-                  backgroundColor: activeShift ? LOW_RED : 'white',
-                },
-              ]}>
-              {activeShift ? (
-                <React.Fragment>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 13,
-                      fontWeight: '700',
-                    }}>
-                    You are in an active Shift:
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 13,
-                      marginRight: 3,
-                    }}>
-                    {activeShift.position.title} from{' '}
-                    {moment(activeShift.starting_at)
-                      .tz(moment.tz.guess())
-                      .format('h:mm a')}{' '}
-                    to{' '}
-                    {moment(activeShift.ending_at)
-                      .tz(moment.tz.guess())
-                      .format('h:mm a')}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.navigate(WorkModeScreen.routeName, {
-                        shiftId: activeShift.id,
-                      });
-                    }}>
-                    <Text style={styles.styleWorkMode}>WORK MODE</Text>
-                  </TouchableOpacity>
-                </React.Fragment>
-              ) : nextShift ? (
-                <React.Fragment>
-                  <TouchableOpacity
-                    onPress={() => this.goToJobDetails(nextShift)}>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontSize: 13,
-                        fontWeight: '700',
-                      }}>
-                      Next Shift:
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontSize: 13,
-                        marginRight: 3,
-                      }}>
-                      {nextShift.position.title} {todayDay && 'Today'}
-                      {tomorrowDay && 'Tomorrow'}
-                      {!tomorrowDay &&
-                        !todayDay &&
-                        moment(nextShift.starting_at)
-                          .tz(moment.tz.guess())
-                          .format('MMM DD YY')}{' '}
-                      from{' '}
-                      {moment(nextShift.starting_at)
-                        .tz(moment.tz.guess())
-                        .format('h:mm a')}{' '}
+            {(activeShift &&
+              activeShift.ending_at &&
+              moment(activeShift.ending_at)
+                .tz(moment.tz.guess())
+                .isSameOrBefore(moment())) ||
+            nextShift ||
+            (Array.isArray(this.state.invites) &&
+              this.state.invites.length === 0) ? (
+                <View
+                  style={[
+                    styles.flexTwo,
+                    {
+                      backgroundColor: activeShift ? LOW_RED : '#CAE9F5',
+                    },
+                  ]}>
+                  {activeShift &&
+                moment(activeShift.ending_at)
+                  .tz(moment.tz.guess())
+                  .isSameOrAfter(moment()) &&
+                moment(activeShift.starting_at)
+                  .tz(moment.tz.guess())
+                  .isSameOrBefore(moment()) ? (
+                      <React.Fragment>
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontSize: 13,
+                            fontWeight: '700',
+                          }}>
+                      You are in an active shift:
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontSize: 13,
+                            marginRight: 3,
+                          }}>
+                          {activeShift.position.title} from{' '}
+                          {moment(activeShift.starting_at)
+                            .tz(moment.tz.guess())
+                            .format('h:mm a')}{' '}
                       to{' '}
-                      {moment(nextShift.ending_at)
-                        .tz(moment.tz.guess())
-                        .format('h:mm a')}
-                    </Text>
-                  </TouchableOpacity>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      fontWeight: '700',
-                    }}>
-                    No Available Shifts
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      marginRight: 3,
-                    }}>
-                    You have no upcoming shifts, make sure to
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate(JOB_PREFERENCES_ROUTE)
-                      }>
-                      <Text style={styles.flexiStyle}>
-                        flexibilize your preferences
-                      </Text>
-                    </TouchableOpacity>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontSize: 13,
-                        marginRight: 3,
-                      }}>
-                      to get more job invites
-                    </Text>
-                  </View>
-                </React.Fragment>
-              )}
-            </View>
+                          {moment(activeShift.ending_at)
+                            .tz(moment.tz.guess())
+                            .format('h:mm a')}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.props.navigation.navigate(
+                              WorkModeScreen.routeName,
+                              {
+                                shiftId: activeShift.id,
+                              },
+                            );
+                          }}>
+                          <Text style={styles.styleWorkMode}>WORK MODE</Text>
+                        </TouchableOpacity>
+                      </React.Fragment>
+                    ) : nextShift ? (
+                      <React.Fragment>
+                        <TouchableOpacity
+                          onPress={() => this.goToJobDetails(nextShift)}>
+                          <Text
+                            style={{
+                              color: 'black',
+                              fontSize: 15,
+                              fontWeight: '700',
+                            }}>
+                        Next Shift:
+                          </Text>
+                          <Text
+                            style={{
+                              color: 'black',
+                              fontSize: 13,
+                              marginRight: 3,
+                            }}>
+                            {nextShift.position.title} {todayDay && 'Today'}
+                            {tomorrowDay && 'Tomorrow'}
+                            {!tomorrowDay &&
+                          !todayDay &&
+                          moment(nextShift.starting_at)
+                            .tz(moment.tz.guess())
+                            .format('MMMM Do, YYYY')}{' '}
+                        from{' '}
+                            {moment(nextShift.starting_at)
+                              .tz(moment.tz.guess())
+                              .format('h:mm a')}{' '}
+                        to{' '}
+                            {moment(nextShift.ending_at)
+                              .tz(moment.tz.guess())
+                              .format('h:mm a')}
+                          </Text>
+                        </TouchableOpacity>
+                      </React.Fragment>
+                    ) : Array.isArray(this.state.invites) &&
+                  this.state.invites.length === 0 ? (
+                        <React.Fragment>
+                          <Text
+                            style={{
+                              color: 'black',
+                              fontSize: 13,
+                              fontWeight: '700',
+                            }}>
+                      No Available Shifts
+                          </Text>
+                          <Text
+                            style={{
+                              color: 'black',
+                              fontSize: 13,
+                              marginRight: 3,
+                            }}>
+                      You have no upcoming shifts, make sure to
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                            }}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                this.props.navigation.navigate(JOB_PREFERENCES_ROUTE)
+                              }>
+                              <Text style={styles.flexiStyle}>
+                          flexibilize your preferences
+                              </Text>
+                            </TouchableOpacity>
+                            <Text
+                              style={{
+                                color: 'black',
+                                fontSize: 13,
+                                marginRight: 3,
+                              }}>
+                        to get more job invites
+                            </Text>
+                          </View>
+                        </React.Fragment>
+                      ) : null}
+                </View>
+              ) : null}
             <View style={styles.flexThree}>
               <View
                 style={{
@@ -1083,7 +1145,7 @@ class DashboardScreen extends Component {
                         fontSize: 12,
                         color: tabs === 2 ? 'white' : 'black',
                       }}>
-                      Jobs ({jobs && jobs.length})
+                      Upcoming Jobs ({jobs && jobs.length})
                     </Text>
                   </View>
                 </TouchableOpacity>

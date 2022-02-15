@@ -26,6 +26,7 @@ import {
   Icon,
   Left,
   Right,
+  ListItem,
 } from 'native-base';
 import {
   REGISTER_ROUTE,
@@ -69,6 +70,11 @@ class PositionOnboarding extends Component {
     super(props);
     this.state = {
       isLoading: false,
+      showHospitality: true,
+      showConstruction: false,
+      showOther: false,
+      showGeneral: false,
+      showOffice: false,
       isRefreshing: false,
       positionList: inviteStore.getState('GetPositions') || [],
       positions: Object.assign(
@@ -163,6 +169,21 @@ class PositionOnboarding extends Component {
     this.setState({ isLoading: false });
   };
   render() {
+    const hospitalityPositions = this.state.positionList.filter(
+      (e) => e.meta_keywords === 'Hospitality',
+    );
+    const officePositions = this.state.positionList.filter(
+      (e) => e.meta_keywords === 'Office',
+    );
+    const generalPositions = this.state.positionList.filter(
+      (e) => e.meta_keywords === 'General Labor',
+    );
+    const constructionlPositions = this.state.positionList.filter(
+      (e) => e.meta_keywords === 'Construction',
+    );
+    const otherPositions = this.state.positionList.filter(
+      (e) => e.meta_keywords === 'Other',
+    );
     return (
       <I18n>
         {(t) => (
@@ -189,7 +210,7 @@ class PositionOnboarding extends Component {
                   onPress={() => this.logout()}>
                   <Icon
                     type="Ionicons"
-                    style={{ color: 'black',fontSize: 38 }}
+                    style={{ color: 'black', fontSize: 38 }}
                     name="arrow-back-sharp"
                   />
                 </Button>
@@ -209,61 +230,436 @@ class PositionOnboarding extends Component {
                     marginBottom: 15,
                     fontSize: 32,
                     lineHeight: 45,
-                    fontFamily: 'UberMoveText-Medium', 
+                    fontFamily: 'UberMoveText-Medium',
                   }}>
                   What type of work are you interested in?
                 </H1>
-                <Text style={{ fontSize: 18, color: 'gray',fontFamily: 'UberMoveText-Light'  }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                  }}>
                   Select all that apply
                 </Text>
               </View>
               <>
-                {this.state.isLoading ? <Loading /> : null}
-                <CustomPickerWhite
-                  height={'75%'}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={this.state.isRefreshing}
-                      onRefresh={this.refreshPositions}
-                    />
-                  }
-                  data={this.state.positionList}
-                  onItemPress={(position) => {
-                    const isPositionSelected = this.isPositionSelected(
-                      position,
-                    );
-                    this.selectUnselectPosition(position, isPositionSelected);
-                  }}
-                  itemRendered={(position, key) => {
-                    const isPositionSelected = this.isPositionSelected(
-                      position,
-                    );
-
-                    return (
-                      <View
-                        key={position.id}
-                        style={[
-                          styles.itemSelectCheck,
-                          { borderBottomWidth: 0, alignItems: 'center' },
-                        ]}>
-                        <View>
-                          <Text style={{ color: 'black', fontSize: 18,fontFamily: 'UberMoveText-Light' }}>
-                            {position.title}
-                          </Text>
-                        </View>
-                        <View>
-                          <Icon
-                            type="FontAwesome"
-                            name={
-                              isPositionSelected ? 'check-circle' : 'circle-o'
-                            }
-                            style={{ fontSize: 24, color: 'black' }}
+                <List style={{ marginLeft: 10, marginRight: 10 }}>
+                  <ListItem
+                    onPress={() =>
+                      this.setState({
+                        showHospitality: !this.state.showHospitality,
+                      })
+                    }>
+                    <Left>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                        Hospitality
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black' }}
+                        name={
+                          !this.state.showHospitality
+                            ? 'arrow-forward'
+                            : 'arrow-down'
+                        }
+                      />
+                    </Right>
+                  </ListItem>
+                  {this.state.showHospitality && (
+                    <View style={{ marginTop: 10 }}>
+                      <CustomPickerWhite
+                        refreshControl={
+                          <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshPositions}
                           />
-                        </View>
-                      </View>
-                    );
-                  }}
-                />
+                        }
+                        data={hospitalityPositions}
+                        onItemPress={(position) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+                          this.selectUnselectPosition(
+                            position,
+                            isPositionSelected,
+                          );
+                        }}
+                        itemRendered={(position, key) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+
+                          return (
+                            <View
+                              key={position.id}
+                              style={[
+                                styles.itemSelectCheck,
+                                { borderBottomWidth: 0, alignItems: 'center' },
+                              ]}>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'UberMoveText-Light',
+                                  }}>
+                                  {position.title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Icon
+                                  type="FontAwesome"
+                                  name={
+                                    isPositionSelected
+                                      ? 'check-circle'
+                                      : 'circle-o'
+                                  }
+                                  style={{ fontSize: 24, color: 'black' }}
+                                />
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                  <ListItem
+                    onPress={() =>
+                      this.setState({ showOffice: !this.state.showOffice })
+                    }>
+                    <Left>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                        Office
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black' }}
+                        name={
+                          !this.state.showOffice
+                            ? 'arrow-forward'
+                            : 'arrow-down'
+                        }
+                      />
+                    </Right>
+                  </ListItem>
+                  {this.state.showOffice && (
+                    <View style={{ marginTop: 10 }}>
+                      <CustomPickerWhite
+                        refreshControl={
+                          <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshPositions}
+                          />
+                        }
+                        data={officePositions}
+                        onItemPress={(position) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+                          this.selectUnselectPosition(
+                            position,
+                            isPositionSelected,
+                          );
+                        }}
+                        itemRendered={(position, key) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+
+                          return (
+                            <View
+                              key={position.id}
+                              style={[
+                                styles.itemSelectCheck,
+                                { borderBottomWidth: 0, alignItems: 'center' },
+                              ]}>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'UberMoveText-Light',
+                                  }}>
+                                  {position.title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Icon
+                                  type="FontAwesome"
+                                  name={
+                                    isPositionSelected
+                                      ? 'check-circle'
+                                      : 'circle-o'
+                                  }
+                                  style={{ fontSize: 24, color: 'black' }}
+                                />
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                  <ListItem
+                    onPress={() =>
+                      this.setState({ showGeneral: !this.state.showGeneral })
+                    }>
+                    <Left>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                        General Labor
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black' }}
+                        name={
+                          !this.state.showGeneral
+                            ? 'arrow-forward'
+                            : 'arrow-down'
+                        }
+                      />
+                    </Right>
+                  </ListItem>
+                  {this.state.showGeneral && (
+                    <View style={{ marginTop: 10 }}>
+                      <CustomPickerWhite
+                        refreshControl={
+                          <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshPositions}
+                          />
+                        }
+                        data={generalPositions}
+                        onItemPress={(position) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+                          this.selectUnselectPosition(
+                            position,
+                            isPositionSelected,
+                          );
+                        }}
+                        itemRendered={(position, key) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+
+                          return (
+                            <View
+                              key={position.id}
+                              style={[
+                                styles.itemSelectCheck,
+                                { borderBottomWidth: 0, alignItems: 'center' },
+                              ]}>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'UberMoveText-Light',
+                                  }}>
+                                  {position.title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Icon
+                                  type="FontAwesome"
+                                  name={
+                                    isPositionSelected
+                                      ? 'check-circle'
+                                      : 'circle-o'
+                                  }
+                                  style={{ fontSize: 24, color: 'black' }}
+                                />
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                  <ListItem
+                    onPress={() =>
+                      this.setState({
+                        showConstruction: !this.state.showConstruction,
+                      })
+                    }>
+                    <Left>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                        Construction
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black' }}
+                        name={
+                          !this.state.showConstruction
+                            ? 'arrow-forward'
+                            : 'arrow-down'
+                        }
+                      />
+                    </Right>
+                  </ListItem>
+                  {this.state.showConstruction && (
+                    <View style={{ marginTop: 10 }}>
+                      <CustomPickerWhite
+                        refreshControl={
+                          <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshPositions}
+                          />
+                        }
+                        data={constructionlPositions}
+                        onItemPress={(position) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+                          this.selectUnselectPosition(
+                            position,
+                            isPositionSelected,
+                          );
+                        }}
+                        itemRendered={(position, key) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+
+                          return (
+                            <View
+                              key={position.id}
+                              style={[
+                                styles.itemSelectCheck,
+                                { borderBottomWidth: 0, alignItems: 'center' },
+                              ]}>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'UberMoveText-Light',
+                                  }}>
+                                  {position.title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Icon
+                                  type="FontAwesome"
+                                  name={
+                                    isPositionSelected
+                                      ? 'check-circle'
+                                      : 'circle-o'
+                                  }
+                                  style={{ fontSize: 24, color: 'black' }}
+                                />
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                  <ListItem
+                    onPress={() =>
+                      this.setState({ showOther: !this.state.showOther })
+                    }>
+                    <Left>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                        Other
+                      </Text>
+                    </Left>
+                    <Right>
+                      <Icon
+                        style={{ color: 'black' }}
+                        name={
+                          !this.state.showOther ? 'arrow-forward' : 'arrow-down'
+                        }
+                      />
+                    </Right>
+                  </ListItem>
+                  {this.state.showOther && (
+                    <View style={{ marginTop: 10 }}>
+                      <CustomPickerWhite
+                        refreshControl={
+                          <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshPositions}
+                          />
+                        }
+                        data={otherPositions}
+                        onItemPress={(position) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+                          this.selectUnselectPosition(
+                            position,
+                            isPositionSelected,
+                          );
+                        }}
+                        itemRendered={(position, key) => {
+                          const isPositionSelected = this.isPositionSelected(
+                            position,
+                          );
+
+                          return (
+                            <View
+                              key={position.id}
+                              style={[
+                                styles.itemSelectCheck,
+                                { borderBottomWidth: 0, alignItems: 'center' },
+                              ]}>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'UberMoveText-Light',
+                                  }}>
+                                  {position.title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Icon
+                                  type="FontAwesome"
+                                  name={
+                                    isPositionSelected
+                                      ? 'check-circle'
+                                      : 'circle-o'
+                                  }
+                                  style={{ fontSize: 24, color: 'black' }}
+                                />
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                </List>
+                {this.state.isLoading ? <Loading /> : null}
+
                 {/* <BtnCancelSave t={t} onPressSave={this.editPosition} /> */}
               </>
             </Content>
@@ -280,18 +676,29 @@ class PositionOnboarding extends Component {
                       full
                       style={{ backgroundColor: 'black', borderRadius: 0 }}
                       onPress={this.editPosition}>
-                      <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium'  }}>Next</Text>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 16,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
+                      Next
+                      </Text>
                     </Button>
                   ) : (
                     <Button light full disabled style={{ borderRadius: 0 }}>
-                      <Text style={{ color: 'white', fontSize: 18,fontFamily: 'UberMoveText-Medium' }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 16,
+                          fontFamily: 'UberMoveText-Medium',
+                        }}>
                       To continue, add position(s)
                       </Text>
                     </Button>
                   )}
               </FooterTab>
             </Footer>
-      
           </Container>
         )}
       </I18n>
