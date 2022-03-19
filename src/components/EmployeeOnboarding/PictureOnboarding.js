@@ -40,7 +40,8 @@ import { i18next } from '../../i18n';
 import { LOG, WARN } from '../../shared';
 import TouchID from 'react-native-touch-id';
 import { CustomToast, Loading } from '../../shared/components';
-import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from "react-native-image-picker"
+import {PermissionsAndroid} from 'react-native';
 import {
   RESUME_ONBOARDING_ROUTE,
   DOB_ONBOARDING_ROUTE,
@@ -133,6 +134,7 @@ class PictureOnboarding extends Component {
     } else hasPicture = true;
 
     console.log('estado', this.state);
+
     return (
       <I18n>
         {(t) => (
@@ -347,7 +349,7 @@ class PictureOnboarding extends Component {
   openImagePicker = () => {
     ImagePicker.showImagePicker(
       IMAGE_PICKER_OPTIONS,
-      this.handleImagePickerResponse,
+      this.handleImagePickerResponse
     );
   };
 
@@ -357,6 +359,7 @@ class PictureOnboarding extends Component {
    * with the uri, type & name
    */
   handleImagePickerResponse = (response) => {
+    
     if (response.didCancel) {
       // for react-native-image-picker response
       LOG(this, 'User cancelled image picker');
@@ -406,3 +409,4 @@ class PictureOnboarding extends Component {
 PictureOnboarding.routeName = 'EditProfile';
 
 export default PictureOnboarding;
+
