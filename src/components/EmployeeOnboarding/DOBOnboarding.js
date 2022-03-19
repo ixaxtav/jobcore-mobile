@@ -174,6 +174,7 @@ class DOBOnboarding extends Component {
                     rounded>
                     <Label>Birthday</Label>
                     <Input
+                      style={{marginLeft: 40}}
                       keyboardType="numeric"
                       value={moment(_userBirthDate).format('MM-DD-YYYY')}
                       disabled={true}
@@ -189,7 +190,7 @@ class DOBOnboarding extends Component {
                       <DateTimePicker
                         value={_userBirthDate ? _userBirthDate : new Date()}
                         mode={'date'}
-                        display="calendar"
+                        display="spinner"
                         minimumDate={new Date(1920, 1, 1)}
                         maximumDate={new Date()}
                         onChange={(_, date) => {
@@ -203,6 +204,15 @@ class DOBOnboarding extends Component {
                     </View>
                   )}
                 </View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'gray',
+                    fontFamily: 'UberMoveText-Light',
+                    marginTop: 20,
+                  }}>
+                  Please click on the box above and enter your date of birth.
+                </Text>
               </View>
             </Content>
             <Footer

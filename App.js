@@ -6,7 +6,7 @@ import {
 } from 'react-navigation';
 
 import { YellowBox } from 'react-native';
-
+import { LogBox  } from 'react-native';
 import { Root } from 'native-base';
 import LoginScreen from './src/components/Account/LoginScreen';
 import SigninScreen from './src/components/Account/SigninScreen';
@@ -94,14 +94,15 @@ import EditLocation from './src/components/Invite/EditLocation';
 import ApplicationDetailScreen from './src/components/MyJobs/ApplicationDetailScreen';
 import JobCompletedScreen from './src/components/MyJobs/JobCompletedScreen';
 import UpdateApp from './src/components/UpdateApp';
+// import { useEffect } from 'react-native'
 
-YellowBox.ignoreWarnings([
-  'Warning: isMounted(...) is deprecated',
-  'Warning: Failed prop type',
-  'Module RCTImageLoader',
-]);
+// YellowBox.ignoreWarnings([
+//   'Warning: isMounted(...) is deprecated',
+//   'Warning: Failed prop type',
+//   'Module RCTImageLoader',
+// ]);
 window.DEBUG = false;
-
+console.disableYellowBox = true;
 export const AuthStack = createStackNavigator({
   [LOGIN_ROUTE]: {
     screen: LoginScreen,
